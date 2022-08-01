@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import { signOut, getSession } from 'next-auth/react';
-import { Session } from 'next-auth';
-import { Button, Typography } from '@mui/material';
-import styles from '../styles/Home.module.css';
+import { Button, Typography } from 'components/mui';
 
-const Home: NextPage<PageProps> = (props) => {
+import { HomePageProps } from 'config/types';
+import styles from 'styles/Home.module.css';
+
+const Home: NextPage<HomePageProps> = ({ session }) => {
   const router = useRouter();
+  useEffect(() => {
+    if (!session) {
+      router.push('/auth/signin');
+    }
+  }, [router, session]);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -19,20 +26,15 @@ const Home: NextPage<PageProps> = (props) => {
       </Head>
 
       <main className={styles.main}>
-        {!props.session && (
-          <div>
-            <Button onClick={() => router.push('/signin')}>Signin</Button>
-          </div>
-        )}
-        {props.session && (
+        {session && (
           <React.Fragment>
             <Image
-              src={props.session.user?.image || ''}
-              alt="pic"
+              src={session.user?.image || ''}
+              alt="user-pic"
               width={100}
               height={100}
             />
-            <Typography>{props.session.user?.name}</Typography>
+            <Typography>{session.user?.name}</Typography>
             <Button onClick={() => signOut()}>Sign out</Button>
           </React.Fragment>
         )}
@@ -54,14 +56,10 @@ const Home: NextPage<PageProps> = (props) => {
   );
 };
 
-export default Home;
-
-type PageProps = {
-  session: Session | null;
-};
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  const _props: PageProps = { session: session };
+  const _props: HomePageProps = { session };
   return { props: _props };
 };
+
+export default Home;

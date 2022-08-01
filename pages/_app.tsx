@@ -1,13 +1,25 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import Providers from '../Providers';
+import { SessionProvider } from 'next-auth/react';
+import Providers, { AuthProvider } from '../Providers';
 
-function MyApp({ Component, pageProps }: AppProps) {
+const PUBLIC_PATHS = ['/auth/signin'];
+
+const MyApp = ({ Component, pageProps, router: { route } }: AppProps) => {
+  const requireAuth = !PUBLIC_PATHS.some((path) => route.startsWith(path));
+  console.log(route);
   return (
-    <Providers pageProps={pageProps}>
-      <Component {...pageProps} />
-    </Providers>
+    <SessionProvider session={pageProps.session}>
+      <Providers>
+        {requireAuth && (
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        )}
+        {!requireAuth && <Component {...pageProps} />}
+      </Providers>
+    </SessionProvider>
   );
-}
+};
 
 export default MyApp;

@@ -1,9 +1,9 @@
 import React from 'react';
 import type { GetServerSideProps } from 'next';
-import { getProviders, getSession, signIn } from 'next-auth/react';
-import { Button, Grid } from '@mui/material';
+import { getProviders, getSession } from 'next-auth/react';
+import { Grid, Typography } from '@mui/material';
 
-export default function SignIn({}) {
+const UserList = () => {
   return (
     <Grid
       container
@@ -13,23 +13,22 @@ export default function SignIn({}) {
       justifyContent="center"
       style={{ minHeight: '100vh' }}
     >
-      <Grid item xs={3}>
-        <Button onClick={() => signIn()}>Signin with Google</Button>
-      </Grid>
+      <Typography>Hello users</Typography>
     </Grid>
   );
-}
+};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req, res } = context;
-  const providers = await getProviders();
   const session = await getSession({ req });
-  if (session && res) {
+  if (!session) {
     res.statusCode = 302;
     res.setHeader('Location', '/');
-    return { props: { session, providers } };
+    return { props: {} };
   }
   return {
-    props: { providers },
+    props: {},
   };
 };
+
+export default UserList;

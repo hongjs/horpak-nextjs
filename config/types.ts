@@ -1,3 +1,6 @@
+import { ClientSafeProvider } from 'next-auth/react';
+import { Session } from 'next-auth';
+
 export interface IConfig {
   mongoURI: string;
   dbName: string;
@@ -15,3 +18,11 @@ export interface IConfig {
   FIREBASE_STORAGE_BUCKET: string;
   FIREBASE_MESSAGING_SENDER_ID: string;
 }
+
+export type HomePageProps = {
+  session: Session | null;
+};
+
+export type SignInProps = {
+  providers: ClientSafeProvider[];
+};
