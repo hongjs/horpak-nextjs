@@ -1,12 +1,15 @@
-import type { NextPage } from 'next';
+import React from 'react';
+import type { NextPage, GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Image from 'next/image';
+import { signOut, getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
+import { Button, Typography } from '@mui/material';
 import styles from '../styles/Home.module.css';
-import { Button } from '@mui/material';
 
-import { signIn, signOut } from 'next-auth/react';
-
-const Home: NextPage = () => {
+const Home: NextPage<PageProps> = (props) => {
+  const router = useRouter();
   return (
     <div className={styles.container}>
       <Head>
@@ -16,9 +19,23 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <div>
-          <Button onClick={() => signIn()}>Signin with Google</Button>
-        </div>
+        {!props.session && (
+          <div>
+            <Button onClick={() => router.push('/signin')}>Signin</Button>
+          </div>
+        )}
+        {props.session && (
+          <React.Fragment>
+            <Image
+              src={props.session.user?.image || ''}
+              alt="pic"
+              width={100}
+              height={100}
+            />
+            <Typography>{props.session.user?.name}</Typography>
+            <Button onClick={() => signOut()}>Sign out</Button>
+          </React.Fragment>
+        )}
       </main>
 
       <footer className={styles.footer}>
@@ -38,3 +55,13 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+type PageProps = {
+  session: Session | null;
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+  const _props: PageProps = { session: session };
+  return { props: _props };
+};
