@@ -16,7 +16,7 @@
     "@next-auth/firebase-adapter": "1.0.1",
     "bcryptjs": "^2.4.3",
     "firebase": "9.7.0",
-    "firebase-admin": "^11.0.0",
+    "firebase-admin": "^11.0.1",
     "mongodb": "^4.8.1",
     "next": "12.2.3",
     "next-auth": "4.10.2",
