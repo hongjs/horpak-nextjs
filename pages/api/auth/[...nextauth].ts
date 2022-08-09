@@ -1,9 +1,11 @@
-import NextAuth from 'next-auth';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import { unstable_getServerSession } from 'next-auth/next';
 import GoogleProvider from 'next-auth/providers/google';
 import { FirestoreAdapter } from '@next-auth/firebase-adapter';
 import keys from 'config/keys';
 
-export default NextAuth({
+const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: keys.GOOGLE_ID,
@@ -18,4 +20,17 @@ export default NextAuth({
     messagingSenderId: keys.FIREBASE_MESSEAGING_ID,
     appId: keys.FIREBASE_APP_ID,
   }),
-});
+};
+
+export default NextAuth(authOptions);
+
+export const validSession = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const session = await unstable_getServerSession(req, res, authOptions);
+  if (!session) {
+    throw 'Unauthorized';
+  }
+  return !!session;
+};
