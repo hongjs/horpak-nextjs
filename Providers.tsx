@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-
+import Loader from 'components/Loader';
 import ThemeContextProvider from 'contexts/ThemeContext';
-import Layout from './components/layout/Layout';
+import AppContextWrapper from 'contexts/AppContext';
 
 interface Props {
   children: React.ReactNode;
@@ -11,9 +11,9 @@ interface Props {
 
 const Providers: React.FC<Props> = ({ children }: Props) => {
   return (
-    <ThemeContextProvider>
-      <Layout>{children}</Layout>
-    </ThemeContextProvider>
+    <AppContextWrapper>
+      <ThemeContextProvider>{children}</ThemeContextProvider>
+    </AppContextWrapper>
   );
 };
 
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     return <>{children}</>;
   }
 
-  return <div>Loading...</div>;
+  return <Loader />;
 };
 
 export default Providers;

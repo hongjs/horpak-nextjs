@@ -1,9 +1,10 @@
-import { Fragment, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { signOut, useSession } from 'next-auth/react';
 import {
   AppBar,
-  Button,
   Box,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -13,24 +14,43 @@ import {
   ListItemText,
   Toolbar,
   Typography,
+  Tooltip,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  Inbox as InboxIcon,
-  Mail as MailIcon,
+  PowerSettingsNew as LogoutIcon,
 } from '@mui/icons-material';
 
 import classes from './MainNavigation.module.css';
 
 function MainNavigation() {
+  const { data } = useSession();
+  const router = useRouter();
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const toggleDrawer = () => {
+  const menuItems = useMemo(() => {
+    return [
+      { id: 'home', name: 'Home', icon: 'home', url: '/' },
+      { id: 'users', name: 'Users', icon: 'user-group', url: '/users' },
+    ];
+  }, []);
+
+  const menuClickHandler = useCallback(
+    (id: string) => {
+      const menu = menuItems.find((i) => i.id === id);
+      if (menu) {
+        router.push(menu.url);
+      }
+    },
+    [router, menuItems]
+  );
+
+  const toggleDrawer = useCallback(() => {
     setOpenDrawer((prev) => !prev);
-  };
+  }, []);
 
   return (
-    <Fragment>
+    <>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -44,9 +64,33 @@ function MainNavigation() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            Hong.JS
           </Typography>
-          <Button color="inherit">Login</Button>
+
+          {data && data.user && (
+            <>
+              <Image
+                src={data.user?.image || ''}
+                alt={'user-pic'}
+                width={30}
+                height={30}
+              />
+              <Typography style={{ padding: '15px' }}>
+                {data.user.name}
+              </Typography>
+              <Tooltip title="Sign out">
+                <IconButton
+                  color="inherit"
+                  size="medium"
+                  aria-label="logout"
+                  sx={{ mr: 2 }}
+                  onClick={() => signOut()}
+                >
+                  <LogoutIcon />
+                </IconButton>
+              </Tooltip>
+            </>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer}>
@@ -57,33 +101,22 @@ function MainNavigation() {
           onKeyDown={toggleDrawer}
         >
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            {menuItems.map((i) => {
+              return (
+                <ListItem key={i.id} disablePadding>
+                  <ListItemButton onClick={() => menuClickHandler(i.id)}>
+                    <ListItemIcon>
+                      <i className={`fa-solid fa-${i.icon}`} />
+                    </ListItemIcon>
+                    <ListItemText primary={i.name} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
           </List>
         </Box>
       </Drawer>
-    </Fragment>
+    </>
   );
 }
 

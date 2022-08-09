@@ -1,11 +1,8 @@
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { ContextProps } from 'config/types';
 import theme from '../styles/theme';
 
-interface Props {
-  children?: React.ReactNode;
-}
-
-const ThemeContextProvider = ({ children }: Props) => {
+const ThemeContextProvider = ({ children }: ContextProps) => {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>

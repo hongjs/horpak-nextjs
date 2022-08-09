@@ -17,7 +17,13 @@ export interface IConfig {
   FIREBASE_PROJECT_ID: string;
   FIREBASE_STORAGE_BUCKET: string;
   FIREBASE_MESSAGING_SENDER_ID: string;
+
+  BASE_URL: string;
 }
+
+export type ContextProps = {
+  children?: React.ReactNode;
+};
 
 export type HomePageProps = {
   session: Session | null;
@@ -26,3 +32,21 @@ export type HomePageProps = {
 export type SignInProps = {
   providers: ClientSafeProvider[];
 };
+
+export type IUsers = {
+  id: string;
+  name: string;
+  email: string;
+  image: string;
+  emailVerified: boolean | null;
+};
+
+export interface IAppReducerState {
+  users: IUsers[];
+  number: number;
+}
+
+export interface IAppAction {
+  type: string;
+  payload: any;
+}
