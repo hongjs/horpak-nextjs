@@ -5,11 +5,11 @@ import { SessionProvider } from 'next-auth/react';
 import Providers, { AuthProvider } from '../Providers';
 import Layout from 'components/layout/Layout';
 
-const PUBLIC_PATHS = ['/auth/signin'];
+const PUBLIC_PATHS = ['/auth/signin', '/forbidden'];
 
 const MyApp = ({ Component, pageProps, router: { route } }: AppProps) => {
   const requireAuth = !PUBLIC_PATHS.some((path) => route.startsWith(path));
-  console.log(route);
+
   return (
     <SessionProvider session={pageProps.session}>
       <Providers>

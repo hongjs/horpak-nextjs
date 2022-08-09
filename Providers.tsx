@@ -1,13 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import axios from 'axios';
 import Loader from 'components/Loader';
 import ThemeContextProvider from 'contexts/ThemeContext';
 import AppContextWrapper from 'contexts/AppContext';
-
-interface Props {
-  children: React.ReactNode;
-}
+import { IUsers, Props } from 'config/types';
 
 const Providers: React.FC<Props> = ({ children }: Props) => {
   return (
@@ -20,17 +18,30 @@ const Providers: React.FC<Props> = ({ children }: Props) => {
 export const AuthProvider: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   const { data, status } = useSession();
-  const isUser = !!data?.user;
+  const isUser = useMemo(() => {
+    return !!data?.user;
+  }, [data]);
+  const [user, setUser] = useState<IUsers | null>(null);
+
+  useEffect(() => {
+    if (data && data.user && data.user.email) {
+      axios
+        .get(`/api/users/getByEmail?email=${data.user.email}`)
+        .then((res) => {
+          setUser(res.data);
+        });
+    }
+  }, [data]);
 
   useEffect(() => {
     if (status === 'loading') return; // Do nothing while loading
     if (!isUser) router.push('/auth/signin'); // If not authenticated, force log in
-  }, [router, isUser, status]);
+    if (isUser && user && !user.active) router.push('/forbidden');
+  }, [router, isUser, status, user]);
 
-  if (isUser) {
+  if (user && user.active) {
     return <>{children}</>;
   }
-
   return <Loader />;
 };
 

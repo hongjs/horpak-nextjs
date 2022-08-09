@@ -39,7 +39,13 @@ export type IUsers = {
   email: string;
   image: string;
   emailVerified: boolean | null;
+  active: boolean;
+  admin: boolean;
 };
+
+export interface Props {
+  children: React.ReactNode;
+}
 
 export interface IAppReducerState {
   users: IUsers[];

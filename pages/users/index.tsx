@@ -1,17 +1,15 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import Image from 'next/image';
-import { Button, Typography } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { Box, Button, Typography } from '@mui/material';
 import {
   CheckBoxOutlined as CheckIcon,
   CheckBoxOutlineBlank as UncheckIcon,
 } from '@mui/icons-material';
-import { useAppContext } from 'contexts/AppContext';
-import { fetchUsers, toggleUserStatus } from 'actions/userAction';
-import { Box } from '@mui/system';
+import { DataGrid } from '@mui/x-data-grid';
+import useUser from 'hooks/useUser';
 
 const UserList = () => {
-  const { state, dispatch } = useAppContext();
+  const { users, toggleUserStatus } = useUser();
 
   const columns = useMemo(() => {
     return [
@@ -57,7 +55,7 @@ const UserList = () => {
               disabled={!!params.row.admin}
               onClick={() => {
                 if (params.row.admin) return;
-                toggleUserStatus(dispatch, params.row.id);
+                toggleUserStatus(params.row.id);
               }}
             >
               {params.row.active ? 'Inactive' : 'Active'}
@@ -66,11 +64,7 @@ const UserList = () => {
         },
       },
     ];
-  }, []);
-
-  useEffect(() => {
-    fetchUsers(dispatch);
-  }, [dispatch]);
+  }, [toggleUserStatus]);
 
   return (
     <>
@@ -81,7 +75,7 @@ const UserList = () => {
       </Box>
       <div style={{ height: 600, width: '100%' }}>
         <DataGrid
-          rows={state.users || []}
+          rows={users || []}
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[10, 20, 50]}

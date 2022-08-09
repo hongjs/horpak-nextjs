@@ -1,4 +1,4 @@
-import { FETCH_USERS } from 'actions/userAction';
+import { FETCH_USERS } from 'reducers/actions/userAction';
 
 export const initialState = {
   users: [],

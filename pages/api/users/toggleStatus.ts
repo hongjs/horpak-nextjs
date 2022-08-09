@@ -6,10 +6,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const { id } = req.body;
       const snapshot = await db.collection('users').doc(id).get();
-      const isActive = snapshot.data()?.active || false;
-      await db.collection('users').doc(id).update({ active: !isActive });
-
-      res.send(true);
+      const user = snapshot.data();
+      if (user && !user.admin) {
+        const isActive = user?.active || false;
+        await db.collection('users').doc(id).update({ active: !isActive });
+        res.send(true);
+      } else {
+        res.send(false);
+      }
     } catch (error) {
       res.status(500).send(error);
     }
