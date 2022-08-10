@@ -1,7 +1,7 @@
 import { credential } from 'firebase-admin';
 import { initializeApp, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-const serviceAccount = require('/serviceAccountKey.json');
+import keys from 'config/keys';
 
 const apps = getApps();
 const app =
@@ -9,9 +9,9 @@ const app =
     ? apps[0]
     : initializeApp(
         {
-          credential: credential.cert(serviceAccount),
+          credential: credential.cert(keys.FIREBASE_SERVICE_ACCOUNT_KEY),
         },
-        serviceAccount.project_id
+        keys.FIREBASE_SERVICE_ACCOUNT_KEY.project_id
       );
 
 const db = getFirestore(app);

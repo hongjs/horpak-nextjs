@@ -17,6 +17,7 @@ export interface IConfig {
   FIREBASE_PROJECT_ID: string;
   FIREBASE_STORAGE_BUCKET: string;
   FIREBASE_MESSAGING_SENDER_ID: string;
+  FIREBASE_SERVICE_ACCOUNT_KEY: string;
 
   BASE_URL: string;
 }
