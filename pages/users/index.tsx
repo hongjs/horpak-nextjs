@@ -7,11 +7,12 @@ import {
   CheckBoxOutlineBlank as UncheckIcon,
 } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
-import useUser from 'hooks/useUser';
+import { useUser, useSnackbar } from 'hooks';
 
 const UserList = () => {
   const session = useSession();
   const { users, toggleUserStatus } = useUser();
+  const { setAlert } = useSnackbar();
 
   const currentUser = useMemo(() => {
     if (session && session.data && session.data.user)
@@ -65,6 +66,11 @@ const UserList = () => {
               onClick={() => {
                 if (params.row.admin) return;
                 toggleUserStatus(params.row.id);
+                setAlert({
+                  open: true,
+                  message: 'Saved successful',
+                  severity: 'success',
+                });
               }}
             >
               {params.row.active ? 'Inactive' : 'Active'}

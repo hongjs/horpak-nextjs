@@ -15,10 +15,13 @@ import {
   Toolbar,
   Typography,
   Tooltip,
+  ClickAwayListener,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   PowerSettingsNew as LogoutIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 
 import classes from './MainNavigation.module.css';
@@ -35,22 +38,27 @@ function MainNavigation() {
     ];
   }, []);
 
-  const menuClickHandler = useCallback(
+  const handleOpenDrawer = useCallback(() => {
+    setOpenDrawer(true);
+  }, []);
+
+  const handleCloseDrawer = useCallback(() => {
+    setOpenDrawer(false);
+  }, []);
+
+  const handleMenuClick = useCallback(
     (id: string) => {
       const menu = menuItems.find((i) => i.id === id);
       if (menu) {
         router.push(menu.url);
+        handleCloseDrawer();
       }
     },
-    [router, menuItems]
+    [router, menuItems, handleCloseDrawer]
   );
 
-  const toggleDrawer = useCallback(() => {
-    setOpenDrawer((prev) => !prev);
-  }, []);
-
   return (
-    <>
+    <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -59,7 +67,7 @@ function MainNavigation() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={toggleDrawer}
+            onClick={handleOpenDrawer}
           >
             <MenuIcon />
           </IconButton>
@@ -93,18 +101,29 @@ function MainNavigation() {
           )}
         </Toolbar>
       </AppBar>
-      <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer}>
-        <Box
-          sx={{ width: 250 }}
-          role="presentation"
-          onClick={toggleDrawer}
-          onKeyDown={toggleDrawer}
+      <ClickAwayListener onClickAway={handleCloseDrawer} mouseEvent="onMouseUp">
+        <Drawer
+          variant="persistent"
+          open={openDrawer}
+          onClose={handleCloseDrawer}
+          className={classes.drawer}
         >
+          <div className={classes.toolbar}>
+            <Typography color="primary" variant="h6">
+              App
+            </Typography>
+            <Box className={classes.header}>
+              <IconButton onClick={handleCloseDrawer}>
+                {openDrawer ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              </IconButton>
+            </Box>
+          </div>
+
           <List>
             {menuItems.map((i) => {
               return (
                 <ListItem key={i.id} disablePadding>
-                  <ListItemButton onClick={() => menuClickHandler(i.id)}>
+                  <ListItemButton onClick={() => handleMenuClick(i.id)}>
                     <ListItemIcon>
                       <i className={`fa-solid fa-${i.icon}`} />
                     </ListItemIcon>
@@ -114,9 +133,9 @@ function MainNavigation() {
               );
             })}
           </List>
-        </Box>
-      </Drawer>
-    </>
+        </Drawer>
+      </ClickAwayListener>
+    </div>
   );
 }
 

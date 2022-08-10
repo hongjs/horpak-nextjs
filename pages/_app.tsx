@@ -2,7 +2,6 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import Head from 'next/head';
-import Layout from 'components/layout/Layout';
 import Providers, { AuthProvider } from '../Providers';
 
 const PUBLIC_PATHS = ['/auth/signin', '/unauthorized'];
@@ -24,9 +23,7 @@ const MyApp = ({ Component, pageProps, router: { route } }: AppProps) => {
         </Head>
         {!publicAccess && (
           <AuthProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <Component {...pageProps} />
           </AuthProvider>
         )}
         {publicAccess && <Component {...pageProps} />}

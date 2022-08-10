@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from 'react';
-import { useAppContext } from 'contexts/AppContext';
+import { useAppContext } from 'hooks';
 import { fetchUsers, toggleUserStatus } from '../reducers/actions/userAction';
 
-const useUser = () => {
+export const useUser = () => {
   const { state, dispatch } = useAppContext();
 
   const toggleUserStatusHandler = useCallback(
@@ -18,5 +18,3 @@ const useUser = () => {
 
   return { users: state.users, toggleUserStatus: toggleUserStatusHandler };
 };
-
-export default useUser;

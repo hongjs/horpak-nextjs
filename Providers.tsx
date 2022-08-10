@@ -3,14 +3,23 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import Loader from 'components/Loader';
+import ErrorBoundary from 'components/ErrorBoundary';
+import Layout from 'components/layout/Layout';
 import ThemeContextProvider from 'contexts/ThemeContext';
+import SnackbarContext from 'contexts/SnackbarContext';
 import AppContextWrapper from 'contexts/AppContext';
-import { IUsers, Props } from 'config/types';
+import { Props } from 'config/types';
 
 const Providers: React.FC<Props> = ({ children }: Props) => {
   return (
     <AppContextWrapper>
-      <ThemeContextProvider>{children}</ThemeContextProvider>
+      <ThemeContextProvider>
+        <Layout>
+          <SnackbarContext>
+            <ErrorBoundary>{children}</ErrorBoundary>
+          </SnackbarContext>
+        </Layout>
+      </ThemeContextProvider>
     </AppContextWrapper>
   );
 };
