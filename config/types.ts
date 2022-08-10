@@ -38,9 +38,9 @@ export type IUsers = {
   name: string;
   email: string;
   image: string;
-  emailVerified: boolean | null;
-  active: boolean;
-  admin: boolean;
+  emailVerified?: boolean;
+  active?: boolean;
+  admin?: boolean;
 };
 
 export interface Props {

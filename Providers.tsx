@@ -21,14 +21,17 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   const isUser = useMemo(() => {
     return !!data?.user;
   }, [data]);
-  const [user, setUser] = useState<IUsers | null>(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     if (data && data.user && data.user.email) {
       axios
-        .get(`/api/users/getByEmail?email=${data.user.email}`)
+        .get(`/api/users/getUser?email=${data.user.email}`)
         .then((res) => {
           setUser(res.data);
+        })
+        .catch((err) => {
+          setUser({ active: false });
         });
     }
   }, [data]);
@@ -36,7 +39,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
   useEffect(() => {
     if (status === 'loading') return; // Do nothing while loading
     if (!isUser) router.push('/auth/signin'); // If not authenticated, force log in
-    if (isUser && user && !user.active) router.push('/forbidden');
+    if (isUser && user && !user.active) router.push('/unauthorized');
   }, [router, isUser, status, user]);
 
   if (user && user.active) {

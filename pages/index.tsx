@@ -18,7 +18,7 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <Typography variant="h3">{`Hello ${session?.user?.name}`}</Typography>
+        <Typography variant="h4">{`Hello ${session?.user?.name}`}</Typography>
       </main>
 
       <footer className={styles.footer}>

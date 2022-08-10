@@ -1,12 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { validSession } from '../auth/[...nextauth]';
 import { db } from 'lib/firebaseUtil';
+import { withAuth } from 'middleware';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     try {
-      await validSession(req, res);
-
       const { id } = req.body;
       const snapshot = await db.collection('users').doc(id).get();
       const user = snapshot.data();
@@ -23,4 +21,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default handler;
+export default withAuth(handler);

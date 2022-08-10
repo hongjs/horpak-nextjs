@@ -13,6 +13,19 @@ const app =
         },
         serviceAccount.project_id
       );
+
 const db = getFirestore(app);
 
-export { app, db };
+const getUser = async (email: string) => {
+  if (!email) return null;
+  const snapshot = await db
+    .collection('users')
+    .where('email', '==', email)
+    .get();
+  if (snapshot.size > 0) {
+    return snapshot.docs[0].data();
+  }
+  return null;
+};
+
+export { app, db, getUser };

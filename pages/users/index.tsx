@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import { Box, Button, Typography } from '@mui/material';
 import {
   CheckBoxOutlined as CheckIcon,
@@ -9,7 +10,15 @@ import { DataGrid } from '@mui/x-data-grid';
 import useUser from 'hooks/useUser';
 
 const UserList = () => {
+  const session = useSession();
   const { users, toggleUserStatus } = useUser();
+
+  const currentUser = useMemo(() => {
+    if (session && session.data && session.data.user)
+      return session.data.user.email;
+
+    return null;
+  }, [session]);
 
   const columns = useMemo(() => {
     return [
@@ -52,7 +61,7 @@ const UserList = () => {
         renderCell: (params: any) => {
           return (
             <Button
-              disabled={!!params.row.admin}
+              disabled={!!params.row.admin || params.row.email === currentUser}
               onClick={() => {
                 if (params.row.admin) return;
                 toggleUserStatus(params.row.id);
@@ -64,12 +73,12 @@ const UserList = () => {
         },
       },
     ];
-  }, [toggleUserStatus]);
+  }, [currentUser, toggleUserStatus]);
 
   return (
     <>
       <Box sx={{ textAlign: 'left' }}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           User List
         </Typography>
       </Box>
@@ -77,8 +86,8 @@ const UserList = () => {
         <DataGrid
           rows={users || []}
           columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[10, 20, 50]}
+          pageSize={5}
+          rowsPerPageOptions={[5, 10, 20]}
         />
       </div>
     </>
