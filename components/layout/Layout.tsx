@@ -10,7 +10,7 @@ interface Props {
 function Layout({ children }: Props) {
   return (
     <>
-      <Container maxWidth="xl" disableGutters>
+      <Container className={classes.container}>
         <CssBaseline />
         <MainNavigation />
         <main className={classes.main}>{children}</main>

@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import { getUser } from 'lib/firebaseUtil';
+import { getUser, checkAdmin } from 'lib/firebaseUtil';
 
-const withAdmin = (handler: any) => {
+const withActiveAuth = (handler: any) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getSession({ req });
     if (!session || !session.user || !session.user.email) {
@@ -11,8 +11,12 @@ const withAdmin = (handler: any) => {
     }
 
     try {
+      // allow all users to login without checking active flag until we has Admin
+      const noAdmin = await checkAdmin();
+      if (noAdmin) return handler(req, res);
+
       const user = await getUser(session.user.email);
-      if (!user || !user.active || !user.admin) {
+      if (!user || !user.active) {
         res.status(401).send('Unauthorized');
         return;
       }
@@ -24,4 +28,4 @@ const withAdmin = (handler: any) => {
   };
 };
 
-export default withAdmin;
+export default withActiveAuth;

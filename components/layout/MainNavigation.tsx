@@ -16,6 +16,7 @@ import {
   Typography,
   Tooltip,
   ClickAwayListener,
+  Divider,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -57,60 +58,39 @@ function MainNavigation() {
     [router, menuItems, handleCloseDrawer]
   );
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
+  const renderUser = useCallback((user: any) => {
+    return (
+      <>
+        <Image src={user.image || ''} alt={'user-pic'} width={30} height={30} />
+        <Typography style={{ padding: '15px' }}>{user.name}</Typography>
+        <Tooltip title="Sign out">
           <IconButton
-            size="large"
-            edge="start"
             color="inherit"
-            aria-label="menu"
+            size="medium"
+            aria-label="logout"
             sx={{ mr: 2 }}
-            onClick={handleOpenDrawer}
+            onClick={() => signOut()}
           >
-            <MenuIcon />
+            <LogoutIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Hong.JS
-          </Typography>
+        </Tooltip>
+      </>
+    );
+  }, []);
 
-          {data && data.user && (
-            <>
-              <Image
-                src={data.user?.image || ''}
-                alt={'user-pic'}
-                width={30}
-                height={30}
-              />
-              <Typography style={{ padding: '15px' }}>
-                {data.user.name}
-              </Typography>
-              <Tooltip title="Sign out">
-                <IconButton
-                  color="inherit"
-                  size="medium"
-                  aria-label="logout"
-                  sx={{ mr: 2 }}
-                  onClick={() => signOut()}
-                >
-                  <LogoutIcon />
-                </IconButton>
-              </Tooltip>
-            </>
-          )}
-        </Toolbar>
-      </AppBar>
+  const renderDrawer = useCallback(() => {
+    return (
       <ClickAwayListener onClickAway={handleCloseDrawer} mouseEvent="onMouseUp">
         <Drawer
           variant="persistent"
           open={openDrawer}
           onClose={handleCloseDrawer}
           className={classes.drawer}
+          classes={{ paper: classes.drawerPaper }}
         >
           <div className={classes.toolbar}>
             <Typography color="primary" variant="h6">
-              App
+              My App
             </Typography>
             <Box className={classes.header}>
               <IconButton onClick={handleCloseDrawer}>
@@ -118,7 +98,7 @@ function MainNavigation() {
               </IconButton>
             </Box>
           </div>
-
+          <Divider />
           <List>
             {menuItems.map((i) => {
               return (
@@ -135,6 +115,31 @@ function MainNavigation() {
           </List>
         </Drawer>
       </ClickAwayListener>
+    );
+  }, [openDrawer, menuItems, handleMenuClick, handleCloseDrawer]);
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={handleOpenDrawer}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            My App
+          </Typography>
+
+          {data && data.user && renderUser(data.user)}
+        </Toolbar>
+      </AppBar>
+      {renderDrawer()}
     </div>
   );
 }

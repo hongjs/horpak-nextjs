@@ -34,7 +34,7 @@ export type SignInProps = {
   providers: ClientSafeProvider[];
 };
 
-export type IUsers = {
+export type IUser = {
   id: string;
   name: string;
   email: string;
@@ -49,7 +49,7 @@ export interface Props {
 }
 
 export interface IAppReducerState {
-  users: IUsers[];
+  users: IUser[];
   number: number;
 }
 
@@ -57,3 +57,5 @@ export interface IAppAction {
   type: string;
   payload: any;
 }
+
+export type AlertColor = 'success' | 'info' | 'warning' | 'error';

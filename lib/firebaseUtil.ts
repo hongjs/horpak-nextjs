@@ -28,4 +28,13 @@ const getUser = async (email: string) => {
   return null;
 };
 
-export { app, db, getUser };
+const checkAdmin = async () => {
+  const snapshot = await db
+    .collection('users')
+    .where('admin', '==', true)
+    .get();
+
+  return snapshot.size === 0;
+};
+
+export { app, db, getUser, checkAdmin };

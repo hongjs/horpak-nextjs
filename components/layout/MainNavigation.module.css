@@ -1,15 +1,19 @@
 .root {
   display: flex;
 }
+
 .drawer {
-  width: 350px;
   flex-shrink: 0;
   white-space: nowrap;
+}
+
+.drawerPaper {
+  width: 280px;
 }
 
 .toolbar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 8px;
+  justify-content: space-between;
+  padding: 16px;
 }
