@@ -5,7 +5,6 @@ import Loader from 'components/Loader';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Layout from 'components/layout/Layout';
 import ThemeContextProvider from 'contexts/ThemeContext';
-import SnackbarContext from 'contexts/SnackbarContext';
 import AppContextWrapper from 'contexts/AppContext';
 import { useAuthUser } from 'hooks';
 import { Props } from 'config/types';
@@ -16,9 +15,7 @@ const Providers: React.FC<Props> = ({ children }: Props) => {
       <AuthProvider>
         <ThemeContextProvider>
           <Layout>
-            <SnackbarContext>
-              <ErrorBoundary>{children}</ErrorBoundary>
-            </SnackbarContext>
+            <ErrorBoundary>{children}</ErrorBoundary>
           </Layout>
         </ThemeContextProvider>
       </AuthProvider>

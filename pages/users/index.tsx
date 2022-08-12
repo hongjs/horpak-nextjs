@@ -7,7 +7,7 @@ import {
   CheckBoxOutlineBlank as UncheckIcon,
 } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
-import { useUser, useSnackbar } from 'hooks';
+import { useUser, useAlert } from 'hooks';
 import { getUser, checkAdmin } from 'lib/firebaseUtil';
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 
 const UserList = ({ isAdmin, noAdmin, email }: Props) => {
   const { users, toggleUserStatus } = useUser();
-  const { setAlert } = useSnackbar();
+  const { openAlert } = useAlert();
 
   const columns = useMemo(() => {
     return [
@@ -84,11 +84,7 @@ const UserList = ({ isAdmin, noAdmin, email }: Props) => {
               disabled={(!noAdmin && !isAdmin) || email === params.row.email}
               onClick={() => {
                 toggleUserStatus(params.row.id);
-                setAlert({
-                  open: true,
-                  message: 'Saved successful',
-                  severity: 'success',
-                });
+                openAlert('Saved successful', 'success');
               }}
             >
               {params.row.active ? 'Inactive' : 'Active'}
@@ -97,7 +93,7 @@ const UserList = ({ isAdmin, noAdmin, email }: Props) => {
         },
       },
     ];
-  }, [toggleUserStatus, setAlert, email, isAdmin, noAdmin]);
+  }, [toggleUserStatus, openAlert, email, isAdmin, noAdmin]);
 
   return (
     <>
