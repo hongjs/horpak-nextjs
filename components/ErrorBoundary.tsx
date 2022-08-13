@@ -1,6 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { Grid, Typography } from '@mui/material';
 import { MoodBad as MoodBadIcon } from '@mui/icons-material';
+import { Grid, Typography } from '@mui/material';
 
 interface Props {
   children?: ReactNode;

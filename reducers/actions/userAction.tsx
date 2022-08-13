@@ -2,11 +2,18 @@ import axios from 'axios';
 export const FETCH_USERS = 'FETCH_USERS';
 export const FETCH_AUTH_USER_PENDING = 'FETCH_CURRENT_USER_PENDING';
 export const FETCH_AUTH_USER_SUCCESS = 'FETCH_CURRENT_USER_SUCCESS';
+export const OPEN_ALERT = 'OPEN_ALERT';
 
 export const fetchUsers = async (dispatch: any) => {
-  const res = await axios.get('/api/users');
-
-  dispatch({ type: FETCH_USERS, payload: res.data });
+  try {
+    const res = await axios.get('/api/users');
+    dispatch({ type: FETCH_USERS, payload: res.data });
+  } catch (err) {
+    dispatch({
+      type: OPEN_ALERT,
+      payload: { message: 'Unknown error occurs.', severity: 'error' },
+    });
+  }
 };
 
 export const fetchAuthUser = async (dispatch: any, email: string) => {
@@ -25,15 +32,25 @@ export const fetchAuthUser = async (dispatch: any, email: string) => {
       dispatch({ type: FETCH_AUTH_USER_SUCCESS, payload });
       return;
     } catch (err) {
-      console.log(err);
+      dispatch({
+        type: OPEN_ALERT,
+        payload: { message: 'Unknown error occurs.', severity: 'error' },
+      });
     }
   }
 };
 
 export const toggleUserStatus = async (dispatch: any, id: string) => {
-  const res1 = await axios.post('/api/users/toggleStatus', { id });
-  if (res1.data) {
-    const res2 = await axios.get('/api/users');
-    dispatch({ type: FETCH_USERS, payload: res2.data });
+  try {
+    const res1 = await axios.post('/api/users/toggleStatus', { id });
+    if (res1.data) {
+      const res2 = await axios.get('/api/users');
+      dispatch({ type: FETCH_USERS, payload: res2.data });
+    }
+  } catch (err) {
+    dispatch({
+      type: OPEN_ALERT,
+      payload: { message: 'Unknown error occurs.', severity: 'error' },
+    });
   }
 };

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { getSession } from 'next-auth/react';
 import { Box, Button, Typography } from '@mui/material';
@@ -9,6 +10,8 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 import { useUser, useAlert } from 'hooks';
 import { getUser, checkAdmin } from 'lib/firebaseUtil';
+
+import styles from './index.module.css';
 
 type Props = {
   isAdmin: boolean;
@@ -102,11 +105,18 @@ const UserList = ({ isAdmin, noAdmin, email }: Props) => {
           User List
         </Typography>
       </Box>
+      {noAdmin && (
+        <Box className={styles.announcement}>
+          <Typography>First active user will be assigned as Admin.</Typography>
+        </Box>
+      )}
       <div style={{ height: 600, width: '100%' }}>
         <DataGrid
           rows={users || []}
           columns={columns}
           pageSize={5}
+          checkboxSelection={false}
+          hideFooterSelectedRowCount={true}
           rowsPerPageOptions={[5, 10, 20]}
         />
       </div>
@@ -114,8 +124,8 @@ const UserList = ({ isAdmin, noAdmin, email }: Props) => {
   );
 };
 
-export async function getServerSideProps(ctx: any) {
-  const session = await getSession(ctx);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
   if (session?.user?.email) {
     const user = await getUser(session?.user?.email);
     const noAdmin = await checkAdmin();
@@ -129,6 +139,6 @@ export async function getServerSideProps(ctx: any) {
   }
 
   return { props: { noAdmin: false, isAdmin: false, email: '' } };
-}
+};
 
 export default UserList;

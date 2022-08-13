@@ -5,6 +5,7 @@ import { signOut, useSession } from 'next-auth/react';
 import {
   AppBar,
   Box,
+  ClickAwayListener,
   Drawer,
   IconButton,
   List,
@@ -13,9 +14,8 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Typography,
   Tooltip,
-  ClickAwayListener,
+  Typography,
   Divider,
 } from '@mui/material';
 import {
@@ -25,7 +25,7 @@ import {
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 
-import classes from './MainNavigation.module.css';
+import styles from './MainNavigation.module.css';
 
 function MainNavigation() {
   const { data } = useSession();
@@ -85,14 +85,14 @@ function MainNavigation() {
           variant="persistent"
           open={openDrawer}
           onClose={handleCloseDrawer}
-          className={classes.drawer}
-          classes={{ paper: classes.drawerPaper }}
+          className={styles.drawer}
+          classes={{ paper: styles.drawerPaper }}
         >
-          <div className={classes.toolbar}>
+          <div className={styles.toolbar}>
             <Typography color="primary" variant="h6">
               My App
             </Typography>
-            <Box className={classes.header}>
+            <Box className={styles.header}>
               <IconButton onClick={handleCloseDrawer}>
                 {openDrawer ? <ChevronLeftIcon /> : <ChevronRightIcon />}
               </IconButton>
@@ -119,7 +119,7 @@ function MainNavigation() {
   }, [openDrawer, menuItems, handleMenuClick, handleCloseDrawer]);
 
   return (
-    <div className={classes.root}>
+    <div className={styles.root}>
       <AppBar position="static">
         <Toolbar>
           <IconButton

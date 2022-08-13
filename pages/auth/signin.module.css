@@ -1,0 +1,45 @@
+.container {
+  max-height: 100vh;
+  margin-top: 64px;
+}
+.itemImage {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin-right: 16px;
+}
+.itemLeft {
+  width: 100%;
+  padding-right: 16px;
+  height: calc(70vh);
+}
+.itemRight {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  height: calc(70vh);
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.toolbar {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  background-color: #fff;
+  color: #545454;
+}
+.button {
+  width: 100%;
+  height: 50px;
+  text-transform: none;
+}
+
+.footer {
+  display: flex;
+  flex: 1;
+  border-top: 1px solid #eaeaea;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

@@ -1,7 +1,7 @@
 import { createContext, useCallback, useReducer } from 'react';
-import { Alert, Snackbar } from '@mui/material';
 import { AppReducer, initialState } from 'reducers/AppReducer';
-import { ContextProps, AlertColor } from 'config/types';
+import { ContextProps } from 'config/types';
+import { Alert, Snackbar } from '@mui/material';
 
 export const AppContext = createContext(initialState);
 
@@ -14,7 +14,7 @@ const AppContextWrapper = (props: ContextProps) => {
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
-      {props.children}
+      <>{props.children}</>
       <Snackbar
         open={state.alert.open || false}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -25,7 +25,7 @@ const AppContextWrapper = (props: ContextProps) => {
           onClose={handleClose}
           severity={state.alert.severity || 'success'}
         >
-          {state.alert.message}
+          {state.alert.message || 'Hi there!'}
         </Alert>
       </Snackbar>
     </AppContext.Provider>

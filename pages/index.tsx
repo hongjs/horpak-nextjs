@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import type { NextPage, GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { getSession } from 'next-auth/react';
-import { Typography } from 'components/mui';
-
+import { Typography } from '@mui/material';
 import { HomePageProps } from 'config/types';
 import styles from 'styles/Home.module.css';
 
@@ -22,9 +21,11 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
       </main>
 
       <footer className={styles.footer}>
-        <a target="_blank" rel="noopener noreferrer">
+        <p>
           Powered by HongJS
-        </a>
+          <br />
+          sompote.r@gmail.com
+        </p>
       </footer>
     </div>
   );

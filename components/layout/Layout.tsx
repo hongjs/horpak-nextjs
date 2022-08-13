@@ -1,7 +1,7 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { Container } from '@mui/material';
 import MainNavigation from './MainNavigation';
-import classes from './Layout.module.css';
+import styles from './Layout.module.css';
 
 interface Props {
   children?: React.ReactNode;
@@ -10,10 +10,10 @@ interface Props {
 function Layout({ children }: Props) {
   return (
     <>
-      <Container className={classes.container}>
+      <Container className={styles.container}>
         <CssBaseline />
         <MainNavigation />
-        <main className={classes.main}>{children}</main>
+        <main className={styles.main}>{children}</main>
       </Container>
     </>
   );

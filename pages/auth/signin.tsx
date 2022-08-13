@@ -1,38 +1,93 @@
 import React from 'react';
 import type { GetServerSideProps } from 'next';
+import Image from 'next/image';
 import { getProviders, getSession, signIn } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
-import { Button, Grid, Typography } from 'components/mui';
+import { FaFacebook } from 'react-icons/fa';
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Toolbar,
+  Typography,
+} from '@mui/material';
+import { Hidden } from '@mui/material';
 import { SignInProps } from 'config/types';
+
+import styles from './signin.module.css';
 
 const SignIn = ({ providers }: SignInProps) => {
   return (
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      style={{ minHeight: '100vh' }}
-    >
-      {providers &&
-        Object.values(providers).map((provider) => {
-          return (
-            <Grid
-              key={provider.id}
-              item
-              xs={12}
-              style={{ display: 'flex', justifyContent: 'flex-center' }}
-            >
-              <Button
-                startIcon={<FcGoogle fontSize={30} />}
-                onClick={() => signIn(provider.id)}
-              >{`Signin with ${provider.name}`}</Button>
+    <>
+      <AppBar position="static">
+        <Toolbar className={styles.toolbar}>
+          <Image src="/images/logo64.png" width={32} height={32} alt="logo" />
+          <Typography variant="h6" component="div" sx={{ marginLeft: '16px' }}>
+            Hong.JS
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Container maxWidth="lg" className={styles.container}>
+        <Grid container>
+          <Hidden mdDown>
+            <Grid item xs={12} md={7} lg={8}>
+              <Box className={styles.itemLeft}>
+                <Box component="div" className={styles.itemImage}>
+                  <Image
+                    src={'/images/cover.jpg'}
+                    alt="cover"
+                    width={600}
+                    height={400}
+                    layout="responsive"
+                  />
+                </Box>
+              </Box>
             </Grid>
-          );
-        })}
-      {!providers && <Typography>No login provider found</Typography>}
-    </Grid>
+          </Hidden>
+          <Grid item xs={12} md={5} lg={4}>
+            <Box className={styles.itemRight}>
+              <Grid container direction="column" rowSpacing={3}>
+                <Grid item xs={12}>
+                  <Typography variant="h4" gutterBottom>
+                    Sign in
+                  </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<FcGoogle fontSize={30} />}
+                    className={styles.button}
+                    onClick={() => signIn('google')}
+                  >{`Signin with Google`}</Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    disabled
+                    variant="outlined"
+                    startIcon={<FaFacebook fontSize={30} />}
+                    className={styles.button}
+                  >{`Signin with Facebook`}</Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+              </Grid>
+            </Box>
+          </Grid>
+        </Grid>
+        <footer className={styles.footer}>
+          <Divider />
+          <p>
+            Powered by HongJS
+            <br />
+            sompote.r@gmail.com
+          </p>
+        </footer>
+      </Container>
+    </>
   );
 };
 

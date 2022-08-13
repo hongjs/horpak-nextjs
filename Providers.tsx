@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import Loader from 'components/Loader';
@@ -27,14 +27,10 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   const { data, status } = useSession();
   const { currentUser, noAdmin, loading } = useAuthUser();
+
   const isUser = useMemo(() => {
     return !!data?.user;
   }, [data]);
-
-  useEffect(() => {
-    if (data && data.user && data.user.email) {
-    }
-  }, [data, status]);
 
   useEffect(() => {
     if (status === 'loading' || loading) return; // Do nothing while loading

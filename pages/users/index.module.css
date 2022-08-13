@@ -1,0 +1,8 @@
+.announcement {
+  text-align: left;
+  padding: 8px;
+  color: dimgrey;
+  background-color: azure;
+  border: 4px solid lightblue;
+  margin-bottom: 16px;
+}
