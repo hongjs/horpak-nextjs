@@ -20,6 +20,7 @@ export interface IConfig {
   FIREBASE_SERVICE_ACCOUNT_KEY: string;
 
   BASE_URL: string;
+  PUBLIC_PATHS: string[];
 }
 
 export type ContextProps = {

@@ -22,4 +22,5 @@ export default {
     : undefined,
 
   BASE_URL: process.env.BASE_URL,
+  PUBLIC_PATHS: ['/auth/signin', '/unauthorized'],
 } as IConfig;

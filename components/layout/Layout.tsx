@@ -13,7 +13,16 @@ function Layout({ children }: Props) {
       <Container className={styles.container}>
         <CssBaseline />
         <MainNavigation />
-        <main className={styles.main}>{children}</main>
+        <main className={styles.main}>
+          {children}
+          <footer className={styles.footer}>
+            <p>
+              Powered by HongJS
+              <br />
+              sompote.r@gmail.com
+            </p>
+          </footer>
+        </main>
       </Container>
     </>
   );

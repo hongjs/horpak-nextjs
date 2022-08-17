@@ -6,7 +6,9 @@ import {
   AppBar,
   Box,
   ClickAwayListener,
+  Divider,
   Drawer,
+  Hidden,
   IconButton,
   List,
   ListItem,
@@ -16,7 +18,6 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-  Divider,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -63,17 +64,19 @@ function MainNavigation() {
       <>
         <Image src={user.image || ''} alt={'user-pic'} width={30} height={30} />
         <Typography style={{ padding: '15px' }}>{user.name}</Typography>
-        <Tooltip title="Sign out">
-          <IconButton
-            color="inherit"
-            size="medium"
-            aria-label="logout"
-            sx={{ mr: 2 }}
-            onClick={() => signOut()}
-          >
-            <LogoutIcon />
-          </IconButton>
-        </Tooltip>
+        <Hidden mdDown>
+          <Tooltip title="Sign out">
+            <IconButton
+              color="inherit"
+              size="medium"
+              aria-label="logout"
+              sx={{ mr: 2 }}
+              onClick={() => signOut()}
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
+        </Hidden>
       </>
     );
   }, []);
@@ -112,6 +115,15 @@ function MainNavigation() {
                 </ListItem>
               );
             })}
+            <Divider />
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => signOut()}>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Sign out" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Drawer>
       </ClickAwayListener>
@@ -132,9 +144,16 @@ function MainNavigation() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            My App
-          </Typography>
+          <Hidden mdDown>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              My App
+            </Typography>
+          </Hidden>
+          <Hidden mdUp>
+            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+              &nbsp;
+            </Typography>
+          </Hidden>
 
           {data && data.user && renderUser(data.user)}
         </Toolbar>
