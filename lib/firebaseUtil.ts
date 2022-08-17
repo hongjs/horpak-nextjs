@@ -9,7 +9,9 @@ const app =
     ? apps[0]
     : initializeApp(
         {
-          credential: credential.cert(keys.FIREBASE_SERVICE_ACCOUNT_KEY),
+          credential: credential.cert(
+            JSON.stringify(keys.FIREBASE_SERVICE_ACCOUNT_KEY)
+          ),
         },
         keys.FIREBASE_SERVICE_ACCOUNT_KEY.project_id
       );
