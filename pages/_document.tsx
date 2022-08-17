@@ -10,6 +10,10 @@ export default function Document() {
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
         />
+        <meta
+          name="google-site-verification"
+          content="KQP1ad7HXTVasrNzc0VvD_wStujJ2zwkY0R1dd_jeMk"
+        />
       </Head>
       <body>
         <Main />

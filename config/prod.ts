@@ -20,7 +20,7 @@ export default {
   FIREBASE_SERVICE_ACCOUNT_KEY: process.env.FIREBASE_SERVICE_ACCOUNT_KEY
     ? (JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY) as IServiceAccount)
     : undefined,
-
+  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   BASE_URL: process.env.BASE_URL,
   PUBLIC_PATHS: ['/auth/signin', '/unauthorized'],
 } as IConfig;

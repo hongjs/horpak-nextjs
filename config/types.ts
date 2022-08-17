@@ -33,6 +33,7 @@ export interface IConfig {
   FIREBASE_SERVICE_ACCOUNT_KEY: IServiceAccount;
 
   BASE_URL: string;
+  NEXTAUTH_SECRET: string;
   PUBLIC_PATHS: string[];
 }
 
