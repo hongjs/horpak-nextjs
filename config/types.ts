@@ -1,6 +1,19 @@
 import { ClientSafeProvider } from 'next-auth/react';
 import { Session } from 'next-auth';
 
+export type IServiceAccount = {
+  type: string;
+  project_id: string;
+  private_key_id: string;
+  private_key: string;
+  client_email: string;
+  client_id: string;
+  auth_uri: string;
+  token_uri: string;
+  auth_provider_x509_cert_url: string;
+  client_x509_cert_url: string;
+};
+
 export interface IConfig {
   mongoURI: string;
   dbName: string;
@@ -16,8 +29,8 @@ export interface IConfig {
   FIREBASE_DATABASE_URL: string;
   FIREBASE_PROJECT_ID: string;
   FIREBASE_STORAGE_BUCKET: string;
-  FIREBASE_MESSAGING_SENDER_ID: string;
-  FIREBASE_SERVICE_ACCOUNT_KEY: string;
+  FIREBASE_MESSEAGING_ID: string;
+  FIREBASE_SERVICE_ACCOUNT_KEY: IServiceAccount;
 
   BASE_URL: string;
   PUBLIC_PATHS: string[];
