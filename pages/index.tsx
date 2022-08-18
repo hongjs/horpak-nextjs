@@ -19,6 +19,13 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
       <main className={styles.main}>
         <Typography variant="h4">{`Hello ${session?.user?.name}`}</Typography>
       </main>
+      <footer className={styles.footer}>
+        <p>
+          Powered by HongJS
+          <br />
+          sompote.r@gmail.com
+        </p>
+      </footer>
     </div>
   );
 };

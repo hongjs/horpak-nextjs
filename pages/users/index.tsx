@@ -101,7 +101,7 @@ const UserList = ({ isAdmin, noAdmin, email }: Props) => {
   return (
     <>
       <Box sx={{ textAlign: 'left' }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h5" gutterBottom>
           User List
         </Typography>
       </Box>

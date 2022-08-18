@@ -22,71 +22,77 @@ import styles from './signin.module.css';
 const SignIn = ({ providers }: SignInProps) => {
   return (
     <>
-      <AppBar position="static">
-        <Toolbar className={styles.toolbar}>
-          <Image src="/images/logo64.png" width={32} height={32} alt="logo" />
-          <Typography variant="h6" component="div" sx={{ marginLeft: '16px' }}>
-            Hong.JS
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Container maxWidth="lg" className={styles.container}>
-        <Grid container>
-          <Hidden mdDown>
-            <Grid item xs={12} md={7} lg={8}>
-              <Box className={styles.itemLeft}>
-                <Box component="div" className={styles.itemImage}>
-                  <Image
-                    src={'/images/cover.jpg'}
-                    alt="cover"
-                    width={600}
-                    height={400}
-                    layout="responsive"
-                  />
+      <main>
+        <AppBar position="static">
+          <Toolbar className={styles.toolbar}>
+            <Image src="/images/logo64.png" width={32} height={32} alt="logo" />
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ marginLeft: '16px' }}
+            >
+              Hong.JS
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Container maxWidth="lg" className={styles.container}>
+          <Grid container>
+            <Hidden mdDown>
+              <Grid item xs={12} md={7} lg={8}>
+                <Box className={styles.itemLeft}>
+                  <Box component="div" className={styles.itemImage}>
+                    <Image
+                      src={'/images/cover.jpg'}
+                      alt="cover"
+                      width={600}
+                      height={400}
+                      layout="responsive"
+                    />
+                  </Box>
                 </Box>
+              </Grid>
+            </Hidden>
+            <Grid item xs={12} md={5} lg={4}>
+              <Box className={styles.itemRight}>
+                <Grid container direction="column" rowSpacing={3}>
+                  <Grid item xs={12}>
+                    <Typography variant="h4" gutterBottom>
+                      Sign in
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      variant="outlined"
+                      startIcon={<FcGoogle fontSize={30} />}
+                      className={styles.button}
+                      onClick={() => signIn('google')}
+                    >{`Signin with Google`}</Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      disabled
+                      variant="outlined"
+                      startIcon={<FaFacebook fontSize={30} />}
+                      className={styles.button}
+                    >{`Signin with Facebook`}</Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                </Grid>
               </Box>
             </Grid>
-          </Hidden>
-          <Grid item xs={12} md={5} lg={4}>
-            <Box className={styles.itemRight}>
-              <Grid container direction="column" rowSpacing={3}>
-                <Grid item xs={12}>
-                  <Typography variant="h4" gutterBottom>
-                    Sign in
-                  </Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    variant="outlined"
-                    startIcon={<FcGoogle fontSize={30} />}
-                    className={styles.button}
-                    onClick={() => signIn('google')}
-                  >{`Signin with Google`}</Button>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    disabled
-                    variant="outlined"
-                    startIcon={<FaFacebook fontSize={30} />}
-                    className={styles.button}
-                  >{`Signin with Facebook`}</Button>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-              </Grid>
-            </Box>
           </Grid>
-        </Grid>
-        <footer className={styles.footer}>
-          <Divider />
-          <p>
-            Powered by HongJS
-            <br />
-            sompote.r@gmail.com
-          </p>
-        </footer>
-      </Container>
+        </Container>
+      </main>
+      <footer className={styles.footer}>
+        <Divider />
+        <p>
+          Powered by HongJS
+          <br />
+          sompote.r@gmail.com
+        </p>
+      </footer>
     </>
   );
 };
