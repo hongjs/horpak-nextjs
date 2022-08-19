@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Hidden } from '@mui/material';
-import { SignInProps } from 'config/types';
+import { SignInProps } from 'types/auth';
 
 import styles from './signin.module.css';
 

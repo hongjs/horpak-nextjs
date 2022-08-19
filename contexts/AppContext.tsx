@@ -1,6 +1,6 @@
 import { createContext, useCallback, useReducer } from 'react';
 import { AppReducer, initialState } from 'reducers/AppReducer';
-import { ContextProps } from 'config/types';
+
 import { Alert, Snackbar } from '@mui/material';
 
 export const AppContext = createContext(initialState);

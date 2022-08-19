@@ -1,6 +1,5 @@
 export const OPEN_ALERT = 'OPEN_ALERT';
 export const CLOSE_ALERT = 'CLOSE_ALERT';
-import { AlertColor } from 'config/types';
 
 export const openAlert = async (
   dispatch: any,

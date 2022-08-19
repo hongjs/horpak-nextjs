@@ -7,7 +7,6 @@ import Layout from 'components/layout/Layout';
 import ThemeContextProvider from 'contexts/ThemeContext';
 import AppContextWrapper from 'contexts/AppContext';
 import { useAuthUser } from 'hooks';
-import { Props } from 'config/types';
 
 const Providers: React.FC<Props> = ({ children }: Props) => {
   return (

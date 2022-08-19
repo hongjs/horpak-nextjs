@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from 'react';
-import { Props } from 'config/types';
 
 const FAST_INTERVAL = 2000;
 const SLOW_INTERVAL = 60000;
