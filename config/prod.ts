@@ -1,4 +1,4 @@
-import { IServiceAccount } from './types';
+import { ServiceAccount } from 'types/auth';
 
 export default {
   mongoURI: process.env.MONGO_URI || 'mongodb://localhost:27017/admin',
@@ -18,7 +18,7 @@ export default {
   FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
   FIREBASE_MESSEAGING_ID: process.env.FIREBASE_MESSEAGING_ID,
   FIREBASE_SERVICE_ACCOUNT_KEY: process.env.FIREBASE_SERVICE_ACCOUNT_KEY
-    ? (JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY) as IServiceAccount)
+    ? (JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY) as ServiceAccount)
     : undefined,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   BASE_URL: process.env.BASE_URL,
