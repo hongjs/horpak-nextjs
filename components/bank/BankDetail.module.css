@@ -1,0 +1,17 @@
+.root {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  width: 100%;
+}
+.paper {
+  padding: 32px;
+  text-align: center;
+}
+.textField {
+  width: 100%;
+}
+.button {
+  width: 200px;
+  margin-right: 8px;
+}

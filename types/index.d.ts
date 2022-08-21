@@ -1,12 +1,20 @@
-interface Props {
-  children: React.ReactNode;
-}
+import { Dispatch } from 'react';
+import { AppState } from 'types/state';
 
-type ContextProps = {
-  children?: React.ReactNode;
+export type Props = {
+  children: React.ReactNode;
 };
 
-interface IConfig {
+export type AppContextProps = {
+  state: AppState;
+  dispatch: Dispatch<any>;
+};
+
+export type HomePageProps = {
+  session: Session | null;
+};
+
+type ConfigType = {
   mongoURI: string;
   dbName: string;
   tokenSecret: string;
@@ -27,11 +35,4 @@ interface IConfig {
   BASE_URL: string;
   NEXTAUTH_SECRET: string;
   PUBLIC_PATHS: string[];
-}
-
-interface IAppAction {
-  type: string;
-  payload: any;
-}
-
-type AlertColor = 'success' | 'info' | 'warning' | 'error';
+};

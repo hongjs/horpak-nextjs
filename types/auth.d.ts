@@ -14,7 +14,7 @@ export type ServiceAccount = {
   client_x509_cert_url: string;
 };
 
-type IUser = {
+type UserType = {
   id: string;
   name: string;
   email: string;
@@ -24,13 +24,10 @@ type IUser = {
   admin?: boolean;
 };
 
-interface IAppReducerState {
-  users: IUser[];
-  number: number;
-}
-
-export type HomePageProps = {
-  session: Session | null;
+type AuthState = {
+  loading: boolean;
+  currentUser: any | null;
+  noAdmin: boolean;
 };
 
 export type SignInProps = {

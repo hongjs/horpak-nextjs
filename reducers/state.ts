@@ -1,15 +1,23 @@
+import { AppState } from 'types/state';
+
 const initialState = {
-  users: [],
   auth: {
-    loading: null,
+    loading: false,
     currentUser: null,
-    noAdmin: null,
+    noAdmin: false,
   },
   alert: {
     open: false,
     message: '',
     severity: 'success',
   },
-} as any;
+  users: [],
+  bank: {
+    loading: false,
+    saved: false,
+    item: undefined,
+    banks: [],
+  },
+} as AppState;
 
 export default initialState;

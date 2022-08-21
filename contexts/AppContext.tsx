@@ -2,10 +2,14 @@ import { createContext, useCallback, useReducer } from 'react';
 import { Alert, Snackbar } from '@mui/material';
 import { AppReducer } from 'reducers/AppReducer';
 import initialState from 'reducers/state';
+import { Props, AppContextProps } from 'types';
 
-export const AppContext = createContext(initialState);
+export const AppContext = createContext<AppContextProps>({
+  state: initialState,
+  dispatch: () => {},
+});
 
-const AppContextWrapper = (props: ContextProps) => {
+const AppContextWrapper: React.FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(AppReducer, initialState);
 
   const handleClose = useCallback(() => {
@@ -14,7 +18,7 @@ const AppContextWrapper = (props: ContextProps) => {
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
-      <>{props.children}</>
+      <> {children}</>
       <Snackbar
         open={state.alert.open || false}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}

@@ -8,6 +8,7 @@
   padding: 0px;
 }
 
+/* MD, LG, XL */
 @media (min-width: 900px) {
   .main {
     width: 100%;
@@ -18,6 +19,7 @@
   }
 }
 
+/* XS, SM */
 @media (max-width: 899px) {
   .main {
     width: 100%;

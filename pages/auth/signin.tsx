@@ -2,8 +2,7 @@ import React from 'react';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { getProviders, getSession, signIn } from 'next-auth/react';
-import { FcGoogle } from 'react-icons/fc';
-import { FaFacebook } from 'react-icons/fa';
+
 import {
   AppBar,
   Box,
@@ -63,7 +62,7 @@ const SignIn = ({ providers }: SignInProps) => {
                   <Grid item xs={12}>
                     <Button
                       variant="outlined"
-                      startIcon={<FcGoogle fontSize={30} />}
+                      startIcon={<i className="fa-brands fa-google" />}
                       className={styles.button}
                       onClick={() => signIn('google')}
                     >{`Signin with Google`}</Button>
@@ -72,7 +71,7 @@ const SignIn = ({ providers }: SignInProps) => {
                     <Button
                       disabled
                       variant="outlined"
-                      startIcon={<FaFacebook fontSize={30} />}
+                      startIcon={<i className="fa-brands fa-facebook" />}
                       className={styles.button}
                     >{`Signin with Facebook`}</Button>
                   </Grid>

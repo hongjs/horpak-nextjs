@@ -37,6 +37,7 @@ function MainNavigation() {
     return [
       { id: 'home', name: 'Home', icon: 'home', url: '/' },
       { id: 'users', name: 'Users', icon: 'user-group', url: '/users' },
+      { id: 'banks', name: 'Banks', icon: 'building-columns', url: '/bank' },
     ];
   }, []);
 

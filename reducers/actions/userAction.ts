@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { Dispatch } from 'react';
+export const OPEN_ALERT = 'OPEN_ALERT';
 export const FETCH_USERS = 'FETCH_USERS';
 export const FETCH_AUTH_USER_PENDING = 'FETCH_CURRENT_USER_PENDING';
 export const FETCH_AUTH_USER_SUCCESS = 'FETCH_CURRENT_USER_SUCCESS';
-export const OPEN_ALERT = 'OPEN_ALERT';
 
-export const fetchUsers = async (dispatch: any) => {
+export const fetchUsers = async (dispatch: Dispatch<any>) => {
   try {
     const res = await axios.get('/api/users');
     dispatch({ type: FETCH_USERS, payload: res.data });
@@ -16,7 +17,7 @@ export const fetchUsers = async (dispatch: any) => {
   }
 };
 
-export const fetchAuthUser = async (dispatch: any, email: string) => {
+export const fetchAuthUser = async (dispatch: Dispatch<any>, email: string) => {
   if (email) {
     try {
       dispatch({ type: FETCH_AUTH_USER_PENDING });
@@ -40,7 +41,7 @@ export const fetchAuthUser = async (dispatch: any, email: string) => {
   }
 };
 
-export const toggleUserStatus = async (dispatch: any, id: string) => {
+export const toggleUserStatus = async (dispatch: Dispatch<any>, id: string) => {
   try {
     const res1 = await axios.post('/api/users/toggleStatus', { id });
     if (res1.data) {
