@@ -4,6 +4,7 @@ import { Box, Button, Grid, Paper, TextField } from '@mui/material';
 import { Save as SaveIcon, Cancel as CancelIcon } from '@mui/icons-material';
 import { useAlert, useBank } from 'hooks';
 import { BankItemState } from 'types/state';
+import ConfirmDialog from 'components/ConfirmDialog';
 
 import styles from './BankDetail.module.css';
 
@@ -16,6 +17,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
   const { item, saved, getBank, saveBank } = useBank();
   const { openAlert } = useAlert();
   const [data, setData] = useState<BankItemState>({});
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (id) getBank(id);
@@ -53,9 +55,21 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
     if (!data || !data.bankId || isNaN(data.bankId)) {
       openAlert('Bank ID must be an integer', 'warning');
     } else {
+      setOpen(true);
+    }
+  }, [openAlert, data]);
+
+  const handleSave = useCallback(() => {
+    if (!data || !data.bankId || isNaN(data.bankId)) {
+      openAlert('Bank ID must be an integer', 'warning');
+    } else {
       saveBank(data);
     }
-  }, [openAlert, saveBank, data]);
+  }, [data, openAlert, saveBank]);
+
+  const handleCancel = useCallback(() => {
+    setOpen(false);
+  }, []);
 
   return (
     <Box className={styles.root}>
@@ -138,6 +152,12 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
           </Grid>
         </Grid>
       </Paper>
+      <ConfirmDialog
+        open={open}
+        onOk={handleSave}
+        onClose={handleCancel}
+        content={`Are you sure you want to save?`}
+      />
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { Box, Fab, IconButton, Typography } from '@mui/material';
@@ -9,25 +9,38 @@ import {
 } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
 import { format as dateFormat, parseISO } from 'date-fns';
-import { useBank } from 'hooks/useBank';
+import { useBank } from 'hooks';
+import ConfirmDialog from 'components/ConfirmDialog';
 
 import styles from './index.module.css';
 
 const BankList = () => {
   const router = useRouter();
   const { banks, fetchBank, deleteBank } = useBank();
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState({ id: '', name: '' });
 
   useEffect(() => {
     fetchBank();
   }, [fetchBank]);
 
-  const handleDeleteClick = useCallback(
-    (event: any, id: string) => {
-      event.stopPropagation();
-      deleteBank(id);
-    },
-    [deleteBank]
-  );
+  const handleDeleteClick = useCallback((event: any, row: any) => {
+    setOpen(true);
+    setCurrent(row);
+    event.stopPropagation();
+  }, []);
+
+  const handleDelete = useCallback(() => {
+    if (current) deleteBank(current.id);
+
+    setCurrent({ id: '', name: '' });
+    setOpen(false);
+  }, [current, deleteBank]);
+
+  const handleCancel = useCallback(() => {
+    setCurrent({ id: '', name: '' });
+    setOpen(false);
+  }, []);
 
   const columns = useMemo(() => {
     return [
@@ -77,7 +90,13 @@ const BankList = () => {
           return (
             <section>
               <IconButton
-                onClick={(event) => handleDeleteClick(event, params.row._id)}
+                onClick={(event) => {
+                  const data = {
+                    id: params.row._id,
+                    name: params.row.bankName,
+                  };
+                  handleDeleteClick(event, data);
+                }}
               >
                 <DeleteIcon />
               </IconButton>
@@ -116,6 +135,12 @@ const BankList = () => {
       >
         <AddIcon className={styles.fabIcon} />
       </Fab>
+      <ConfirmDialog
+        open={open}
+        onOk={handleDelete}
+        onClose={handleCancel}
+        content={`Are you sure you want to delete ${current.name}?`}
+      />
     </Box>
   );
 };
