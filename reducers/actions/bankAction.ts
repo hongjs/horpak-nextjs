@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'react';
-export const LOADING_BANK = 'LOADING_BANK';
 export const OPEN_ALERT = 'OPEN_ALERT';
-export const LOADING_BANKS = 'LOADING_BANKS';
+export const LOADING_BANK = 'LOADING_BANK';
 export const FETCH_BANKS = 'FETCH_BANKS';
 export const GET_BANK = 'GET_BANK';
 export const EDIT_BANK = 'EDIT_BANK';

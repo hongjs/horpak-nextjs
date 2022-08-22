@@ -1,25 +1,25 @@
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { Box, Typography } from '@mui/material';
-import BankDetail from 'components/bank/BankDetail';
+import BranchDetail from 'components/branch/BranchDetail';
 import { getIds } from 'lib/mongoUtil';
 
 type PageProps = {
   id: string;
 };
 
-const EditBank: React.FC<PageProps> = ({ id }) => {
+const EditBranch: React.FC<PageProps> = ({ id }) => {
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
-        Edit bank account
+        Edit branch
       </Typography>
-      <BankDetail id={id} />;
+      <BranchDetail id={id} />;
     </Box>
   );
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const ids = await getIds('bankAccounts');
+  const ids = await getIds('branches');
   const paths = ids.map((id) => {
     return { params: { id: id.toString() } };
   });
@@ -36,4 +36,4 @@ export const getStaticProps: GetStaticProps<{ id: string }> = async (
   };
 };
 
-export default EditBank;
+export default EditBranch;

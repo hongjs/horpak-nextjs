@@ -11,6 +11,14 @@ import {
   EDIT_BANK,
   DELETE_BANK,
 } from 'reducers/actions/bankAction';
+import {
+  LOADING_BRANCH,
+  FETCH_BRANCHS,
+  GET_BRANCH,
+  EDIT_BRANCH,
+  DELETE_BRANCH,
+  DRIVE_LIST,
+} from 'reducers/actions/branchAction';
 import { OPEN_ALERT, CLOSE_ALERT } from 'reducers/actions/globalAction';
 import { AppReducerType, AppState } from 'types/state';
 
@@ -111,6 +119,60 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
           }),
           loading: false,
         },
+      };
+
+    //---------------- BRANCH ----------------
+    case LOADING_BRANCH: {
+      return {
+        ...state,
+        branch: { ...state.branch, loading: true },
+      };
+    }
+    case FETCH_BRANCHS:
+      return {
+        ...state,
+        branch: { ...state.branch, branches: action.payload, loading: false },
+      };
+
+    case GET_BRANCH:
+      return {
+        ...state,
+        branch: {
+          ...state.branch,
+          item: action.payload,
+          loading: false,
+          saved: false,
+        },
+      };
+
+    case EDIT_BRANCH:
+      return {
+        ...state,
+        branch: {
+          ...state.branch,
+          item: action.payload,
+          loading: false,
+          saved: true,
+        },
+      };
+
+    case DELETE_BRANCH:
+      return {
+        ...state,
+        branch: {
+          ...state.branch,
+          branches: _.filter(state.branch.branches, (row: any) => {
+            return row._id !== action.payload.id;
+          }),
+          loading: false,
+        },
+      };
+
+    case DRIVE_LIST:
+      return {
+        ...state,
+        driveList: _.orderBy(action.payload, ['mimeType', 'name']),
+        loadingFile: false,
       };
 
     default: {

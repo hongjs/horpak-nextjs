@@ -36,8 +36,15 @@ const MainNavigation: React.FC = () => {
   const menuItems = useMemo(() => {
     return [
       { id: 'home', name: 'Home', icon: 'home', url: '/' },
-      { id: 'users', name: 'Users', icon: 'user-group', url: '/users' },
-      { id: 'banks', name: 'Banks', icon: 'building-columns', url: '/bank' },
+      { divider: true },
+      { id: 'users', name: 'User', icon: 'user-group', url: '/users' },
+      { id: 'banks', name: 'Bank', icon: 'building-columns', url: '/bank' },
+      {
+        id: 'branches',
+        name: 'Branch',
+        icon: 'building',
+        url: '/branch',
+      },
     ];
   }, []);
 
@@ -105,6 +112,9 @@ const MainNavigation: React.FC = () => {
           <Divider />
           <List>
             {menuItems.map((i) => {
+              if (i.divider) {
+                return <Divider />;
+              }
               return (
                 <ListItem key={i.id} disablePadding>
                   <ListItemButton onClick={() => handleMenuClick(i.id)}>

@@ -7,6 +7,7 @@ export type AppState = {
   alert: AlertState;
   users: UserType[];
   bank: BankState;
+  branch: BranchState;
 };
 
 type BankState = {
@@ -25,6 +26,25 @@ export type BankItemState = {
   remark?: string;
   modifiedDate?: Date;
   modifiedBy?: string;
+};
+
+type BranchState = {
+  loading: boolean;
+  saved: boolean;
+  item?: BranchItemState;
+  branches: BranchItemState[];
+};
+
+export type BranchItemState = {
+  _id?: string;
+  name?: string;
+  spreadSheetId?: string;
+  spreadSheetName?: string;
+  lastProcessSheet?: Date;
+  reportAddress?: string;
+  reportContact?: string;
+  reportHeader?: string;
+  reportRemark?: string;
 };
 
 type AlertState = {

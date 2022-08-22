@@ -18,6 +18,12 @@ const initialState: AppState = {
     item: undefined,
     banks: [],
   },
+  branch: {
+    loading: false,
+    saved: false,
+    item: undefined,
+    branches: [],
+  },
 };
 
 export default initialState;
