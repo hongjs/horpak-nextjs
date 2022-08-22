@@ -1,5 +1,7 @@
 import { AuthState, UserType } from './auth';
 
+export type AppReducerType = (state: AppState, action: any) => AppState;
+
 export type AppState = {
   auth: AuthState;
   alert: AlertState;

@@ -12,9 +12,9 @@ import {
   DELETE_BANK,
 } from 'reducers/actions/bankAction';
 import { OPEN_ALERT, CLOSE_ALERT } from 'reducers/actions/globalAction';
-import { AppState } from 'types/state';
+import { AppReducerType, AppState } from 'types/state';
 
-export const AppReducer = (state: AppState, action: any) => {
+export const AppReducer: AppReducerType = (state: AppState, action: any) => {
   switch (action.type) {
     case FETCH_USERS: {
       return {

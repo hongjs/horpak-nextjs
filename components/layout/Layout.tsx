@@ -1,15 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Router from 'next/router';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, Container, CircularProgress } from '@mui/material';
 import MainNavigation from './MainNavigation';
 import styles from './Layout.module.css';
+import { Props } from 'types';
 
-interface Props {
-  children?: React.ReactNode;
-}
-
-function Layout({ children }: Props) {
+const Layout: React.FC<Props> = ({ children }) => {
   const [loadingPage, setLoadingPage] = useState(false);
 
   Router.events.on('routeChangeStart', (url) => {
@@ -38,6 +35,6 @@ function Layout({ children }: Props) {
       </Container>
     </>
   );
-}
+};
 
 export default Layout;

@@ -21,11 +21,15 @@ export const fetchBank = async (dispatch: Dispatch<any>) => {
   }
 };
 
-export const getBank = async (dispatch: Dispatch<any>, id: string) => {
+export const getBank = async (dispatch: Dispatch<any>, id: string | null) => {
   try {
-    dispatch({ type: LOADING_BANK });
-    const res = await axios.get(`/api/bank/get?id=${id}`);
-    dispatch({ type: GET_BANK, payload: res.data });
+    if (id) {
+      dispatch({ type: LOADING_BANK });
+      const res = await axios.get(`/api/bank/get?id=${id}`);
+      dispatch({ type: GET_BANK, payload: res.data });
+    } else {
+      dispatch({ type: GET_BANK, payload: null });
+    }
   } catch (err) {
     dispatch({
       type: OPEN_ALERT,

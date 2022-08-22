@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'DELETE') {
     const { id } = req.query as { id: string };
 
-    if (!ObjectId.isValid(id as string)) {
+    if (!ObjectId.isValid(id)) {
       res.status(400).send({ status: 'Invalid parameters, require [id]' });
       return;
     }

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { Box, Fab, IconButton, Typography } from '@mui/material';
 import {
   Add as AddIcon,
@@ -14,7 +13,7 @@ import ConfirmDialog from 'components/ConfirmDialog';
 
 import styles from './index.module.css';
 
-const BankList = () => {
+const BankList: React.FC = () => {
   const router = useRouter();
   const { banks, fetchBank, deleteBank } = useBank();
   const [open, setOpen] = useState(false);
@@ -75,9 +74,13 @@ const BankList = () => {
         renderCell: (params: any) => {
           return (
             <section>
-              <Link href={`/bank/${params.row._id}`}>
+              <IconButton
+                onClick={() => {
+                  router.push(`/bank/edit/${params.row._id}`);
+                }}
+              >
                 <EditIcon />
-              </Link>
+              </IconButton>
             </section>
           );
         },
@@ -105,7 +108,7 @@ const BankList = () => {
         },
       },
     ];
-  }, [handleDeleteClick]);
+  }, [router, handleDeleteClick]);
 
   return (
     <Box className={styles.root}>
@@ -139,7 +142,16 @@ const BankList = () => {
         open={open}
         onOk={handleDelete}
         onClose={handleCancel}
-        content={`Are you sure you want to delete ${current.name}?`}
+        content={
+          <Box>
+            Are you sure you want to delete{' '}
+            <Typography sx={{ fontWeight: 'bold' }} component="span">
+              {current.name}
+            </Typography>
+            ?
+          </Box>
+        }
+        okButtonText="Delete"
       />
     </Box>
   );

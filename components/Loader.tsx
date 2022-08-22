@@ -1,7 +1,7 @@
 import React from 'react';
 import { CircularProgress } from '@mui/material';
 
-const Loader = () => {
+const Loader: React.FC = () => {
   return (
     <div
       style={{

@@ -1,10 +1,7 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo } from 'react';
 import { MoodBad as MoodBadIcon } from '@mui/icons-material';
 import { Grid, Typography } from '@mui/material';
-
-interface Props {
-  children?: ReactNode;
-}
+import { Props } from 'types';
 
 interface State {
   hasError: boolean;

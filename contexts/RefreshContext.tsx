@@ -4,7 +4,10 @@ import { Props } from 'types';
 const FAST_INTERVAL = 2000;
 const SLOW_INTERVAL = 60000;
 
-export const RefreshContext = createContext({ slow: 0, fast: 0 });
+export const RefreshContext = createContext<{ slow: number; fast: number }>({
+  slow: 0,
+  fast: 0,
+});
 
 // This context maintain 2 counters that can be used as a dependencies on other hooks to force a periodic refresh
 const RefreshContextProvider: React.FC<Props> = ({ children }) => {

@@ -28,7 +28,7 @@ import {
 
 import styles from './MainNavigation.module.css';
 
-function MainNavigation() {
+const MainNavigation: React.FC = () => {
   const { data } = useSession();
   const router = useRouter();
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -162,6 +162,6 @@ function MainNavigation() {
       {renderDrawer()}
     </div>
   );
-}
+};
 
 export default MainNavigation;

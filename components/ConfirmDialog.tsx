@@ -71,7 +71,7 @@ type ConfirmDialogProps = {
   onClose: Function;
   open: boolean;
   title?: string;
-  content?: string;
+  content?: React.ReactNode;
   okButtonText?: string;
   cancelButtonText?: string;
   disableBackdropClick?: boolean;

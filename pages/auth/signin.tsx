@@ -2,7 +2,6 @@ import React from 'react';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { getProviders, getSession, signIn } from 'next-auth/react';
-
 import {
   AppBar,
   Box,
@@ -18,7 +17,7 @@ import { SignInProps } from 'types/auth';
 
 import styles from './signin.module.css';
 
-const SignIn = ({ providers }: SignInProps) => {
+const SignIn: React.FC<SignInProps> = ({ providers }) => {
   return (
     <>
       <main>

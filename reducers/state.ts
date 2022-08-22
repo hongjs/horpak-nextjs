@@ -1,6 +1,6 @@
 import { AppState } from 'types/state';
 
-const initialState = {
+const initialState: AppState = {
   auth: {
     loading: false,
     currentUser: null,
@@ -18,6 +18,6 @@ const initialState = {
     item: undefined,
     banks: [],
   },
-} as AppState;
+};
 
 export default initialState;

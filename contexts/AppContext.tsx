@@ -6,7 +6,7 @@ import { Props, AppContextProps } from 'types';
 
 export const AppContext = createContext<AppContextProps>({
   state: initialState,
-  dispatch: () => {},
+  dispatch: () => null,
 });
 
 const AppContextWrapper: React.FC<Props> = ({ children }) => {

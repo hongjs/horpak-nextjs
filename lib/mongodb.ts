@@ -2,8 +2,8 @@ import { MongoClient, MongoClientOptions } from 'mongodb';
 import keys from 'config/keys';
 import { MongoClientType } from 'types/mongodb';
 
-let cachedClient = null as any;
-let cachedDb = null as any;
+let cachedClient: any = null;
+let cachedDb: any = null;
 
 if (!keys.mongoURI) {
   throw new Error(

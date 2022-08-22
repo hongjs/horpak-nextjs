@@ -3,7 +3,7 @@ import { useAppContext } from 'hooks';
 import { openAlert, closeAlert } from 'reducers/actions/globalAction';
 import { AlertColor } from 'types/state';
 
-export const useAlert = () => {
+const useAlert = () => {
   const { dispatch } = useAppContext();
 
   const handleOpenAlert = useCallback(
@@ -19,3 +19,5 @@ export const useAlert = () => {
 
   return { openAlert: handleOpenAlert, closeAlert: handleCloseAlert };
 };
+
+export default useAlert;

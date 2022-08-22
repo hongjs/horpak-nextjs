@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { getSession } from 'next-auth/react';
@@ -10,6 +10,7 @@ import {
 import { DataGrid } from '@mui/x-data-grid';
 import { useUser, useAlert } from 'hooks';
 import { getUser, checkAdmin } from 'lib/firebaseUtil';
+import ConfirmDialog from 'components/ConfirmDialog';
 
 import styles from './index.module.css';
 
@@ -19,9 +20,31 @@ type Props = {
   email: string;
 };
 
-const UserList = ({ isAdmin, noAdmin, email }: Props) => {
+const UserList: React.FC<Props> = ({ isAdmin, noAdmin, email }) => {
   const { users, toggleUserStatus } = useUser();
   const { openAlert } = useAlert();
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState({ id: '', name: '', active: false });
+
+  const handleToggleClick = useCallback((row: any) => {
+    setOpen(true);
+    setCurrent({ id: row.id, name: row.name, active: row.active });
+  }, []);
+
+  const handleSave = useCallback(() => {
+    if (current) {
+      toggleUserStatus(current.id);
+      openAlert('Saved successful', 'success');
+    }
+
+    setCurrent({ id: '', name: '', active: false });
+    setOpen(false);
+  }, [current, openAlert, toggleUserStatus]);
+
+  const handleCancel = useCallback(() => {
+    setCurrent({ id: '', name: '', active: false });
+    setOpen(false);
+  }, []);
 
   const columns = useMemo(() => {
     return [
@@ -86,8 +109,7 @@ const UserList = ({ isAdmin, noAdmin, email }: Props) => {
               // First active user will be set ad Admin
               disabled={(!noAdmin && !isAdmin) || email === params.row.email}
               onClick={() => {
-                toggleUserStatus(params.row.id);
-                openAlert('Saved successful', 'success');
+                handleToggleClick(params.row);
               }}
             >
               {params.row.active ? 'Inactive' : 'Active'}
@@ -96,7 +118,7 @@ const UserList = ({ isAdmin, noAdmin, email }: Props) => {
         },
       },
     ];
-  }, [toggleUserStatus, openAlert, email, isAdmin, noAdmin]);
+  }, [handleToggleClick, email, isAdmin, noAdmin]);
 
   return (
     <>
@@ -120,6 +142,20 @@ const UserList = ({ isAdmin, noAdmin, email }: Props) => {
           rowsPerPageOptions={[5, 10, 20]}
         />
       </div>
+      <ConfirmDialog
+        open={open}
+        onOk={handleSave}
+        onClose={handleCancel}
+        content={
+          <Box>
+            {`Are you sure to `}
+            <Typography sx={{ fontWeight: 'bold' }} component="span">
+              {current.active ? 'Inactive' : 'Active'}
+            </Typography>
+            {` ${current.name}?`}
+          </Box>
+        }
+      />
     </>
   );
 };

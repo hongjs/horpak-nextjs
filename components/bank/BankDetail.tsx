@@ -9,7 +9,7 @@ import ConfirmDialog from 'components/ConfirmDialog';
 import styles from './BankDetail.module.css';
 
 type BankDetailProps = {
-  id: string;
+  id: string | null;
 };
 
 const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
@@ -20,13 +20,8 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (id) getBank(id);
+    getBank(id);
   }, [id, getBank]);
-
-  useEffect(() => {
-    if (item) setData(item);
-    else setData({});
-  }, [item]);
 
   useEffect(() => {
     if (item) setData(item);
@@ -81,7 +76,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               label="Bank ID"
               disabled={data && data._id !== undefined}
               className={styles.textField}
-              value={data?.bankId || 0}
+              value={data?.bankId || ''}
               onChange={(e) => {
                 handleTextChange('bankId', e.target.value);
               }}
@@ -91,9 +86,10 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
             <TextField
               id="bank-name"
               label="Bank Bame"
+              variant="outlined"
               type="text"
               className={styles.textField}
-              value={data?.bankName}
+              value={data?.bankName || ''}
               onChange={(e) => handleTextChange('bankName', e.target.value)}
             />
           </Grid>
@@ -103,7 +99,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               label="Account No"
               type="text"
               className={styles.textField}
-              value={data?.accountNo}
+              value={data?.accountNo || ''}
               onChange={(e) => handleTextChange('accountNo', e.target.value)}
             />
           </Grid>
@@ -113,7 +109,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               label="Account Name"
               type="text"
               className={styles.textField}
-              value={data?.accountName}
+              value={data?.accountName || ''}
               onChange={(e) => handleTextChange('accountName', e.target.value)}
             />
           </Grid>
@@ -125,7 +121,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               className={styles.textField}
               multiline
               rows={6}
-              value={data?.remark}
+              value={data?.remark || ''}
               onChange={(e) => handleTextChange('remark', e.target.value)}
             />
           </Grid>

@@ -3,12 +3,13 @@ import Image from 'next/image';
 import { signOut, getSession } from 'next-auth/react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import styles from 'styles/Home.module.css';
+import React from 'react';
 
 type Props = {
   user: any;
 };
 
-const Unauthorized = ({ user }: Props) => {
+const Unauthorized: React.FC<Props> = ({ user }) => {
   return (
     <>
       <main>

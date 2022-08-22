@@ -7,7 +7,7 @@ import {
   deleteBank,
 } from 'reducers/actions/bankAction';
 
-export const useBank = () => {
+const useBank = () => {
   const { state, dispatch } = useAppContext();
 
   const handleFetchBank = useCallback(() => {
@@ -15,7 +15,7 @@ export const useBank = () => {
   }, [dispatch]);
 
   const handleGetBank = useCallback(
-    (id: string) => {
+    (id: string | null) => {
       getBank(dispatch, id);
     },
     [dispatch]
@@ -46,3 +46,5 @@ export const useBank = () => {
     deleteBank: handleDeleteBank,
   };
 };
+
+export default useBank;

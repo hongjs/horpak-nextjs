@@ -11,7 +11,7 @@ const EditBank: React.FC<PageProps> = ({ id }) => {
   return (
     <Box>
       <Typography variant="h5" gutterBottom>
-        Add new bank account
+        Edit bank account
       </Typography>
       <BankDetail id={id} />;
     </Box>
@@ -23,7 +23,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const paths = ids.map((id) => {
     return { params: { id: id.toString() } };
   });
-  return { paths, fallback: 'blocking' };
+  return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps<{ id: string }> = async (

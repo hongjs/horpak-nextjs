@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { useAppContext } from 'hooks';
 import { fetchUsers, toggleUserStatus } from '../reducers/actions/userAction';
 
-export const useUser = () => {
+const useUser = () => {
   const { state, dispatch } = useAppContext();
 
   useEffect(() => {
@@ -18,3 +18,5 @@ export const useUser = () => {
 
   return { users: state.users, toggleUserStatus: toggleUserStatusHandler };
 };
+
+export default useUser;

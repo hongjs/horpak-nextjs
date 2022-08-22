@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useAppContext } from 'hooks';
 import { fetchAuthUser } from '../reducers/actions/userAction';
 
-export const useAuthUser = () => {
+const useAuthUser = () => {
   const { state, dispatch } = useAppContext();
   const { data, status } = useSession();
 
@@ -17,3 +17,5 @@ export const useAuthUser = () => {
 
   return state.auth;
 };
+
+export default useAuthUser;
