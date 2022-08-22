@@ -59,7 +59,7 @@ const MainNavigation: React.FC = () => {
   const handleMenuClick = useCallback(
     (id: string) => {
       const menu = menuItems.find((i) => i.id === id);
-      if (menu) {
+      if (menu && menu.url) {
         router.push(menu.url);
         handleCloseDrawer();
       }
