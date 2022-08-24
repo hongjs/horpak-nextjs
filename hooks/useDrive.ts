@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useAppContext } from 'hooks';
-import { fetchDrive, checkToken } from 'reducers/actions/driveAction';
+import { fetchDrive, checkToken, getUser } from 'reducers/actions/driveAction';
 
 const useDrive = () => {
   const { state, dispatch } = useAppContext();
@@ -16,11 +16,17 @@ const useDrive = () => {
     checkToken(dispatch);
   }, [dispatch]);
 
+  const handleGetUser = useCallback(() => {
+    getUser(dispatch);
+  }, [dispatch]);
+
   return {
     files: state.drive.files,
     loading: state.drive.loading,
     hasToken: state.drive.hasToken,
+    user: state.drive.user,
     fetchDrive: handleFetchDrive,
+    getUser: handleGetUser,
     checkToken: handleCheckToken,
   };
 };

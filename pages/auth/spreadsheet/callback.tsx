@@ -11,10 +11,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (code) {
     const session = await getSession({ req: context.req });
     const user = session?.user?.email || 'N/A';
-    auth(code as string, user);
+    await auth(code as string, user);
   }
   return {
-    props: { code },
+    redirect: {
+      permanent: false,
+      destination: '/admin/datasource',
+    },
+    props: {},
   };
 };
 

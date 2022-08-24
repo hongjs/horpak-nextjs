@@ -63,8 +63,18 @@ export type DriveItem = {
   parents?: string[];
 };
 
+type DriveUser = {
+  name: string;
+  picture: string;
+  email: string;
+  updatedBy: string;
+  updatedDate: string;
+  expiryDate: string;
+};
+
 type DriveState = {
   loading: boolean;
   hasToken: boolean;
   files: DriveItem[];
+  user?: DriveUser;
 };

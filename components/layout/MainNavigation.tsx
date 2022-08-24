@@ -44,6 +44,12 @@ const MainNavigation: React.FC = () => {
         icon: 'building',
         url: '/branch',
       },
+      {
+        id: 'datasource',
+        name: 'Data Source',
+        icon: 'database',
+        url: '/admin/datasource',
+      },
     ];
   }, []);
 

@@ -22,6 +22,7 @@ import {
   CHECK_TOKEN,
   LOADING_DRIVE,
   FETCH_DRIVE,
+  GET_DRIVE_USER,
 } from 'reducers/actions/driveAction';
 import { OPEN_ALERT, CLOSE_ALERT } from 'reducers/actions/globalAction';
 import { AppReducerType, AppState } from 'types/state';
@@ -198,6 +199,15 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
           ...state.drive,
           loading: false,
           files: _.orderBy(action.payload, ['mimeType', 'name']),
+        },
+      };
+    case GET_DRIVE_USER:
+      return {
+        ...state,
+        drive: {
+          ...state.drive,
+          loading: false,
+          user: action.payload,
         },
       };
 
