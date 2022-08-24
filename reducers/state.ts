@@ -24,6 +24,11 @@ const initialState: AppState = {
     item: undefined,
     branches: [],
   },
+  drive: {
+    hasToken: false,
+    loading: false,
+    files: [],
+  },
 };
 
 export default initialState;

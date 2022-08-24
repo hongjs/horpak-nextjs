@@ -13,7 +13,7 @@ const EditBank: React.FC<PageProps> = ({ id }) => {
       <Typography variant="h5" gutterBottom>
         Edit bank account
       </Typography>
-      <BankDetail id={id} />;
+      <BankDetail id={id} />
     </Box>
   );
 };

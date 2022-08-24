@@ -112,8 +112,8 @@ const MainNavigation: React.FC = () => {
           <List>
             {menuItems.map((i) => {
               return (
-                <>
-                  <ListItem key={i.id} disablePadding>
+                <Box key={i.id}>
+                  <ListItem disablePadding>
                     <ListItemButton onClick={() => handleMenuClick(i.id)}>
                       <ListItemIcon>
                         <i className={`fa-solid fa-${i.icon}`} />
@@ -122,7 +122,7 @@ const MainNavigation: React.FC = () => {
                     </ListItemButton>
                   </ListItem>
                   {i.divider && <Divider />}
-                </>
+                </Box>
               );
             })}
             <Divider />

@@ -7,7 +7,7 @@ const AddNewBank: React.FC = () => {
       <Typography variant="h5" gutterBottom>
         Add new bank account
       </Typography>
-      <BankDetail id={null} />;
+      <BankDetail id={null} />
     </Box>
   );
 };

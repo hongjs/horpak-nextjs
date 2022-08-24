@@ -7,7 +7,8 @@ const AddNewBranch: React.FC = () => {
       <Typography variant="h5" gutterBottom>
         Add new branch
       </Typography>
-      <BranchDetail id={null} />;
+
+      <BranchDetail id={null} />
     </Box>
   );
 };

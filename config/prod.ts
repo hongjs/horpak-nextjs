@@ -7,7 +7,8 @@ const keys: ConfigType = Object.freeze({
   tokenSecret: process.env.JWT_SECRET || 'JWT_SECRET',
   tokenExpiresIn: process.env.JWT_EXPIRE || '7d',
   googleRedirectUri:
-    process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/admin/datasource',
+    process.env.GOOGLE_REDIRECT_URI ||
+    'http://localhost:3000/auth/spreadsheet/callback',
 
   GOOGLE_ID: process.env.GOOGLE_ID || '',
   GOOGLE_SECRET: process.env.GOOGLE_SECRET || '',

@@ -8,6 +8,7 @@ export type AppState = {
   users: UserType[];
   bank: BankState;
   branch: BranchState;
+  drive: DriveState;
 };
 
 type BankState = {
@@ -54,3 +55,16 @@ type AlertState = {
 };
 
 export type AlertColor = 'success' | 'info' | 'warning' | 'error';
+
+export type DriveItem = {
+  id: string;
+  name: string;
+  mimeType: string;
+  parents?: string[];
+};
+
+type DriveState = {
+  loading: boolean;
+  hasToken: boolean;
+  files: DriveItem[];
+};

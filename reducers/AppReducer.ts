@@ -17,8 +17,12 @@ import {
   GET_BRANCH,
   EDIT_BRANCH,
   DELETE_BRANCH,
-  DRIVE_LIST,
 } from 'reducers/actions/branchAction';
+import {
+  CHECK_TOKEN,
+  LOADING_DRIVE,
+  FETCH_DRIVE,
+} from 'reducers/actions/driveAction';
 import { OPEN_ALERT, CLOSE_ALERT } from 'reducers/actions/globalAction';
 import { AppReducerType, AppState } from 'types/state';
 
@@ -168,11 +172,33 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
         },
       };
 
-    case DRIVE_LIST:
+    //---------------- DRIVE & Spreadsheet ----------------
+    case CHECK_TOKEN: {
       return {
         ...state,
-        driveList: _.orderBy(action.payload, ['mimeType', 'name']),
-        loadingFile: false,
+        drive: {
+          ...state.drive,
+          hasToken: action.payload,
+        },
+      };
+    }
+    case LOADING_DRIVE: {
+      return {
+        ...state,
+        drive: {
+          ...state.drive,
+          loading: true,
+        },
+      };
+    }
+    case FETCH_DRIVE:
+      return {
+        ...state,
+        drive: {
+          ...state.drive,
+          loading: false,
+          files: _.orderBy(action.payload, ['mimeType', 'name']),
+        },
       };
 
     default: {

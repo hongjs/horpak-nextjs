@@ -13,7 +13,7 @@ const EditBranch: React.FC<PageProps> = ({ id }) => {
       <Typography variant="h5" gutterBottom>
         Edit branch
       </Typography>
-      <BranchDetail id={id} />;
+      <BranchDetail id={id} />
     </Box>
   );
 };

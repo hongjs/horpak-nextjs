@@ -13,10 +13,12 @@ import {
   Save as SaveIcon,
   Cancel as CancelIcon,
   Folder as FolderIcon,
+  Google as GoogleIcon,
 } from '@mui/icons-material';
-import { useAlert, useBranch } from 'hooks';
-import { BranchItemState } from 'types/state';
+import { useAlert, useBranch, useDrive } from 'hooks';
+import { BranchItemState, DriveItem } from 'types/state';
 import ConfirmDialog from 'components/ConfirmDialog';
+import SpreadsheetDialog from 'components/SpreadsheetDialog';
 
 import styles from './BranchDetail.module.css';
 
@@ -24,12 +26,20 @@ type BranchDetailProps = {
   id: string | null;
 };
 
+export const FOLDER = 'application/vnd.google-apps.folder';
+
 const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
   const router = useRouter();
-  const { item, saved, getBranch, saveBranch } = useBranch();
   const { openAlert } = useAlert();
+  const { item, saved, getBranch, saveBranch } = useBranch();
+  const { fetchDrive, checkToken, hasToken } = useDrive();
   const [data, setData] = useState<BranchItemState>({});
   const [open, setOpen] = useState(false);
+  const [openSheet, setOpenSheet] = useState(false);
+
+  useEffect(() => {
+    checkToken();
+  }, [checkToken]);
 
   useEffect(() => {
     getBranch(id);
@@ -46,6 +56,10 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
     }
   }, [router, saved]);
 
+  useEffect(() => {
+    if (openSheet === true) fetchDrive('root');
+  }, [openSheet, fetchDrive]);
+
   const handleTextChange = useCallback((name: string, value: string) => {
     setData((prev) => {
       return { ...prev, [name]: value };
@@ -53,8 +67,19 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
   }, []);
 
   const handleSaveClick = useCallback(() => {
+    if (!data.name) {
+      openAlert('Name is required.', 'warning');
+      return;
+    } else if (!data.reportHeader) {
+      openAlert('Header is required.', 'warning');
+      return;
+    } else if (!data.spreadSheetId) {
+      openAlert('Spreadsheet is required.', 'warning');
+      return;
+    }
+
     setOpen(true);
-  }, []);
+  }, [data, openAlert]);
 
   const handleSave = useCallback(() => {
     saveBranch(data);
@@ -62,6 +87,21 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
 
   const handleCancel = useCallback(() => {
     setOpen(false);
+  }, []);
+
+  const handleSheetSelected = useCallback((item: DriveItem) => {
+    setOpenSheet(false);
+    setData((prev) => {
+      return {
+        ...prev,
+        spreadSheetId: item.id,
+        spreadSheetName: item.name,
+      };
+    });
+  }, []);
+
+  const handleSheetClose = useCallback(() => {
+    setOpenSheet(false);
   }, []);
 
   return (
@@ -79,8 +119,33 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
           </Grid>
           <Grid item xs={12} sx={{ textAlign: 'left', marginLeft: '8px' }}>
             <i className="fa-brands fa-google" /> Speadsheet :{' '}
-            {data?.spreadSheetName || ''}
-            <Button startIcon={<FolderIcon />}>Browse</Button>
+            <a
+              href={`https://docs.google.com/spreadsheets/d/${
+                data?.spreadSheetId || ''
+              }`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {data?.spreadSheetName || ''}
+            </a>
+            {hasToken && (
+              <Button
+                startIcon={<FolderIcon />}
+                onClick={() => {
+                  setOpenSheet(true);
+                }}
+              >
+                Browse
+              </Button>
+            )}
+            {!hasToken && (
+              <Button
+                startIcon={<GoogleIcon />}
+                onClick={() => {
+                  // redirect to google auth page
+                }}
+              ></Button>
+            )}
           </Grid>
           <Grid item xs={12}>
             <Divider />
@@ -135,7 +200,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
           </Grid>
           <Grid item xs={12}>
             <Button
-              variant="contained"
+              variant="outlined"
               color="primary"
               className={styles.button}
               startIcon={<SaveIcon />}
@@ -144,7 +209,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               Save
             </Button>
             <Button
-              variant="contained"
+              variant="outlined"
               className={styles.button}
               startIcon={<CancelIcon />}
               href="/branch"
@@ -160,14 +225,11 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
         onClose={handleCancel}
         content={`Are you sure you want to save?`}
       />
-      {/* <SelectFileDialog
-        open={openDialog}
-        loading={data.loadingFile || false}
-        onItemClick={handleFileClick}
-        onSave={handleFileSelected}
-        onClose={handleDialogClose}
-        items={data.driveList}
-      /> */}
+      <SpreadsheetDialog
+        open={openSheet}
+        onSave={handleSheetSelected}
+        onClose={handleSheetClose}
+      />
     </Box>
   );
 };

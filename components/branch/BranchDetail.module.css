@@ -7,11 +7,24 @@
 .paper {
   padding: 32px;
   text-align: center;
+  max-width: 800px;
 }
 .textField {
   width: 100%;
 }
-.button {
-  width: 200px;
-  margin-right: 8px;
+
+/* MD, LG, XL */
+@media (min-width: 900px) {
+  .button {
+    width: 200px;
+    margin-right: 8px;
+  }
+}
+
+/* XS, SM */
+@media (max-width: 899px) {
+  .button {
+    width: 130px;
+    margin-right: 8px;
+  }
 }

@@ -60,6 +60,10 @@ export const deleteBranch = async (dispatch: Dispatch<any>, id: string) => {
     dispatch({ type: LOADING_BRANCH });
     const res = await axios.delete(`/api/branch/delete?id=${id}`);
     dispatch({ type: DELETE_BRANCH, payload: res.data });
+    dispatch({
+      type: OPEN_ALERT,
+      payload: { message: 'Deleted Successfully', severity: 'success' },
+    });
   } catch (err) {
     dispatch({
       type: OPEN_ALERT,
