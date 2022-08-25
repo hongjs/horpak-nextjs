@@ -2,6 +2,7 @@ import { ConfigType } from 'types';
 import { ServiceAccount } from 'types/auth';
 
 const keys: ConfigType = Object.freeze({
+  NODE_ENV: process.env.NODE_ENV,
   mongoURI: process.env.MONGO_URI || 'mongodb://localhost:27017/admin',
   dbName: process.env.DB_NAME || 'dbname',
   tokenSecret: process.env.JWT_SECRET || 'JWT_SECRET',

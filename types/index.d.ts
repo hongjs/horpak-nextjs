@@ -15,6 +15,7 @@ export type HomePageProps = {
 };
 
 type ConfigType = {
+  NODE_ENV: string;
   mongoURI: string;
   dbName: string;
   tokenSecret: string;

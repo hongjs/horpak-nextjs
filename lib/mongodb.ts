@@ -19,20 +19,23 @@ if (!keys.dbName) {
 
 export const connectToDatabase = async (): Promise<MongoClientType> => {
   if (cachedClient && cachedDb) {
+    console.log('mongo: use cached connection');
     return { client: cachedClient, db: cachedDb };
   }
 
-  const options = {
+  console.log('mongo: new connection');
+
+  const options: MongoClientOptions = {
+    appName: keys.NODE_ENV,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   } as MongoClientOptions;
 
   const client = await MongoClient.connect(keys.mongoURI, options);
-
   const db = await client.db(keys.dbName);
 
   cachedClient = client;
   cachedDb = db;
 
-  return { client, db };
+  return { client: cachedClient, db: cachedDb };
 };
