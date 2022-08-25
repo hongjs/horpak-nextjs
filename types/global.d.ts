@@ -1,6 +1,8 @@
+import { MongoClient } from 'mongodb';
+
 // /global.d.ts
 declare global {
-  var mongoClient: any;
+  var mongoClient: MongoClient;
 }
 
 export {};

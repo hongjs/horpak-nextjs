@@ -1,9 +1,9 @@
-import { MongoClient, MongoClientOptions } from 'mongodb';
+import { Db, MongoClient, MongoClientOptions } from 'mongodb';
 import keys from 'config/keys';
 import { MongoClientType } from 'types/mongodb';
 
-let cachedClient: any = null;
-let cachedDb: any = null;
+let cachedClient: MongoClient;
+let cachedDb: Db;
 
 if (!keys.mongoURI) {
   throw new Error(
@@ -17,9 +17,16 @@ if (!keys.dbName) {
   );
 }
 
+const logConenction = async (db: Db, log: string) => {
+  await db
+    .collection('logs')
+    .insertOne({ date: new Date(), env: keys.NODE_ENV, log: log });
+};
+
 export const connectToDatabase = async (): Promise<MongoClientType> => {
   if (cachedClient && cachedDb) {
     console.log('mongo: use cached connection');
+    await logConenction(cachedDb, 'mongo: use cached connection');
     return { client: cachedClient, db: cachedDb };
   }
 
@@ -33,6 +40,8 @@ export const connectToDatabase = async (): Promise<MongoClientType> => {
 
   const client = await MongoClient.connect(keys.mongoURI, options);
   const db = await client.db(keys.dbName);
+
+  await logConenction(db, 'mongo: new connection');
 
   cachedClient = client;
   cachedDb = db;
