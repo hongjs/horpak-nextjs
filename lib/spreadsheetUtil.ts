@@ -1,7 +1,7 @@
-import { find } from 'lodash';
+import { chain, orderBy } from 'lodash';
 import axois from 'axios';
 import { google, drive_v3, sheets_v4, Auth } from 'googleapis';
-import {} from 'date-fns';
+import { addMonths, format, parseISO } from 'date-fns';
 import {
   OAuth2Client,
   OAuth2ClientOptions,
@@ -104,13 +104,17 @@ export const getFile = async (fileId: string) => {
 export const listSheets = async (spreadsheetId: string) => {
   const res = await sheets.spreadsheets.get({ spreadsheetId });
   if (res.data && res.data.sheets) {
-    return res.data.sheets.map((sheet) => {
-      return {
-        sheetId: sheet.properties?.sheetId,
-        title: sheet.properties?.title,
-        index: sheet.properties?.index,
-      };
-    });
+    return chain(res.data.sheets)
+      .map((sheet) => {
+        return {
+          spreadsheetId: spreadsheetId,
+          sheetId: sheet.properties?.sheetId,
+          title: sheet.properties?.title,
+          index: sheet.properties?.index,
+        };
+      })
+      .sortBy((i) => i.index)
+      .value();
   } else {
     return [];
   }
@@ -121,211 +125,264 @@ export const getSpreadSheet = async (spreadsheetId: string) => {
   return res.data;
 };
 
-// const   processSheet = async (
-//   spreadsheetId,
-//   sourceSheetId,
-//   ownerEmail,
-//   updateInfo
-// ) => {
-//   // Retrieve sheet info
-//   var spreadSheet = await getSpreadSheet(spreadsheetId);
-//   var sheet = _.find(spreadSheet.sheets, (sheet) => {
-//     return sheet.properties.sheetId === sourceSheetId;
-//   });
+export const processSheet = async (
+  spreadsheetId: string,
+  sourceSheetId: number,
+  ownerEmail: string,
+  updateInfo: UpdateInfo[]
+) => {
+  // Retrieve sheet info
+  var spreadSheet = await getSpreadSheet(spreadsheetId);
+  if (!spreadSheet || !spreadSheet.sheets) throw 'Get SpreadSheet error';
 
-//   // // Duplicate sheet
-//   const { duplicateSheet } = await _duplicateSheet(
-//     spreadsheetId,
-//     sourceSheetId,
-//     sheet.properties.title
-//   );
-//   // // Rename sheets
-//   var newSheetName = format(
-//     addMonths(new Date(`${sheet.properties.title}-01`), 1),
-//     'yyyy-MM'
-//   );
-//   await _renameSheet(spreadsheetId, sourceSheetId, newSheetName);
-//   await _renameSheet(
-//     spreadsheetId,
-//     duplicateSheet.properties.sheetId,
-//     sheet.properties.title
-//   );
-//   duplicateSheet.properties.title = sheet.properties.title;
-//   sheet.properties.title = newSheetName;
+  var sheet = spreadSheet.sheets.find((sheet) => {
+    return (
+      sheet && sheet.properties && sheet.properties.sheetId === sourceSheetId
+    );
+  });
 
-//   // // Add Protection for duplicateSheet
-//   await _addProtectedRange(
-//     spreadsheetId,
-//     duplicateSheet.properties.sheetId,
-//     ownerEmail
-//   );
+  if (!sheet || !sheet.properties || !sheet.properties.title)
+    throw 'Get Sheet error';
 
-//   // Init sheet data
-//   let sheetData = await _getSheetData(spreadsheetId, sheet);
-//   await _processSheetData(
-//     spreadsheetId,
-//     sheet,
-//     sheetData,
-//     _.orderBy(updateInfo, ['index'])
-//   );
-//   return [
-//     { sheetId: sourceSheetId, title: newSheetName },
-//     {
-//       sheetId: duplicateSheet.properties.sheetId,
-//       title: sheet.properties.title,
-//     },
-//   ];
-// };
+  // Duplicate sheet
 
-// const  _duplicateSheet = async (spreadsheetId, sourceSheetId, sourceSheetTitle) => {
-//   const request = {
-//     spreadsheetId: spreadsheetId,
-//     resource: {
-//       requests: [
-//         {
-//           duplicateSheet: {
-//             sourceSheetId: sourceSheetId,
-//             insertSheetIndex: 1,
-//             newSheetId: undefined,
-//             newSheetName: `Copy of ${sourceSheetTitle}`,
-//           },
-//         },
-//       ],
-//     },
-//   };
-//   const res = await sheets.spreadsheets.batchUpdate(request);
-//   return res.data.replies[0];
-// };
+  const { duplicateSheet } = await _duplicateSheet(
+    spreadsheetId,
+    sourceSheetId,
+    sheet.properties.title
+  );
+  if (
+    !duplicateSheet ||
+    !duplicateSheet.properties ||
+    !duplicateSheet.properties.sheetId
+  )
+    throw 'Duplicate sheet error';
 
-// const  _renameSheet = async (spreadsheetId, sheetId, newSheetTitle) => {
-//   const request = {
-//     spreadsheetId: spreadsheetId,
-//     resource: {
-//       requests: [
-//         {
-//           updateSheetProperties: {
-//             properties: {
-//               sheetId: sheetId,
-//               title: newSheetTitle,
-//             },
-//             fields: 'title',
-//           },
-//         },
-//       ],
-//     },
-//   };
-//   await sheets.spreadsheets.batchUpdate(request);
-// };
+  // Rename sheets
+  var newSheetName = format(
+    addMonths(parseISO(`${sheet.properties.title}-01`), 1),
+    'yyyy-MM'
+  );
+  await _renameSheet(spreadsheetId, sourceSheetId, newSheetName);
+  await _renameSheet(
+    spreadsheetId,
+    duplicateSheet.properties.sheetId,
+    sheet.properties.title
+  );
+  duplicateSheet.properties.title = sheet.properties.title;
+  sheet.properties.title = newSheetName;
 
-// const  _addProtectedRange = async (spreadsheetId, sheetId, ownerEmail) => {
-//   const request = {
-//     spreadsheetId: spreadsheetId,
-//     resource: {
-//       requests: [
-//         {
-//           addProtectedRange: {
-//             protectedRange: {
-//               range: { sheetId: sheetId },
-//               requestingUserCanEdit: true,
-//               editors: { users: [ownerEmail] },
-//             },
-//           },
-//         },
-//       ],
-//     },
-//   };
-//   await sheets.spreadsheets.batchUpdate(request);
-// };
+  // // Add Protection for duplicateSheet
+  await _addProtectedRange(
+    spreadsheetId,
+    duplicateSheet.properties.sheetId,
+    ownerEmail
+  );
 
-// const   _processSheetData = async (
-//   spreadsheetId,
-//   sheetInfo,
-//   sheetData,
-//   updateInfo
-// ) => {
-//   asyncForEach(updateInfo, async (info) => {
-//     if (info.method === 'COPY') {
-//       let data = sheetData.values[info.source];
-//       await _updateSheetData(
-//         spreadsheetId,
-//         sheetInfo,
-//         info.destination,
-//         data
-//       );
-//     } else if (info.method === 'SET_VALUE') {
-//       let { rowCount } = sheetInfo.properties.gridProperties;
-//       let data = Array(rowCount - 1).fill(info.value);
-//       await _updateSheetData(
-//         spreadsheetId,
-//         sheetInfo,
-//         info.destination,
-//         data
-//       );
-//     } else if (info.method === 'SET_VALUE_RANGE') {
-//       let { rowCount } = sheetInfo.properties.gridProperties;
-//       let data1 = Array(rowCount - 1);
-//       let data2 = Array(rowCount - 1);
-//       for (var i = 0; i < rowCount - 1; i++) {
-//         try {
-//           // ignore columns, if start with "*"
-//           if (sheetData.values[info.source[0]][i].startsWith('*')) {
-//             data1[i] = sheetData.values[info.source[0]][i];
-//             data2[i] = sheetData.values[info.source[1]][i];
-//           } else {
-//             data1[i] = info.value[0];
-//             data2[i] = info.value[1];
-//           }
-//         } catch (e) {
-//           data1[i] = info.value[0];
-//           data2[i] = info.value[1];
-//         }
-//       }
+  // Init sheet data
+  let sheetData = await _getSheetData(spreadsheetId, sheet);
+  await _processSheetData(
+    spreadsheetId,
+    sheet,
+    sheetData,
+    orderBy(updateInfo, ['index'])
+  );
+  return [
+    { sheetId: sourceSheetId, title: newSheetName },
+    {
+      sheetId: duplicateSheet.properties.sheetId,
+      title: sheet.properties.title,
+    },
+  ];
+};
 
-//       // update Text
-//       await _updateSheetData(
-//         spreadsheetId,
-//         sheetInfo,
-//         info.destination[0],
-//         data1
-//       );
-//       // update Value
-//       await _updateSheetData(
-//         spreadsheetId,
-//         sheetInfo,
-//         info.destination[1],
-//         data2
-//       );
-//     }
-//   });
-// };
+const _duplicateSheet = async (
+  spreadsheetId: string,
+  sourceSheetId: number,
+  sourceSheetTitle: string
+) => {
+  const request = {
+    spreadsheetId: spreadsheetId,
+    resource: {
+      requests: [
+        {
+          duplicateSheet: {
+            sourceSheetId: sourceSheetId,
+            insertSheetIndex: 1,
+            newSheetId: undefined,
+            newSheetName: `Copy of ${sourceSheetTitle}`,
+          },
+        },
+      ],
+    },
+  };
+  const res = await sheets.spreadsheets.batchUpdate(request);
+  return res.data && res.data.replies ? res.data.replies[0] : {};
+};
 
-// const  _updateSheetData = async (spreadsheetId, sheetInfo, column, data) => {
-//   let { title } = sheetInfo.properties;
-//   let { rowCount } = sheetInfo.properties.gridProperties;
-//   const request = {
-//     spreadsheetId: spreadsheetId,
-//     range: `'${title}'!${column}2:${column}${rowCount}`,
-//     valueInputOption: 'USER_ENTERED',
-//     resource: {
-//       range: `'${title}'!${column}2:${column}${rowCount}`,
-//       majorDimension: 'COLUMNS',
-//       values: [data],
-//     },
-//   };
-//   let res = await sheets.spreadsheets.values.update(request);
-// };
+const _renameSheet = async (
+  spreadsheetId: string,
+  sheetId: number,
+  newSheetTitle: string
+) => {
+  const request = {
+    spreadsheetId: spreadsheetId,
+    resource: {
+      requests: [
+        {
+          updateSheetProperties: {
+            properties: {
+              sheetId: sheetId,
+              title: newSheetTitle,
+            },
+            fields: 'title',
+          },
+        },
+      ],
+    },
+  };
+  await sheets.spreadsheets.batchUpdate(request);
+};
 
-// const   _getSheetData = async (spreadsheetId, sheetInfo) => {
-//   const request = {
-//     spreadsheetId: spreadsheetId,
-//     range: `'${sheetInfo.properties.title}'!A2:AD${sheetInfo.properties.gridProperties.rowCount}`,
-//     majorDimension: 'COLUMNS',
-//     valueRenderOption: 'UNFORMATTED_VALUE',
-//     dateTimeRenderOption: 'SERIAL_NUMBER',
-//   };
-//   let res = await sheets.spreadsheets.values.get(request);
-//   return res.data;
-// };
+const _addProtectedRange = async (
+  spreadsheetId: string,
+  sheetId: number,
+  ownerEmail: string
+) => {
+  const request = {
+    spreadsheetId: spreadsheetId,
+    resource: {
+      requests: [
+        {
+          addProtectedRange: {
+            protectedRange: {
+              range: { sheetId: sheetId },
+              requestingUserCanEdit: true,
+              editors: { users: [ownerEmail] },
+            },
+          },
+        },
+      ],
+    },
+  };
+  await sheets.spreadsheets.batchUpdate(request);
+};
+
+const _processSheetData = async (
+  spreadsheetId: string,
+  sheetInfo: sheets_v4.Schema$Sheet,
+  sheetData: sheets_v4.Schema$ValueRange,
+  updateInfo: UpdateInfo[]
+) => {
+  await Promise.all(
+    updateInfo.map(async (info) => {
+      if (!sheetData || !sheetData.values) throw '_processSheetData() error';
+      if (
+        !sheetInfo ||
+        !sheetInfo.properties ||
+        !sheetInfo.properties.gridProperties
+      )
+        throw '_processSheetData() error';
+
+      if (info.method === 'COPY' && info.source) {
+        let data = sheetData.values[info.source as number];
+        await _updateSheetData(
+          spreadsheetId,
+          sheetInfo,
+          info.destination,
+          data
+        );
+      } else if (info.method === 'SET_VALUE') {
+        const rowCount = sheetInfo.properties.gridProperties.rowCount || 0;
+        let data = Array(rowCount - 1).fill(info.value);
+        await _updateSheetData(
+          spreadsheetId,
+          sheetInfo,
+          info.destination,
+          data
+        );
+      } else if (info.method === 'SET_VALUE_RANGE' && info.source) {
+        const rowCount = sheetInfo.properties.gridProperties.rowCount || 0;
+        let data1 = Array(rowCount - 1);
+        let data2 = Array(rowCount - 1);
+        const source = info.source as any[];
+        for (var i = 0; i < rowCount - 1; i++) {
+          try {
+            // ignore columns, if start with "*"
+            if (sheetData.values[source[0]][i].startsWith('*')) {
+              data1[i] = sheetData.values[source[0]][i];
+              data2[i] = sheetData.values[source[1]][i];
+            } else {
+              data1[i] = info.value[0];
+              data2[i] = info.value[1];
+            }
+          } catch (e) {
+            data1[i] = info.value[0];
+            data2[i] = info.value[1];
+          }
+        }
+
+        // update Text
+        await _updateSheetData(
+          spreadsheetId,
+          sheetInfo,
+          info.destination[0],
+          data1
+        );
+
+        // update Value
+        await _updateSheetData(
+          spreadsheetId,
+          sheetInfo,
+          info.destination[1],
+          data2
+        );
+      }
+    })
+  );
+};
+
+const _updateSheetData = async (
+  spreadsheetId: string,
+  sheetInfo: sheets_v4.Schema$Sheet,
+  column: any,
+  data: any[]
+) => {
+  if (!sheetInfo.properties || !sheetInfo.properties.gridProperties)
+    throw 'Error _updateSheetData() ';
+
+  let { title } = sheetInfo.properties;
+  let { rowCount } = sheetInfo.properties.gridProperties;
+  const request = {
+    spreadsheetId: spreadsheetId,
+    range: `'${title}'!${column}2:${column}${rowCount}`,
+    valueInputOption: 'USER_ENTERED',
+    resource: {
+      range: `'${title}'!${column}2:${column}${rowCount}`,
+      majorDimension: 'COLUMNS',
+      values: [data],
+    },
+  };
+  await sheets.spreadsheets.values.update(request);
+};
+
+const _getSheetData = async (
+  spreadsheetId: string,
+  sheetInfo: sheets_v4.Schema$Sheet
+) => {
+  if (!sheetInfo.properties || !sheetInfo.properties.gridProperties)
+    throw '_getSheetData() Error';
+
+  const request = {
+    spreadsheetId: spreadsheetId,
+    range: `'${sheetInfo.properties.title}'!A2:AD${sheetInfo.properties.gridProperties.rowCount}`,
+    majorDimension: 'COLUMNS',
+    valueRenderOption: 'UNFORMATTED_VALUE',
+    dateTimeRenderOption: 'SERIAL_NUMBER',
+  };
+  let res = await sheets.spreadsheets.values.get(request);
+  return res.data;
+};
 
 const getSheetDataForReport = async (
   spreadsheetId: string,
@@ -354,4 +411,15 @@ const getSheetDataForReport = async (
     }
   }
   return null;
+};
+
+type UpdateInfo = {
+  _id: string;
+  source?: number | number[];
+  sourceName?: string;
+  destination: string | string[];
+  destinationName: string;
+  method: 'COPY' | 'SET_VALUE' | 'SET_VALUE_RANGE';
+  index: number;
+  value?: any | any[];
 };

@@ -142,9 +142,11 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               <Button
                 startIcon={<GoogleIcon />}
                 onClick={() => {
-                  // redirect to google auth page
+                  router.push('/admin/datasource');
                 }}
-              ></Button>
+              >
+                Authorize
+              </Button>
             )}
           </Grid>
           <Grid item xs={12}>

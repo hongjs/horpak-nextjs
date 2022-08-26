@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { format } from 'date-fns';
 import {
   FETCH_USERS,
   FETCH_AUTH_USER_PENDING,
@@ -17,12 +18,16 @@ import {
   GET_BRANCH,
   EDIT_BRANCH,
   DELETE_BRANCH,
+  SHEET_SELECT,
 } from 'reducers/actions/branchAction';
 import {
   CHECK_TOKEN,
   LOADING_DRIVE,
   FETCH_DRIVE,
   GET_DRIVE_USER,
+  FETCH_SHEETS,
+  PROCESSING_DATA,
+  PROCESS_DATA_DONE,
 } from 'reducers/actions/driveAction';
 import { OPEN_ALERT, CLOSE_ALERT } from 'reducers/actions/globalAction';
 import { AppReducerType, AppState } from 'types/state';
@@ -172,6 +177,24 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
           loading: false,
         },
       };
+    case SHEET_SELECT: {
+      const branch = state.branch.branches.find(
+        (i) => i._id === action.payload.branchId
+      );
+
+      if (branch) {
+        branch.sheetId = action.payload.newSheetId;
+      }
+
+      console.log(action.payload, branch);
+      return {
+        ...state,
+        branch: {
+          ...state.branch,
+          branches: [...state.branch.branches],
+        },
+      };
+    }
 
     //---------------- DRIVE & Spreadsheet ----------------
     case CHECK_TOKEN: {
@@ -210,6 +233,58 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
           user: action.payload,
         },
       };
+    case FETCH_SHEETS: {
+      const branch = state.branch.branches.find(
+        (i) => i._id === action.payload.branchId
+      );
+      if (branch) {
+        branch.sheets = action.payload.sheets;
+        branch.sheetId = action.payload.sheetId;
+      }
+
+      return {
+        ...state,
+        branch: {
+          ...state.branch,
+          branches: [...state.branch.branches],
+        },
+      };
+    }
+    case PROCESSING_DATA: {
+      var branch = state.branch.branches.find((i) => i._id === action.payload);
+      if (branch) {
+        branch.processing = true;
+      }
+      return {
+        ...state,
+        branch: { ...state.branch, branches: [...state.branch.branches] },
+      };
+    }
+    case PROCESS_DATA_DONE: {
+      var branch = state.branch.branches.find(
+        (i) => i._id === action.payload.branchId
+      );
+      if (branch) {
+        branch.processing = false;
+        branch.error = undefined;
+        branch.lastProcessSheet = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+        action.payload.updatedSheets.forEach((sheet: any) => {
+          if (branch && branch.sheets) {
+            let item = branch.sheets.find((i) => i.sheetId === sheet.sheetId);
+            if (item) {
+              item.title = sheet.title;
+            } else {
+              branch.sheets.push(sheet);
+            }
+          }
+        });
+      }
+      console.log('branch', branch);
+      return {
+        ...state,
+        branch: { ...state.branch, branches: [...state.branch.branches] },
+      };
+    }
 
     default: {
       return state;

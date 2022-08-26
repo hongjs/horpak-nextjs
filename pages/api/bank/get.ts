@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { withActiveAuth } from 'middleware';
-import { connectToDatabase } from 'lib/mongodb';
+import clientPromise from 'lib/mongodb';
 import { ObjectId } from 'mongodb';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -11,7 +11,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    const { db } = await connectToDatabase();
+    const client = await clientPromise;
+    const db = client.db('cplace-cluster');
     const item = await db
       .collection('bankAccounts')
       .findOne({ _id: new ObjectId(id) });

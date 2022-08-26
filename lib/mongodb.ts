@@ -5,6 +5,11 @@ import { MongoClientType } from 'types/mongodb';
 let cachedClient: MongoClient;
 let cachedDb: Db;
 
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
+
+// https://github.com/vercel/next.js/blob/canary/examples/with-mongodb/lib/mongodb.ts
+
 if (!keys.mongoURI) {
   throw new Error(
     'Please define the MONGODB_URI environment variable inside .env.local'
@@ -17,34 +22,46 @@ if (!keys.dbName) {
   );
 }
 
-const logConenction = async (db: Db, log: string) => {
-  await db
-    .collection('logs')
-    .insertOne({ date: new Date(), env: keys.NODE_ENV, log: log });
-};
+const options = {
+  appName: keys.NODE_ENV,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+} as MongoClientOptions;
 
-export const connectToDatabase = async (): Promise<MongoClientType> => {
-  if (cachedClient && cachedDb) {
-    console.log('mongo: use cached connection');
-    await logConenction(cachedDb, 'mongo: use cached connection');
-    return { client: cachedClient, db: cachedDb };
+if (process.env.NODE_ENV === 'development') {
+  // In development mode, use a global variable so that the value
+  // is preserved across module reloads caused by HMR (Hot Module Replacement).
+  if (!global.mongoClientPromise) {
+    client = new MongoClient(keys.mongoURI, options);
+    global.mongoClientPromise = client.connect();
+    console.log('new connection');
   }
+  console.log('cached connection');
 
-  console.log('mongo: new connection');
+  clientPromise = global.mongoClientPromise;
+} else {
+  // In production mode, it's best to not use a global variable.
+  client = new MongoClient(keys.mongoURI, options);
+  clientPromise = client.connect();
+}
+export default clientPromise;
 
-  const options: MongoClientOptions = {
-    appName: keys.NODE_ENV,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  } as MongoClientOptions;
+// export const connectToDatabase = async (): Promise<MongoClientType> => {
+//   if (cachedClient && cachedDb) {
+//     return { client: cachedClient, db: cachedDb };
+//   }
 
-  const client = await MongoClient.connect(keys.mongoURI, options);
-  const db = await client.db(keys.dbName);
+//   const options = {
+//     appName: keys.NODE_ENV,
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   } as MongoClientOptions;
 
-  await logConenction(db, 'mongo: new connection');
+//   const client = await MongoClient.connect(keys.mongoURI, options);
+//   const db = await client.db(keys.dbName);
 
-  cachedClient = client;
-  cachedDb = db;
+//   cachedClient = client;
+//   cachedDb = db;
 
-  return { client: cachedClient, db: cachedDb };
-};
+//   return { client: cachedClient, db: cachedDb };
+// };

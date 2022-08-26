@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import { withActiveAuth } from 'middleware';
-import { connectToDatabase } from 'lib/mongodb';
+import clientPromise from 'lib/mongodb';
 import { FindOneAndUpdateOptions, ObjectId } from 'mongodb';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,7 +13,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    const { db } = await connectToDatabase();
+    const client = await clientPromise;
+    const db = client.db('cplace-cluster');
     const session = await getSession({ req });
 
     if (_id) {

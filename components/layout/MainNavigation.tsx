@@ -36,6 +36,13 @@ const MainNavigation: React.FC = () => {
   const menuItems = useMemo(() => {
     return [
       { id: 'home', name: 'Home', icon: 'home', url: '/', divider: true },
+      {
+        id: 'process',
+        name: 'Process',
+        icon: 'home',
+        url: '/report/processSheet',
+        divider: true,
+      },
       { id: 'users', name: 'User', icon: 'user-group', url: '/users' },
       { id: 'banks', name: 'Bank', icon: 'building-columns', url: '/bank' },
       {

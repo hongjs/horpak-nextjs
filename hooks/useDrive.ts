@@ -1,6 +1,13 @@
 import { useCallback } from 'react';
 import { useAppContext } from 'hooks';
-import { fetchDrive, checkToken, getUser } from 'reducers/actions/driveAction';
+import {
+  fetchDrive,
+  fetchSheets,
+  checkToken,
+  getUser,
+  processData,
+} from 'reducers/actions/driveAction';
+import { BranchItemState } from 'types/state';
 
 const useDrive = () => {
   const { state, dispatch } = useAppContext();
@@ -20,6 +27,22 @@ const useDrive = () => {
     getUser(dispatch);
   }, [dispatch]);
 
+  const handleChangeSheet = useCallback(() => {}, []);
+
+  const handleFetchSheets = useCallback(
+    (branches: BranchItemState[]) => {
+      fetchSheets(dispatch, branches);
+    },
+    [dispatch]
+  );
+
+  const handleProcessData = useCallback(
+    (branchId: string, spreadsheetId: string, sheetId: number) => {
+      processData(dispatch, branchId, spreadsheetId, sheetId);
+    },
+    [dispatch]
+  );
+
   return {
     files: state.drive.files,
     loading: state.drive.loading,
@@ -28,6 +51,9 @@ const useDrive = () => {
     fetchDrive: handleFetchDrive,
     getUser: handleGetUser,
     checkToken: handleCheckToken,
+    changeSheet: handleChangeSheet,
+    fetchSheets: handleFetchSheets,
+    processData: handleProcessData,
   };
 };
 

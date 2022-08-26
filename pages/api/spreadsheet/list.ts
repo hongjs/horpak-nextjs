@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { withActiveAuth } from 'middleware';
-import { connectToDatabase } from 'lib/mongodb';
+import { getAccessToken } from 'lib/mongoUtil';
 import { setCredentials, listFile, getFile } from 'lib/spreadsheetUtil';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -8,16 +8,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const folderId = req.query.folderId
       ? req.query.folderId.toString()
       : 'root';
-    const { db } = await connectToDatabase();
-    const tokens = await db
-      .collection('configs2')
-      .find({ group: 'google', name: 'token' })
-      .toArray();
-    if (tokens.length === 0) {
-      res.status(500).send('No Access Token found.');
-      return;
-    }
-    setCredentials(tokens[0].value);
+
+    setCredentials(await getAccessToken());
     let files = await listFile(folderId);
 
     if (folderId !== 'root' && files.length > 0 && files[0].parents) {

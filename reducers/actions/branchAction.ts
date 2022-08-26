@@ -7,6 +7,7 @@ export const GET_BRANCH = 'GET_BRANCH';
 export const EDIT_BRANCH = 'EDIT_BRANCH';
 export const DELETE_BRANCH = 'DELETE_BRANCH';
 export const DRIVE_LIST = 'DRIVE_LIST';
+export const SHEET_SELECT = 'SHEET_SELECT';
 
 export const fetchBranch = async (dispatch: Dispatch<any>) => {
   try {
@@ -70,4 +71,12 @@ export const deleteBranch = async (dispatch: Dispatch<any>, id: string) => {
       payload: { message: 'Unknown error occurs.', severity: 'error' },
     });
   }
+};
+
+export const sheetSelect = async (
+  dispatch: Dispatch<any>,
+  branchId: string,
+  newSheetId: number
+) => {
+  dispatch({ type: SHEET_SELECT, payload: { branchId, newSheetId } });
 };

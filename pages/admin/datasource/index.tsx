@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { Button, Grid, Typography, Paper, LinearProgress } from '@mui/material';
 import { Card, CardActions, CardHeader, CardContent } from '@mui/material';
+import { Google as GoogleIcon } from '@mui/icons-material';
 import { format as dateFormat } from 'date-fns';
 import { toInteger } from 'lodash';
 import { useDrive } from 'hooks';
@@ -72,7 +73,12 @@ const DataSource: React.FC = () => {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <Button variant="outlined" color="primary" onClick={handleAuthClick}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={handleAuthClick}
+            startIcon={<GoogleIcon />}
+          >
             {hasToken ? 'Re-Authorize' : 'Authorize'}
           </Button>
         </CardActions>

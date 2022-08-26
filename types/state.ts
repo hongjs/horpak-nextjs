@@ -36,16 +36,27 @@ type BranchState = {
   branches: BranchItemState[];
 };
 
+export type DriveSheetItem = {
+  sheetId: number;
+  title: string;
+  index: number;
+};
+
 export type BranchItemState = {
   _id?: string;
   name?: string;
   spreadSheetId?: string;
   spreadSheetName?: string;
-  lastProcessSheet?: Date;
+  lastProcessSheet?: string;
   reportAddress?: string;
   reportContact?: string;
   reportHeader?: string;
   reportRemark?: string;
+
+  processing?: boolean;
+  sheetId?: number;
+  sheets?: DriveSheetItem[];
+  error?: string;
 };
 
 type AlertState = {

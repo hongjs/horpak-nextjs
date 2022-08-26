@@ -5,6 +5,7 @@ import {
   getBranch,
   saveBranch,
   deleteBranch,
+  sheetSelect,
 } from 'reducers/actions/branchAction';
 
 const useBranch = () => {
@@ -35,6 +36,13 @@ const useBranch = () => {
     [dispatch]
   );
 
+  const handleSheetSelect = useCallback(
+    (branchId: string, sheetId: number) => {
+      sheetSelect(dispatch, branchId, sheetId);
+    },
+    [dispatch]
+  );
+
   return {
     saved: state.branch.saved,
     loading: state.branch.loading,
@@ -44,6 +52,7 @@ const useBranch = () => {
     getBranch: handleGetBranch,
     saveBranch: handleSaveBranch,
     deleteBranch: handleDeleteBranch,
+    sheetSelect: handleSheetSelect,
   };
 };
 
