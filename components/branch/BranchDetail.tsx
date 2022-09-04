@@ -125,6 +125,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               }`}
               target="_blank"
               rel="noreferrer"
+              style={{ color: 'blue', textDecoration: 'underline' }}
             >
               {data?.spreadSheetName || ''}
             </a>

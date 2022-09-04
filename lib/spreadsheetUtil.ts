@@ -15,9 +15,6 @@ const options: OAuth2ClientOptions = {
   clientSecret: keys.GOOGLE_SECRET,
   redirectUri: keys.googleRedirectUri,
 };
-// const credentials: Auth.Credentials = {
-//   access_token: '',
-// };
 
 const client: OAuth2Client = new google.auth.OAuth2(options);
 const SCOPES = [
@@ -26,8 +23,6 @@ const SCOPES = [
   'https://www.googleapis.com/auth/userinfo.profile',
   'https://www.googleapis.com/auth/userinfo.email',
 ];
-
-// client.setCredentials(credentials);
 
 const drive: drive_v3.Drive = google.drive({
   version: 'v3',
@@ -38,13 +33,6 @@ const sheets = google.sheets({
   version: 'v4',
   auth: client,
 } as sheets_v4.Options);
-
-// constructor(client_id: string, client_secret: string, token: string) {
-//   client = new google.auth.OAuth2(client_id, client_secret);
-//   client.setCredentials(token);
-//   drive:drive_v3.Drive   = google.drive({ version: 'v3', auth: client });
-//   sheets = google.sheets({ version: 'v4', auth: client });
-// }
 
 export const generateAuthUrl: () => string = () => {
   const oAuth2Client = new google.auth.OAuth2(options);
@@ -72,7 +60,8 @@ export const auth = async (code: string, currentUser: string) => {
   }
 };
 
-export const setCredentials = (tokens: any) => {
+type FuncSetCredentials = (tokens: any) => void;
+export const setCredentials: FuncSetCredentials = (tokens: any) => {
   client.setCredentials(tokens);
 };
 
@@ -83,7 +72,8 @@ const getUserProfile = async (token: string) => {
   return res.data;
 };
 
-export const listFile = async (folder: string) => {
+type FuncListFile = (folder: string) => Promise<drive_v3.Schema$File[]>;
+export const listFile: FuncListFile = async (folder) => {
   if (!folder) folder = 'root';
   const res = await drive.files.list({
     pageSize: 100,
@@ -93,7 +83,8 @@ export const listFile = async (folder: string) => {
   return res.data.files ?? [];
 };
 
-export const getFile = async (fileId: string) => {
+type FuncGetFile = (fileId: string) => Promise<drive_v3.Schema$File>;
+export const getFile: FuncGetFile = async (fileId: string) => {
   const res = await drive.files.get({
     fileId: fileId,
     fields: 'id,name,mimeType,parents',
@@ -384,14 +375,14 @@ const _getSheetData = async (
   return res.data;
 };
 
-const getSheetDataForReport = async (
+export const getSheetDataForReport = async (
   spreadsheetId: string,
   sheetId: number
 ) => {
   const spreadsheet = await getSpreadSheet(spreadsheetId);
   if (spreadsheet.sheets) {
     var sheetInfo = spreadsheet.sheets.find((sheet) => {
-      return sheet.properties && sheet.properties.sheetId === sheetId;
+      return sheet.properties && sheet.properties.sheetId == sheetId;
     });
 
     if (
@@ -399,7 +390,7 @@ const getSheetDataForReport = async (
       sheetInfo.properties &&
       sheetInfo.properties.gridProperties
     ) {
-      const request = {
+      const request: sheets_v4.Params$Resource$Spreadsheets$Values$Get = {
         spreadsheetId: spreadsheetId,
         range: `'${sheetInfo.properties.title}'!A1:AD${sheetInfo.properties.gridProperties.rowCount}`,
         majorDimension: 'ROWS',

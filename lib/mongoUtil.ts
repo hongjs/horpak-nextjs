@@ -1,9 +1,10 @@
 import clientPromise from './mongodb';
+import keys from 'config/keys';
 
 export const getIds = async (collectionName: string, field?: string) => {
   const _field = field ? field : '_id';
   const client = await clientPromise;
-  const db = client.db('cplace-cluster');
+  const db = client.db(keys.dbName);
   const items = await db
     .collection(collectionName)
     .find({})
@@ -22,7 +23,7 @@ export const saveDriveToken = async (
   if (!token || !userInfo) return;
 
   const client = await clientPromise;
-  const db = client.db('cplace-cluster');
+  const db = client.db(keys.dbName);
 
   await db.collection('configs2').replaceOne(
     { group: 'google', name: 'token' },
@@ -55,7 +56,7 @@ export const saveDriveToken = async (
 
 export const getAccessToken = async () => {
   const client = await clientPromise;
-  const db = client.db('cplace-cluster');
+  const db = client.db(keys.dbName);
 
   const tokens = await db
     .collection('configs2')

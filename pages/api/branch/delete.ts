@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { withActiveAuth } from 'middleware';
 import clientPromise from 'lib/mongodb';
 import { ObjectId } from 'mongodb';
+import keys from 'config/keys';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'DELETE') {
@@ -13,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const client = await clientPromise;
-    const db = client.db('cplace-cluster');
+    const db = client.db(keys.dbName);
     await db.collection('branches').deleteOne({ _id: new ObjectId(id) });
     res.send({ id });
   }

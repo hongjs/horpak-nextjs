@@ -186,7 +186,6 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
         branch.sheetId = action.payload.newSheetId;
       }
 
-      console.log(action.payload, branch);
       return {
         ...state,
         branch: {
@@ -224,6 +223,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
           files: _.orderBy(action.payload, ['mimeType', 'name']),
         },
       };
+
     case GET_DRIVE_USER:
       return {
         ...state,
@@ -247,6 +247,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
         branch: {
           ...state.branch,
           branches: [...state.branch.branches],
+          loading: false,
         },
       };
     }
@@ -279,7 +280,6 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
           }
         });
       }
-      console.log('branch', branch);
       return {
         ...state,
         branch: { ...state.branch, branches: [...state.branch.branches] },

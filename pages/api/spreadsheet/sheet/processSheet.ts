@@ -4,13 +4,14 @@ import { withActiveAuth } from 'middleware';
 import clientPromise from 'lib/mongodb';
 import { setCredentials, processSheet } from 'lib/spreadsheetUtil';
 import { getAccessToken } from 'lib/mongoUtil';
+import keys from 'config/keys';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const { branchId, spreadsheetId, sheetId } = req.query;
     try {
       const client = await clientPromise;
-      const db = client.db('cplace-cluster');
+      const db = client.db(keys.dbName);
       const updateInfo = await db.collection('sheetInfos').find({}).toArray();
       const email = await db.collection('configs').findOne({
         group: 'google',
@@ -39,4 +40,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default handler;
+export default withActiveAuth(handler);

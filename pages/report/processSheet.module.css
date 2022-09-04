@@ -5,18 +5,33 @@
 
 .paper {
   padding: 16px;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 .list {
   margin: 8px 8px 32px 8px;
 }
 
-.selectSheet {
-  min-width: 150px;
-}
-
 .error {
   color: red;
   text-align: left;
+}
+
+.text {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* MD, LG, XL */
+@media (min-width: 900px) {
+  .selectSheet {
+    width: 170px;
+  }
+}
+
+/* XS, SM */
+@media (max-width: 899px) {
+  .selectSheet {
+    width: 120px;
+  }
 }

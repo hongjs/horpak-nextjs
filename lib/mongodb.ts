@@ -1,9 +1,5 @@
-import { Db, MongoClient, MongoClientOptions } from 'mongodb';
+import { MongoClient, MongoClientOptions } from 'mongodb';
 import keys from 'config/keys';
-import { MongoClientType } from 'types/mongodb';
-
-let cachedClient: MongoClient;
-let cachedDb: Db;
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
@@ -34,9 +30,7 @@ if (process.env.NODE_ENV === 'development') {
   if (!global.mongoClientPromise) {
     client = new MongoClient(keys.mongoURI, options);
     global.mongoClientPromise = client.connect();
-    console.log('new connection');
   }
-  console.log('cached connection');
 
   clientPromise = global.mongoClientPromise;
 } else {
@@ -45,6 +39,9 @@ if (process.env.NODE_ENV === 'development') {
   clientPromise = client.connect();
 }
 export default clientPromise;
+
+// let cachedClient: MongoClient;
+// let cachedDb: Db;
 
 // export const connectToDatabase = async (): Promise<MongoClientType> => {
 //   if (cachedClient && cachedDb) {

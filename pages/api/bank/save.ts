@@ -3,6 +3,7 @@ import { getSession } from 'next-auth/react';
 import { withActiveAuth } from 'middleware';
 import clientPromise from 'lib/mongodb';
 import { FindOneAndUpdateOptions, ObjectId } from 'mongodb';
+import keys from 'config/keys';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
@@ -14,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const client = await clientPromise;
-    const db = client.db('cplace-cluster');
+    const db = client.db(keys.dbName);
     const session = await getSession({ req });
 
     if (_id) {

@@ -74,6 +74,39 @@ export type DriveItem = {
   parents?: string[];
 };
 
+export type ReportItem = {
+  room: number;
+  name: string;
+  water_start: number;
+  water_end: number;
+  water_unit_price: number;
+  water_unit: number;
+  water_min_cost: number;
+  water_cost: number;
+  electric_start: number;
+  electric_end: number;
+  electric_unit_price: number;
+  electric_unit: number;
+  electric_cost: number;
+  room_cost: number;
+  share_cost: number;
+  internet_cost: number;
+  penalty_cost: number;
+  arrear: number;
+  electric_extra: string;
+  electric_extra_cost: number;
+  water_extra: string;
+  water_extra_cost: number;
+  other1: string;
+  other1_cost: number;
+  other2: string;
+  other2_cost: number;
+  other3: string;
+  other3_cost: number;
+  bank_id: number;
+  total: number;
+};
+
 type DriveUser = {
   name: string;
   picture: string;

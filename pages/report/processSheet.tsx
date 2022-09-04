@@ -57,37 +57,40 @@ const ProcessSheet: React.FC = () => {
     [sheetSelect]
   );
 
-  const renderIcon = useCallback((item: BranchItemState) => {
-    let tooltip =
-      item.processing === true
-        ? 'processing'
-        : item.processing === false
-        ? 'done'
-        : 'start process';
-    return (
-      <Tooltip title={tooltip} placement="bottom">
-        <div>
-          <IconButton
-            edge="end"
-            aria-label="process"
-            color="primary"
-            onClick={() => handleProcessClick(item)}
-            disabled={
-              item.processing !== undefined || item.sheetId === undefined
-            }
-          >
-            {item.processing === true ? (
-              <CircularProgress size={20} />
-            ) : item.processing === false ? (
-              <CheckIcon sx={{ color: 'green' }} />
-            ) : (
-              <CachedIcon />
-            )}
-          </IconButton>
-        </div>
-      </Tooltip>
-    );
-  }, []);
+  const renderIcon = useCallback(
+    (item: BranchItemState) => {
+      let tooltip =
+        item.processing === true
+          ? 'processing'
+          : item.processing === false
+          ? 'done'
+          : 'start process';
+      return (
+        <Tooltip title={tooltip} placement="bottom">
+          <div>
+            <IconButton
+              edge="end"
+              aria-label="process"
+              color="primary"
+              onClick={() => handleProcessClick(item)}
+              disabled={
+                item.processing !== undefined || item.sheetId === undefined
+              }
+            >
+              {item.processing === true ? (
+                <CircularProgress size={20} />
+              ) : item.processing === false ? (
+                <CheckIcon sx={{ color: 'green' }} />
+              ) : (
+                <CachedIcon />
+              )}
+            </IconButton>
+          </div>
+        </Tooltip>
+      );
+    },
+    [handleProcessClick]
+  );
 
   const renderSheetSelect = useCallback(
     (branch: BranchItemState) => {
@@ -121,7 +124,7 @@ const ProcessSheet: React.FC = () => {
           <Hidden mdDown>
             <Grid item xs={1}></Grid>
           </Hidden>
-          <Grid item xs={12} md={12} className={styles.error}>
+          <Grid item xs={12} md={11} className={styles.error}>
             <Typography variant="body1" gutterBottom>
               {item.error}
             </Typography>
@@ -159,14 +162,37 @@ const ProcessSheet: React.FC = () => {
                 </Hidden>
                 <Grid item xs={11} md={6}>
                   <Box sx={{ textAlign: 'left' }}>
-                    <Typography gutterBottom component="div" variant="body1">
+                    <Typography
+                      gutterBottom
+                      component="div"
+                      variant="body1"
+                      className={styles.text}
+                    >
                       {branch.name}
                     </Typography>
-                    <Typography gutterBottom component="span" variant="caption">
-                      Spreadsheet: {branch.spreadSheetName}
+                    <Typography
+                      gutterBottom
+                      component="span"
+                      variant="caption"
+                      className={styles.text}
+                    >
+                      Spreadsheet:{' '}
+                      <a
+                        href={`https://docs.google.com/spreadsheets/d/${branch.spreadSheetId}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{ color: 'blue', textDecoration: 'underline' }}
+                      >
+                        {branch.spreadSheetName}
+                      </a>
                     </Typography>
                     {' | '}
-                    <Typography gutterBottom component="span" variant="caption">
+                    <Typography
+                      gutterBottom
+                      component="span"
+                      variant="caption"
+                      className={styles.text}
+                    >
                       Last process:{' '}
                       {branch.lastProcessSheet
                         ? format(
@@ -177,10 +203,15 @@ const ProcessSheet: React.FC = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={3}>
+                <Grid
+                  item
+                  xs={6}
+                  md={3}
+                  sx={{ textAlign: 'left', paddingLeft: '32px' }}
+                >
                   {renderSheetSelect(branch)}
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={6} md={2}>
                   {renderIcon(branch)}
                 </Grid>
                 {renderError(branch)}

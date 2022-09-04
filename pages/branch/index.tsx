@@ -58,6 +58,7 @@ const BranchList: React.FC = () => {
               target="_blank"
               rel="noreferrer"
               href={`https://docs.google.com/spreadsheets/d/${params.row.spreadSheetId}`}
+              style={{ color: 'blue', textDecoration: 'underline' }}
             >
               {params.row.spreadSheetName}
             </a>

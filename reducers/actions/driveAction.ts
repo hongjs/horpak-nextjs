@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Dispatch } from 'react';
 import { BranchItemState } from 'types/state';
+import { LOADING_BRANCH } from './branchAction';
 
 export const OPEN_ALERT = 'OPEN_ALERT';
 export const CHECK_TOKEN = 'CHECK_TOKEN';
@@ -10,6 +11,7 @@ export const GET_DRIVE_USER = 'GET_DRIVE_USER';
 export const FETCH_SHEETS = 'FETCH_SHEETS';
 export const PROCESS_DATA_DONE = 'PROCESS_DATA_DONE';
 export const PROCESSING_DATA = 'PROCESSING_DATA';
+export const FETCH_REPORT_DATA = 'FETCH_REPORT_DATA';
 
 export const fetchDrive = async (dispatch: Dispatch<any>, folderId: string) => {
   try {
@@ -51,7 +53,7 @@ export const fetchSheets = async (
   branches: BranchItemState[]
 ) => {
   try {
-    dispatch({ type: LOADING_DRIVE });
+    dispatch({ type: LOADING_BRANCH });
 
     Promise.all(
       branches.map(async (branch) => {
@@ -90,6 +92,25 @@ export const processData = async (
       `/api/spreadsheet/sheet/processSheet?branchId=${branchId}&spreadsheetId=${spreadsheetId}&sheetId=${sheetId}`
     );
     dispatch({ type: PROCESS_DATA_DONE, payload: res.data });
+  } catch (err) {
+    dispatch({
+      type: OPEN_ALERT,
+      payload: { message: 'Unknown error occurs.', severity: 'error' },
+    });
+  }
+};
+
+export const fetchReportData = async (
+  dispatch: Dispatch<any>,
+  spreadSheetId: string,
+  sheetId: number
+) => {
+  dispatch({ type: LOADING_DRIVE });
+  try {
+    const res = await axios.get(
+      `/api/spreadsheet/getData?spreadSheetId=${spreadSheetId}&sheetId=${sheetId}`
+    );
+    dispatch({ type: FETCH_REPORT_DATA, payload: res.data });
   } catch (err) {
     dispatch({
       type: OPEN_ALERT,
