@@ -6,6 +6,7 @@ import useBranch from './useBranch';
 import useDrive from './useDrive';
 import useAuthUser from './useAuthUser';
 import useRefresh from './useRefresh';
+import useReport from './useReport';
 
 export {
   useAppContext,
@@ -16,4 +17,5 @@ export {
   useDrive,
   useAuthUser,
   useRefresh,
+  useReport,
 };

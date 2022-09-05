@@ -28,6 +28,9 @@ import {
   FETCH_SHEETS,
   PROCESSING_DATA,
   PROCESS_DATA_DONE,
+  FETCH_SHEET_CONTENT_PENDING,
+  FETCH_SHEET_CONTENT_SUCCESS,
+  CLEAR_REPORT,
 } from 'reducers/actions/driveAction';
 import { OPEN_ALERT, CLOSE_ALERT } from 'reducers/actions/globalAction';
 import { AppReducerType, AppState } from 'types/state';
@@ -283,6 +286,35 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
       return {
         ...state,
         branch: { ...state.branch, branches: [...state.branch.branches] },
+      };
+    }
+
+    //---------------- Report ----------------
+    case FETCH_SHEET_CONTENT_PENDING: {
+      return {
+        ...state,
+        report: { ...state.report, loading: true },
+      };
+    }
+    case FETCH_SHEET_CONTENT_SUCCESS: {
+      const { sheet, items, errors } = action.payload;
+      return {
+        ...state,
+        report: {
+          ...state.report,
+          loading: false,
+          sheet: sheet,
+          items: items,
+          errors: errors,
+        },
+      };
+    }
+    case CLEAR_REPORT: {
+      return {
+        ...state,
+        report: {
+          loading: false,
+        },
       };
     }
 

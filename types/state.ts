@@ -9,6 +9,7 @@ export type AppState = {
   bank: BankState;
   branch: BranchState;
   drive: DriveState;
+  report: ReportState;
 };
 
 type BankState = {
@@ -121,4 +122,22 @@ type DriveState = {
   hasToken: boolean;
   files: DriveItem[];
   user?: DriveUser;
+};
+
+type ReportState = {
+  loading: boolean;
+  sheet?: {
+    sheetId: number;
+    title: string;
+    index: number;
+    sheetType: string;
+    gridProperties: {
+      rowCount: number;
+      columnCount: number;
+      frozenRowCount: number;
+      frozenColumnCount: number;
+    };
+  };
+  items?: ReportItem[];
+  errors?: string[];
 };

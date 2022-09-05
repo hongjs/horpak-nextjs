@@ -37,6 +37,18 @@ const MainNavigation: React.FC = () => {
     return [
       { id: 'home', name: 'Home', icon: 'home', url: '/', divider: true },
       {
+        id: 'summaryReport',
+        name: 'Summary Report',
+        icon: 'table-list',
+        url: '/report/summaryReport',
+      },
+      {
+        id: 'invoiceReport',
+        name: 'Invoice Report',
+        icon: 'receipt',
+        url: '/report/summaryReport',
+      },
+      {
         id: 'process',
         name: 'Process',
         icon: 'home',

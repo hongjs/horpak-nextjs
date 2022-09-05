@@ -5,10 +5,7 @@ import { getAccessToken } from 'lib/mongoUtil';
 import { setCredentials, getSheetDataForReport } from 'lib/spreadsheetUtil';
 import validateReport from 'lib/validator';
 import keys from 'config/keys';
-import { sheets_v4 } from 'googleapis';
 import { ReportItem } from 'types/state';
-
-type Query = { spreadSheetId: string; sheetId: number };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
@@ -28,14 +25,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const data = await getSheetDataForReport(spreadSheetId, sheetId);
     if (data && data.values && mapping) {
       const tranformed = transformData(data.values, mapping.value);
-      data.values = tranformed as any[];
 
       const errors = validateReport(tranformed);
+
       if (errors && errors.length > 0) {
-        res.send({ ...data, errors });
+        res.send({ sheet: data.sheet, items: tranformed, errors });
       } else {
-        res.send(data);
+        res.send({ sheet: data.sheet, items: tranformed });
       }
+    } else {
+      res.status(500).send('');
     }
   }
 };
@@ -55,78 +54,6 @@ const transformData: TransformDataFunc = (data, mapping) => {
   return newData;
 };
 
-// const validateData = async (data: any[]) => {
-//   const errors: ErrorType[] = [];
-
-//   Promise.all(
-//     data.map(async (i) => {
-//       const schema = new reportSchema(i);
-//       try {
-//         await schema.validate();
-//         if (schema.errors) {
-//           for (var key in schema.errors) {
-//             if (schema.errors.hasOwnProperty(key)) {
-//               errors.push({
-//                 room: i.room,
-//                 column: schema.errors[key].path,
-//                 message: schema.errors[key].message,
-//               });
-//             }
-//           }
-//         }
-//       } catch (err) {
-//         if (err.errors) {
-//           for (var key in err.errors) {
-//             if (err.errors.hasOwnProperty(key)) {
-//               errors.push({
-//                 room: i.room,
-//                 column: err.errors[key].path,
-//                 message: err.errors[key].message,
-//               });
-//             }
-//           }
-//         }
-//       }
-//     })
-//   );
-//   // await asyncForEach(data, async (i) => {
-//   //   const schema = new reportSchema(i);
-//   //   try {
-//   //     await schema.validate();
-//   //     if (schema.errors) {
-//   //       for (var key in schema.errors) {
-//   //         if (schema.errors.hasOwnProperty(key)) {
-//   //           errors.push({
-//   //             room: i.room,
-//   //             column: schema.errors[key].path,
-//   //             message: schema.errors[key].message,
-//   //           });
-//   //         }
-//   //       }
-//   //     }
-//   //   } catch (err) {
-//   //     if (err.errors) {
-//   //       for (var key in err.errors) {
-//   //         if (err.errors.hasOwnProperty(key)) {
-//   //           errors.push({
-//   //             room: i.room,
-//   //             column: err.errors[key].path,
-//   //             message: err.errors[key].message,
-//   //           });
-//   //         }
-//   //       }
-//   //     }
-//   //   }
-//   // });
-//   return errors.length > 0 ? errors : undefined;
-// };
-
-type ErrorType = {
-  room: number;
-  column: string;
-  message: string;
-};
-
 type TransformDataFunc = (data: any[][], mapping: any) => ReportItem[];
 
-export default handler;
+export default withActiveAuth(handler);

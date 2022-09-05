@@ -29,6 +29,9 @@ const initialState: AppState = {
     loading: false,
     files: [],
   },
+  report: {
+    loading: false,
+  },
 };
 
 export default initialState;
