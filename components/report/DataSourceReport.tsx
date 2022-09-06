@@ -86,8 +86,8 @@ const DataSourceReport = (props: any, ref: any) => {
     <div ref={ref}>
       <style>
         {'@media all {.page-break {display: none;}} @media print { @page { size: A4 landscape; margin-bottom: 5mm; } #content{padding:5mm;} #printDate {display:inline;} } ' +
-          '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; border: 1mm solid #555;} #printDate {display:none;} } '}
-        {'#tb { width:100%; border: 1px solid #A3A3A3; border-collapse:collapse; border-spacing:0px; background-color:#fff; font-size:10pt;} ' +
+          '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow:scroll;} #printDate {display:none;} } '}
+        {'#tb { width:100%; min-width:900px; border: 1px solid #A3A3A3; border-collapse:collapse; border-spacing:0px; background-color:#fff; font-size:10pt;} ' +
           '#tb thead { border: 1px solid #A3A3A3 }  #tb th:first-child {border-right: 1px solid #A3A3A3;} #tb th:last-child {}  #tb th {border-right: 1px solid #A3A3A3; border-bottom: 1px solid #A3A3A3;}' +
           '#tb thead {text-align: center;}  #tb tbody {text-align: right;} #tb .text {text-align:left;} .additionalText {text-align:left; padding-left: 1cm;} #tb td { padding-right: 5px; border-top: 1px solid #A3A3A3;} ' +
           '#tb .last {border-left: 1px solid #A3A3A3;}  #tb .summary {border-weight: bold;} #tb .header {border-top:1px solid #fff; border-left:1px solid #fff; border-right:1px solid #fff !important; text-align:left; padding-left:10mm; } '}

@@ -6,6 +6,7 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  Hidden,
   InputLabel,
   LinearProgress,
   List,
@@ -89,7 +90,7 @@ const SummaryReport: React.FC<Props> = (props) => {
     return (
       <Box className={styles.filter}>
         <Grid container>
-          <Grid item xs={6} md={4} lg={4} className={styles.filterBox}>
+          <Grid item xs={6} md={6} lg={3} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl}>
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
@@ -113,7 +114,7 @@ const SummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} md={3} lg={4} className={styles.filterBox}>
+          <Grid item xs={6} md={6} lg={3} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl}>
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
@@ -137,7 +138,7 @@ const SummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={3} sm={2} md={2} lg={1} className={styles.filterBox}>
+          <Grid item xs={6} md={6} lg={2} className={styles.filterBox}>
             <FormControlLabel
               className={styles.formControl}
               control={
@@ -152,30 +153,57 @@ const SummaryReport: React.FC<Props> = (props) => {
               label="Summary"
             />
           </Grid>
-          <Grid item xs={4} md={2} lg={2} className={styles.filterBox}>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="medium"
-              fullWidth
-              className={styles.printButton}
-              startIcon={<PrintIcon />}
-              disabled={!sheetId || (errors && errors?.length > 0)}
-              onClick={handlePrintClick}
-            >
-              Print
-            </Button>
-          </Grid>
-          <Grid item xs={2} md={1} lg={1} className={styles.filterBox}>
-            <Tooltip title="Refresh">
+          <Hidden smDown>
+            <Grid item xs={6} sm={3} md={3} lg={2} className={styles.filterBox}>
               <Button
-                className={styles.refreshButton}
+                variant="outlined"
+                color="primary"
+                size="medium"
+                fullWidth
+                className={styles.button}
+                startIcon={<PrintIcon />}
+                disabled={!sheetId || (errors && errors?.length > 0)}
+                onClick={handlePrintClick}
+              >
+                Print
+              </Button>
+            </Grid>
+          </Hidden>
+          <Grid item xs={6} sm={3} md={3} lg={2} className={styles.filterBox}>
+            <Hidden smUp>
+              <Tooltip title="Print">
+                <Button
+                  className={styles.iconButton}
+                  disabled={!sheetId || (errors && errors?.length > 0)}
+                  onClick={handlePrintClick}
+                >
+                  <PrintIcon />
+                </Button>
+              </Tooltip>
+              <Tooltip title="Refresh">
+                <Button
+                  className={styles.iconButton}
+                  disabled={sheetId === undefined}
+                  onClick={handleRefreshClick}
+                >
+                  <RefreshIcon />
+                </Button>
+              </Tooltip>
+            </Hidden>
+            <Hidden smDown>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="medium"
+                fullWidth
+                className={styles.button}
+                startIcon={<RefreshIcon />}
                 disabled={sheetId === undefined}
                 onClick={handleRefreshClick}
               >
-                <RefreshIcon />
+                Refresh
               </Button>
-            </Tooltip>
+            </Hidden>
           </Grid>
         </Grid>
       </Box>
@@ -241,6 +269,9 @@ const SummaryReport: React.FC<Props> = (props) => {
 
   return (
     <div className={styles.root}>
+      <Typography gutterBottom variant="h5">
+        Summary Report
+      </Typography>
       <Paper className={styles.paper}>
         <Grid
           container
