@@ -6,6 +6,7 @@ import { LOADING_BRANCH } from './branchAction';
 export const OPEN_ALERT = 'OPEN_ALERT';
 export const CHECK_TOKEN = 'CHECK_TOKEN';
 export const LOADING_DRIVE = 'LOADING_DRIVE';
+export const LOADING_DRIVE_DONE = 'LOADING_DRIVE_DONE';
 export const FETCH_DRIVE = 'FETCH_DRIVE';
 export const GET_DRIVE_USER = 'GET_DRIVE_USER';
 export const FETCH_SHEETS = 'FETCH_SHEETS';
@@ -55,9 +56,9 @@ export const fetchSheets = async (
   branches: BranchItemState[]
 ) => {
   try {
-    dispatch({ type: LOADING_BRANCH });
+    dispatch({ type: LOADING_DRIVE });
 
-    Promise.all(
+    await Promise.all(
       branches.map(async (branch) => {
         const res = await axios.get(
           `/api/spreadsheet/sheet/list?id=${branch.spreadSheetId}`
@@ -73,6 +74,7 @@ export const fetchSheets = async (
         });
       })
     );
+    dispatch({ type: LOADING_DRIVE_DONE });
   } catch (err) {
     dispatch({
       type: OPEN_ALERT,

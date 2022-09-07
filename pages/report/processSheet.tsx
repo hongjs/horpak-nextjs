@@ -27,7 +27,7 @@ import { BranchItemState, DriveSheetItem } from 'types/state';
 
 const ProcessSheet: React.FC = () => {
   const { fetchBranch, branches, loading, sheetSelect } = useBranch();
-  const { fetchSheets, processData } = useDrive();
+  const { fetchSheets, processData, loading: driveLoading } = useDrive();
 
   useEffect(() => {
     fetchBranch();
@@ -141,7 +141,7 @@ const ProcessSheet: React.FC = () => {
         Process Sheet
       </Typography>
       <Paper className={styles.paper}>
-        {loading && <LinearProgress />}
+        {(loading || driveLoading) && <LinearProgress />}
 
         {branches.map((branch) => {
           return (

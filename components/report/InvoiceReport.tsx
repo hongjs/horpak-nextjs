@@ -229,38 +229,53 @@ const InvoiceReport = (props: any, ref: any) => {
   );
 
   return (
-    <div ref={ref}>
-      <style>
-        {
-          '@media print { @page { size: A4 portrait; } #content{padding:0mm;} footer {page-break-after: always;} } '
-        }
-        {
-          '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow:scroll;} footer {margin-bottom: 5mm;} } '
-        }
-        {'#tb {width:100%; background-color:#fff; font-size:10pt;} #tb .space {width: 20mm;} #tb .amount {text-align:right;} #tb .summary {font-weight:bold; } #tb .summary td {padding-bottom:2mm;} #tb .remark p {font-size:9pt;} ' +
-          '#tb .header td {font-size:15pt; font-weight:bold; padding: 2mm; border-top:1px solid #555; border-bottom:1px solid #555; } ' +
-          '#tb .title td {font-size:12pt; font-weight:bold;} #tb .divider td {height:1px; border-bottom:1px solid #555;}  ' +
-          '#tb .title2 td {font-size:12pt; padding-bottom:3mm;} .section { width: 210mm; height: 148mm; padding:10mm; background-color: #fff; } .section-first { border-bottom: 1px dashed #A3A3A3; }' +
-          '#tb .contact td {font-size:8pt;} #tb .border-bottom td {border-bottom:2px solid #555;} '}
-      </style>
-      {rows && rows.length > 0 && (
-        <div id="content">
-          {rows.map((row, index) => {
-            return (
-              <div key={index}>
-                <div
-                  className={`section ${
-                    index % 2 === 0 ? 'section-first' : ''
-                  }`}
-                >
-                  {renderRow(row)}
-                </div>
-                {index % 2 === 1 && <footer />}
-              </div>
-            );
-          })}
+    <div style={{ position: 'relative' }}>
+      {items && items.length > 0 && (
+        <div
+          style={{
+            textAlign: 'right',
+            padding: '1px',
+            position: 'absolute',
+            right: '0px',
+          }}
+        >
+          Total {rows.length}/{items?.length}
         </div>
       )}
+
+      <div ref={ref}>
+        <style>
+          {
+            '@media print { @page { size: A4 portrait; } #content{padding:0mm;} footer {page-break-after: always;} } '
+          }
+          {
+            '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow:scroll;} footer {margin-bottom: 5mm;} } '
+          }
+          {'#tb {width:100%; background-color:#fff; font-size:10pt;} #tb .space {width: 20mm;} #tb .amount {text-align:right;} #tb .summary {font-weight:bold; } #tb .summary td {padding-bottom:2mm;} #tb .remark p {font-size:9pt;} ' +
+            '#tb .header td {font-size:15pt; font-weight:bold; padding: 2mm; border-top:1px solid #555; border-bottom:1px solid #555; } ' +
+            '#tb .title td {font-size:12pt; font-weight:bold;} #tb .divider td {height:1px; border-bottom:1px solid #555;}  ' +
+            '#tb .title2 td {font-size:12pt; padding-bottom:3mm;} .section { width: 210mm; height: 148mm; padding:10mm; background-color: #fff; } .section-first { border-bottom: 1px dashed #A3A3A3; }' +
+            '#tb .contact td {font-size:8pt;} #tb .border-bottom td {border-bottom:2px solid #555;} '}
+        </style>
+        {rows && rows.length > 0 && (
+          <div id="content">
+            {rows.map((row, index) => {
+              return (
+                <div key={index}>
+                  <div
+                    className={`section ${
+                      index % 2 === 0 ? 'section-first' : ''
+                    }`}
+                  >
+                    {renderRow(row)}
+                  </div>
+                  {index % 2 === 1 && <footer />}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

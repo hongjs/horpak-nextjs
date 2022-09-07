@@ -31,7 +31,7 @@ import styles from './viewSummaryReport.module.css';
 
 const ViewSummaryReport: React.FC<Props> = (props) => {
   const { branches, fetchBranch, loading } = useBranch();
-  const { fetchSheets } = useDrive();
+  const { fetchSheets, loading: driveLoading } = useDrive();
   const { items, errors, fetchReport, clearReport, ...report } = useReport();
 
   const [branch, setBranch] = useState<BranchItemState | undefined>(undefined);
@@ -289,20 +289,20 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
         >
           <Grid item xs={12}>
             {renderFilter()}
-            {(loading || report.loading) && (
+            {(loading || report.loading || driveLoading) && (
               <Box component="p">
                 <LinearProgress />
               </Box>
             )}
           </Grid>
 
-          {(!errors || errors.length === 0) && (
+          {errors && errors.length > 0 && (
             <Grid item xs={12}>
               {renderError()}
             </Grid>
           )}
 
-          {errors && errors.length > 0 && (
+          {(!errors || errors.length === 0) && (
             <Grid item xs={12}>
               {renderReportData()}
             </Grid>

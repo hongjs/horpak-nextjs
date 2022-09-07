@@ -48,9 +48,9 @@ import { BranchItemState } from 'types/state';
 type Props = {};
 
 const ViewInvoiceReport: React.FC<Props> = ({}) => {
-  const { banks, fetchBank } = useBank();
+  const { banks, fetchBank, loading: bankLoading } = useBank();
   const { branches, fetchBranch, loading } = useBranch();
-  const { fetchSheets } = useDrive();
+  const { fetchSheets, loading: driveLoading } = useDrive();
   const { items, errors, fetchReport, clearReport, ...report } = useReport();
   const [hasName, setHasName] = useState(true);
   const [branch, setBranch] = useState<BranchItemState | undefined>(undefined);
@@ -411,12 +411,18 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
         >
           <Grid item xs={12}>
             {renderFilter()}
-            {(loading || report.loading) && (
+            {(loading || report.loading || driveLoading || bankLoading) && (
               <Box component="p">
                 <LinearProgress />
               </Box>
             )}
           </Grid>
+
+          {errors && errors.length > 0 && (
+            <Grid item xs={12}>
+              {renderError()}
+            </Grid>
+          )}
 
           {(!errors || errors.length === 0) && (
             <Grid item xs={12}>
@@ -430,12 +436,6 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                 invoiceMonth={invoiceMonth}
                 dueDate={dueDate}
               />
-            </Grid>
-          )}
-
-          {errors && errors.length > 0 && (
-            <Grid item xs={12}>
-              {renderError()}
             </Grid>
           )}
         </Grid>

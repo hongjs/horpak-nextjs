@@ -23,6 +23,7 @@ import {
 import {
   CHECK_TOKEN,
   LOADING_DRIVE,
+  LOADING_DRIVE_DONE,
   FETCH_DRIVE,
   GET_DRIVE_USER,
   FETCH_SHEETS,
@@ -214,6 +215,15 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
         drive: {
           ...state.drive,
           loading: true,
+        },
+      };
+    }
+    case LOADING_DRIVE_DONE: {
+      return {
+        ...state,
+        drive: {
+          ...state.drive,
+          loading: false,
         },
       };
     }

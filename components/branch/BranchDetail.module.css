@@ -17,7 +17,6 @@
 @media (min-width: 900px) {
   .button {
     width: 200px;
-    margin-right: 8px;
   }
 }
 
@@ -25,6 +24,5 @@
 @media (max-width: 899px) {
   .button {
     width: 130px;
-    margin-right: 8px;
   }
 }

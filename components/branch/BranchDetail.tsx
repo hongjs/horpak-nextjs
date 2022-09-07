@@ -201,7 +201,11 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               &quot;|&quot; (pipe) for new line
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={6}
+            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
             <Button
               variant="outlined"
               color="primary"
@@ -211,6 +215,12 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
             >
               Save
             </Button>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sx={{ display: 'flex', justifyContent: 'flex-start' }}
+          >
             <Button
               variant="outlined"
               className={styles.button}

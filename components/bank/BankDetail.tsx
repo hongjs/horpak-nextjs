@@ -125,7 +125,11 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               onChange={(e) => handleTextChange('remark', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid
+            item
+            xs={6}
+            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
             <Button
               variant="outlined"
               color="primary"
@@ -135,6 +139,12 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
             >
               Save
             </Button>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sx={{ display: 'flex', justifyContent: 'flex-start' }}
+          >
             <Button
               variant="outlined"
               className={styles.button}

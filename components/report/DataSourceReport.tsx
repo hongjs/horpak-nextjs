@@ -82,6 +82,10 @@ const DataSourceReport = (props: any, ref: any) => {
     return displaySummary === true ? getSummaryRow(items) : undefined;
   }, [displaySummary, items, getSummaryRow]);
 
+  const hasInternetCost = useMemo(() => {
+    return sumBy(items, 'internet_cost') > 0;
+  }, [items]);
+
   return (
     <div ref={ref}>
       <style>
@@ -89,7 +93,7 @@ const DataSourceReport = (props: any, ref: any) => {
           '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow:scroll;} #printDate {display:none;} } '}
         {'#tb { width:100%; min-width:900px; border: 1px solid #A3A3A3; border-collapse:collapse; border-spacing:0px; background-color:#fff; font-size:10pt;} ' +
           '#tb thead { border: 1px solid #A3A3A3 }  #tb th:first-child {border-right: 1px solid #A3A3A3;} #tb th:last-child {}  #tb th {border-right: 1px solid #A3A3A3; border-bottom: 1px solid #A3A3A3;}' +
-          '#tb thead {text-align: center;}  #tb tbody {text-align: right;} #tb .text {text-align:left;} .additionalText {text-align:left; padding-left: 1cm;} #tb td { padding-right: 5px; border-top: 1px solid #A3A3A3;} ' +
+          '#tb thead {text-align: center;}  #tb tbody {text-align: right;} #tb .text {text-align:left;} .additionalText {text-align:left;} #tb td { padding-right: 5px; border-top: 1px solid #A3A3A3;} ' +
           '#tb .last {border-left: 1px solid #A3A3A3;}  #tb .summary {border-weight: bold;} #tb .header {border-top:1px solid #fff; border-left:1px solid #fff; border-right:1px solid #fff !important; text-align:left; padding-left:10mm; } '}
       </style>
       {items && items.length > 0 && (
@@ -97,7 +101,7 @@ const DataSourceReport = (props: any, ref: any) => {
           <table id="tb">
             <thead>
               <tr>
-                <th className="header" colSpan={17}>
+                <th className="header" colSpan={hasInternetCost ? 17 : 16}>
                   {renderHeaderText()}
                 </th>
               </tr>
@@ -109,7 +113,7 @@ const DataSourceReport = (props: any, ref: any) => {
                 <th colSpan={4}>น้ำ</th>
                 <th rowSpan={2}>ห้อง</th>
                 <th rowSpan={2}>กลาง</th>
-                <th rowSpan={2}>เน็ต</th>
+                {hasInternetCost && <th rowSpan={2}>เน็ต</th>}
                 <th rowSpan={2}>ปรับ</th>
                 <th rowSpan={2}>ค้าง</th>
                 <th rowSpan={2}>ลงชื่อ</th>
@@ -144,14 +148,20 @@ const DataSourceReport = (props: any, ref: any) => {
                       <td>{displayInteger(item.electric_cost, '-')}</td>
                       <td>{displayInteger(item.room_cost, '-')}</td>
                       <td>{displayInteger(item.share_cost, '-')}</td>
-                      <td>{displayInteger(item.internet_cost, '-')}</td>
+                      {hasInternetCost && (
+                        <td>{displayInteger(item.internet_cost, '-')}</td>
+                      )}
                       <td>{displayInteger(item.penalty_cost, '-')}</td>
                       <td>{displayInteger(item.arrear, '-')}</td>
                       <td className="last"></td>
                     </tr>
                     {additionalText && (
                       <tr>
-                        <td className="additionalText" colSpan={16}>
+                        <td colSpan={1}></td>
+                        <td
+                          className="additionalText"
+                          colSpan={hasInternetCost ? 15 : 14}
+                        >
                           {additionalText}
                         </td>
                         <td className="last"></td>
@@ -172,7 +182,9 @@ const DataSourceReport = (props: any, ref: any) => {
                   <td>{displayInteger(summaryRow.electric_cost, '-')}</td>
                   <td>{displayInteger(summaryRow.room_cost, '-')}</td>
                   <td>{displayInteger(summaryRow.share_cost, '-')}</td>
-                  <td>{displayInteger(summaryRow.internet_cost, '-')}</td>
+                  {hasInternetCost && (
+                    <td>{displayInteger(summaryRow.internet_cost, '-')}</td>
+                  )}
                   <td>{displayInteger(summaryRow.penalty_cost, '-')}</td>
                   <td>{displayInteger(summaryRow.arrear, '-')}</td>
                   <td className="last"></td>
