@@ -18,7 +18,7 @@ const MyApp: React.FC<AppProps> = ({
   return (
     <SessionProvider session={pageProps.session}>
       <Head>
-        <title>Hong.JS</title>
+        <title>C Place App</title>
       </Head>
       {!publicAccess && (
         <Providers>

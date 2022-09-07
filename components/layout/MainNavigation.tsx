@@ -40,13 +40,13 @@ const MainNavigation: React.FC = () => {
         id: 'summaryReport',
         name: 'Summary Report',
         icon: 'table-list',
-        url: '/report/summaryReport',
+        url: '/report/viewSummaryReport',
       },
       {
         id: 'invoiceReport',
         name: 'Invoice Report',
         icon: 'receipt',
-        url: '/report/summaryReport',
+        url: '/report/viewInvoiceReport',
       },
       {
         id: 'process',
@@ -125,7 +125,7 @@ const MainNavigation: React.FC = () => {
         >
           <div className={styles.toolbar}>
             <Typography color="primary" variant="h6">
-              My App
+              C Place App
             </Typography>
             <Box className={styles.header}>
               <IconButton onClick={handleCloseDrawer}>
@@ -181,7 +181,7 @@ const MainNavigation: React.FC = () => {
           </IconButton>
           <Hidden mdDown>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              My App
+              C Place App
             </Typography>
           </Hidden>
           <Hidden mdUp>

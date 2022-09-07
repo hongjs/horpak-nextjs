@@ -1,0 +1,53 @@
+.root {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.filter {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.filterBox {
+  padding: 8px;
+  display: flex;
+}
+
+.formControl {
+  padding: 1px;
+}
+
+.button {
+  height: 45px;
+}
+
+.iconButton {
+  margin: 4px;
+  min-width: 50px;
+  vertical-align: bottom;
+  text-align: center;
+}
+
+.selectEmpty {
+  margin-top: 8px;
+}
+
+.paper {
+  width: 100%;
+  padding: 8px 8px 32px 8px;
+  text-align: left;
+}
+
+.paperError {
+  margin: 16px;
+  padding: 16px;
+}
+
+.printArea {
+  margin-top: 16px;
+  overflow: hidden;
+}

@@ -27,9 +27,9 @@ import DataSourceReport from 'components/report/DataSourceReport';
 import { Props } from 'types';
 import { useBranch, useDrive, useReport } from 'hooks';
 import { BranchItemState } from 'types/state';
-import styles from './summaryReport.module.css';
+import styles from './viewSummaryReport.module.css';
 
-const SummaryReport: React.FC<Props> = (props) => {
+const ViewSummaryReport: React.FC<Props> = (props) => {
   const { branches, fetchBranch, loading } = useBranch();
   const { fetchSheets } = useDrive();
   const { items, errors, fetchReport, clearReport, ...report } = useReport();
@@ -169,7 +169,15 @@ const SummaryReport: React.FC<Props> = (props) => {
               </Button>
             </Grid>
           </Hidden>
-          <Grid item xs={6} sm={3} md={3} lg={2} className={styles.filterBox}>
+          <Grid
+            item
+            xs={6}
+            sm={3}
+            md={3}
+            lg={2}
+            className={styles.filterBox}
+            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
             <Hidden smUp>
               <Tooltip title="Print">
                 <Button
@@ -288,16 +296,21 @@ const SummaryReport: React.FC<Props> = (props) => {
             )}
           </Grid>
 
-          <Grid item xs={12}>
-            {renderError()}
-          </Grid>
-          <Grid item xs={12}>
-            {renderReportData()}
-          </Grid>
+          {(!errors || errors.length === 0) && (
+            <Grid item xs={12}>
+              {renderError()}
+            </Grid>
+          )}
+
+          {errors && errors.length > 0 && (
+            <Grid item xs={12}>
+              {renderReportData()}
+            </Grid>
+          )}
         </Grid>
       </Paper>
     </div>
   );
 };
 
-export default SummaryReport;
+export default ViewSummaryReport;

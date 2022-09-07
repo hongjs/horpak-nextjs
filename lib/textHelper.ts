@@ -32,3 +32,39 @@ export const displayUnit = (
     return number.toString().padStart(padding, '0');
   else return '-';
 };
+
+export const toFullMonthYear = (date: Date) => {
+  var monthNamesThai = [
+    'มกราคม',
+    'กุมภาพันธ์',
+    'มีนาคม',
+    'เมษายน',
+    'พฤษภาคม',
+    'มิถุนายน',
+    'กรกฎาคม',
+    'สิงหาคม',
+    'กันยายน',
+    'ตุลาคม',
+    'พฤษจิกายน',
+    'ธันวาคม',
+  ];
+  return `${monthNamesThai[date.getMonth()]} ${date.getFullYear() + 543}`;
+};
+
+export const toShortMonthYear = (date: Date) => {
+  var monthNamesThai = [
+    'ม.ค.',
+    'ก.พ.',
+    'มี.ค.',
+    'ม.ย.',
+    'พ.ค.',
+    'มิ.ย.',
+    'ก.ค.',
+    'ส.ค.',
+    'ก.ย.',
+    'ต.ค.',
+    'พ.ย.',
+    'ธ.ค.',
+  ];
+  return `${date.getDate()} ${monthNamesThai[date.getMonth()]}`;
+};
