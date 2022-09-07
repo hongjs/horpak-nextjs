@@ -236,7 +236,7 @@ const InvoiceReport = (props: any, ref: any) => {
             textAlign: 'right',
             padding: '1px',
             position: 'absolute',
-            right: '0px',
+            left: '0px',
           }}
         >
           Total {rows.length}/{items?.length}
