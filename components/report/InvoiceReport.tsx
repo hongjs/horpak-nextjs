@@ -249,7 +249,7 @@ const InvoiceReport = (props: any, ref: any) => {
             '@media print { @page { size: A4 portrait; } #content{padding:0mm;} footer {page-break-after: always;} } '
           }
           {
-            '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow:scroll;} footer {margin-bottom: 5mm;} } '
+            '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow-x:scroll;} footer {margin-bottom: 5mm;} } '
           }
           {'#tb {width:100%; background-color:#fff; font-size:10pt;} #tb .space {width: 20mm;} #tb .amount {text-align:right;} #tb .summary {font-weight:bold; } #tb .summary td {padding-bottom:2mm;} #tb .remark p {font-size:9pt;} ' +
             '#tb .header td {font-size:15pt; font-weight:bold; padding: 2mm; border-top:1px solid #555; border-bottom:1px solid #555; } ' +

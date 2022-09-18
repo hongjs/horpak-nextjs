@@ -90,7 +90,7 @@ const DataSourceReport = (props: any, ref: any) => {
     <div ref={ref}>
       <style>
         {'@media all {.page-break {display: none;}} @media print { @page { size: A4 landscape; margin-bottom: 5mm; } #content{padding:5mm;} #printDate {display:inline;} } ' +
-          '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow:scroll;} #printDate {display:none;} } '}
+          '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow-x:scroll;} #printDate {display:none;} } '}
         {'#tb { width:100%; min-width:900px; border: 1px solid #A3A3A3; border-collapse:collapse; border-spacing:0px; background-color:#fff; font-size:10pt;} ' +
           '#tb thead { border: 1px solid #A3A3A3 }  #tb th:first-child {border-right: 1px solid #A3A3A3;} #tb th:last-child {}  #tb th {border-right: 1px solid #A3A3A3; border-bottom: 1px solid #A3A3A3;}' +
           '#tb thead {text-align: center;}  #tb tbody {text-align: right;} #tb .text {text-align:left;} .additionalText {text-align:left;} #tb td { padding-right: 5px; border-top: 1px solid #A3A3A3;} ' +
@@ -109,8 +109,8 @@ const DataSourceReport = (props: any, ref: any) => {
                 <th rowSpan={2}>ห้อง</th>
                 <th rowSpan={2}>ชื่อ</th>
                 <th rowSpan={2}>รวม</th>
-                <th colSpan={4}>ไฟ</th>
                 <th colSpan={4}>น้ำ</th>
+                <th colSpan={4}>ไฟ</th>
                 <th rowSpan={2}>ห้อง</th>
                 <th rowSpan={2}>กลาง</th>
                 {hasInternetCost && <th rowSpan={2}>เน็ต</th>}
