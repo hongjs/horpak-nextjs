@@ -112,6 +112,28 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
     }
   }, [branch, branch?.sheets, handleChange]);
 
+  const itemsToDisplay = useMemo(() => {
+    if (rooms === undefined || rooms.length === 0) {
+      return items
+        ? hasName === true
+          ? items.filter((item) => {
+              return item.name !== '';
+            })
+          : items
+        : [];
+    } else {
+      return items
+        ? hasName === true
+          ? items.filter((item) => {
+              return item.name !== '' && rooms.includes(item.room);
+            })
+          : items.filter((item) => {
+              return rooms.includes(item.room);
+            })
+        : [];
+    }
+  }, [items, rooms, hasName]);
+
   const handleDateChange = useCallback((date: Date | null, name: string) => {
     if (!date) return;
     if (name === 'dueDate') {
@@ -399,9 +421,17 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
 
   return (
     <div className={styles.root}>
-      <Typography gutterBottom variant="h5">
-        Invoice Report
-      </Typography>
+      <Box className={styles.title}>
+        <Typography gutterBottom variant="h5">
+          Invoice Report
+        </Typography>
+        {itemsToDisplay && items && (
+          <Typography gutterBottom variant="body2">
+            {`Total ${itemsToDisplay.length}/${items.length}`}
+          </Typography>
+        )}
+      </Box>
+
       <Paper className={styles.paper}>
         <Grid
           container
@@ -429,10 +459,8 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               <InvoiceReport
                 ref={componentRef as unknown as any}
                 banks={banks}
-                items={items}
+                items={itemsToDisplay}
                 branch={branch || {}}
-                rooms={rooms}
-                hasName={hasName}
                 invoiceMonth={invoiceMonth}
                 dueDate={dueDate}
               />

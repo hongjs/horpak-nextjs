@@ -14,35 +14,12 @@ type Props = {
   banks: BankItemState[];
   invoiceMonth: Date;
   dueDate: Date;
-  rooms?: number[]; // filter rooms
-  hasName: boolean;
+  // rooms?: number[]; // filter rooms
+  // hasName: boolean;
 };
 
 const InvoiceReport = (props: any, ref: any) => {
-  const { items, branch, banks, invoiceMonth, dueDate, rooms, hasName }: Props =
-    props;
-
-  const rows = useMemo(() => {
-    if (rooms === undefined || rooms.length === 0) {
-      return items
-        ? hasName === true
-          ? items.filter((item) => {
-              return item.name !== '';
-            })
-          : items
-        : [];
-    } else {
-      return items
-        ? hasName === true
-          ? items.filter((item) => {
-              return item.name !== '' && rooms.includes(item.room);
-            })
-          : items.filter((item) => {
-              return rooms.includes(item.room);
-            })
-        : [];
-    }
-  }, [items, rooms, hasName]);
+  const { items, branch, banks, invoiceMonth, dueDate }: Props = props;
 
   const generateRemark = useCallback(
     (bank_id: number) => {
@@ -230,19 +207,6 @@ const InvoiceReport = (props: any, ref: any) => {
 
   return (
     <div style={{ position: 'relative' }}>
-      {items && items.length > 0 && (
-        <div
-          style={{
-            textAlign: 'right',
-            padding: '1px',
-            position: 'absolute',
-            left: '0px',
-          }}
-        >
-          Total {rows.length}/{items?.length}
-        </div>
-      )}
-
       <div ref={ref}>
         <style>
           {
@@ -257,9 +221,9 @@ const InvoiceReport = (props: any, ref: any) => {
             '#tb .title2 td {font-size:12pt; padding-bottom:3mm;} .section { width: 210mm; height: 148mm; padding:10mm; background-color: #fff; } .section-first { border-bottom: 1px dashed #A3A3A3; }' +
             '#tb .contact td {font-size:8pt;} #tb .border-bottom td {border-bottom:2px solid #555;} '}
         </style>
-        {rows && rows.length > 0 && (
+        {items && items.length > 0 && (
           <div id="content">
-            {rows.map((row, index) => {
+            {items.map((row, index) => {
               return (
                 <div key={index}>
                   <div

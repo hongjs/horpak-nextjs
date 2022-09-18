@@ -6,6 +6,13 @@
   width: 100%;
 }
 
+.title {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .filter {
   display: flex;
   justify-content: flex-start;
