@@ -25,7 +25,12 @@ const keys: ConfigType = Object.freeze({
     : undefined,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || '',
   BASE_URL: process.env.BASE_URL || '',
-  PUBLIC_PATHS: ['/auth/signin', '/unauthorized'],
+  PUBLIC_PATHS: [
+    '/auth/signin',
+    '/unauthorized',
+    '/privacyPolicy',
+    '/termOfService',
+  ],
 });
 
 export default keys;

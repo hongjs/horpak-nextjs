@@ -51,7 +51,7 @@ const MainNavigation: React.FC = () => {
       {
         id: 'process',
         name: 'Process',
-        icon: 'home',
+        icon: 'gear',
         url: '/report/processSheet',
         divider: true,
       },
