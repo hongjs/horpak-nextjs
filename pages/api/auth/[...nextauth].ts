@@ -18,7 +18,10 @@ export const authOptions: NextAuthOptions = {
     messagingSenderId: keys.FIREBASE_MESSEAGING_ID,
     appId: keys.FIREBASE_APP_ID,
   }),
-  session: { strategy: 'jwt' },
+  session: {
+    strategy: 'jwt',
+    maxAge: 7 * 24 * 60 * 60, // 7 days
+  },
   secret: keys.NEXTAUTH_SECRET,
 };
 
