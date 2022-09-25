@@ -83,7 +83,7 @@ const UserList: React.FC<Props> = ({ isAdmin, noAdmin, email }) => {
       },
       {
         field: 'admin',
-        headerName: 'admin',
+        headerName: 'Admin',
         width: 70,
         renderCell: (params: any) => {
           return (

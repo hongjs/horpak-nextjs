@@ -20,7 +20,6 @@ const useAuthUser = () => {
 
   useEffect(() => {
     if (isUpdated) {
-      console.log('Changed!!');
       if (status === 'authenticated' && data.user && data.user.email) {
         fetchAuthUser(dispatch, data.user.email);
       } else {
