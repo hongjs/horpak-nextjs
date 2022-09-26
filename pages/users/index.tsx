@@ -107,7 +107,7 @@ const UserList: React.FC<Props> = ({ isAdmin, noAdmin, email }) => {
             <Button
               // if there is no admin, allow any user to set active
               // First active user will be set ad Admin
-              disabled={(!noAdmin && !isAdmin) || email === params.row.email}
+              disabled={!noAdmin && (!isAdmin || email === params.row.email)}
               onClick={() => {
                 handleToggleClick(params.row);
               }}
