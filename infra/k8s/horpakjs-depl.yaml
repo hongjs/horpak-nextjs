@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: horpakjs-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: horpakjs
+  template:
+    metadata:
+      labels:
+        app: horpakjs
+    spec:
+      containers:
+        - name: horpakjs
+          image: hongjsx/horpakjs
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: mnt
+              mountPath: /homes/app/.env.production
+              subPath: .env
+              readOnly: true
+      volumes:
+        - name: mnt
+          configMap:
+            name: horpakjs-env
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: horpakjs-service
+spec:
+  type: ClusterIP
+  selector:
+    app: horpakjs
+  ports:
+    - name: horpakjs
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
