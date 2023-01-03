@@ -21,6 +21,10 @@ spec:
               mountPath: /homes/app/.env.production
               subPath: .env
               readOnly: true
+            # - name: mnt
+            #   mountPath: /homes/app/.env.local
+            #   subPath: .dev
+            #   readOnly: true
       volumes:
         - name: mnt
           configMap:
@@ -31,11 +35,11 @@ kind: Service
 metadata:
   name: horpakjs-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: horpakjs
   ports:
-    - name: horpakjs
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
+    - protocol: TCP
+      port: 30001
+      targetPort: 30001
+      nodePort: 30001

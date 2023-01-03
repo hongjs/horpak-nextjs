@@ -10,8 +10,6 @@ import {
 import keys from 'config/keys';
 import { saveDriveToken } from './mongoUtil';
 
-console.log(keys.GOOGLE_REDIRECT_URI);
-
 const options: OAuth2ClientOptions = {
   clientId: keys.GOOGLE_ID,
   clientSecret: keys.GOOGLE_SECRET,

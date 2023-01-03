@@ -32,9 +32,6 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     return !!data?.user;
   }, [data]);
 
-  console.log('data?.user', data?.user);
-  console.log('currentUser', currentUser);
-
   useEffect(() => {
     if (status === 'loading' || loading) return; // Do nothing while loading
     if (!isUser) router.push('/auth/signin'); // If not authenticated, force log in

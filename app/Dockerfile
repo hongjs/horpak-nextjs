@@ -6,5 +6,6 @@ COPY yarn.lock .
 RUN yarn
 COPY . .
 RUN yarn build
+RUN rm -f ./.env*
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start", "-p", "30001"]
