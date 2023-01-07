@@ -8,4 +8,4 @@ COPY . .
 RUN yarn build
 RUN rm -f ./.env*
 
-CMD ["yarn", "start", "-p", "30001"]
+CMD ["yarn", "start"]
