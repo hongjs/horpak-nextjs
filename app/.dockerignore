@@ -1,7 +1,10 @@
-node_modules
-config/dev.ts
+.gitignore
+.dockerignore
 .next
 .scannerwork
-.env.local
+node_modules
+Dockerfile
+config/dev.ts
 gulpfile.ts
 serviceAccountKey.json
+README.md

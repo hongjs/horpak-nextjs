@@ -18,7 +18,7 @@ spec:
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: mnt
-              mountPath: /homes/app/.env.production
+              mountPath: /app/.env.production
               subPath: .env
               readOnly: true
           resources:

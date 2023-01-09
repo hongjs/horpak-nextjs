@@ -25,3 +25,4 @@ data:
     NEXTAUTH_SECRET=secret
     BASE_URL=https://app.hongjs.dev
 immutable: true
+    SECRET=secret
