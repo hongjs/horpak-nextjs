@@ -8,8 +8,7 @@ metadata:
     # nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-    - host: app.hongjs.me
-      http:
+    - http:
         paths:
           - path: /?(.*)
             pathType: Prefix

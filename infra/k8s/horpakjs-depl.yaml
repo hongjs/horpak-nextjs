@@ -36,6 +36,7 @@ kind: Service
 metadata:
   name: horpakjs-service
 spec:
+  type: ClusterIP
   selector:
     app: horpakjs
   ports:
