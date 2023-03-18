@@ -7,6 +7,5 @@ pipeline {
         echo 'Init 123'
       }
     }
-
   }
 }
