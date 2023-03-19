@@ -167,7 +167,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const noAdmin = await checkAdmin();
     return {
       props: {
-        noAdmin: noAdmin,
+        noAdmin,
         isAdmin: user?.admin ?? false,
         email: session?.user?.email,
       },
