@@ -86,7 +86,7 @@ export const listFile: FuncListFile = async (folder) => {
 type FuncGetFile = (fileId: string) => Promise<drive_v3.Schema$File>;
 export const getFile: FuncGetFile = async (fileId: string) => {
   const res = await drive.files.get({
-    fileId: fileId,
+    fileId,
     fields: 'id,name,mimeType,parents',
   });
   return res.data;
@@ -98,7 +98,7 @@ export const listSheets = async (spreadsheetId: string) => {
     return chain(res.data.sheets)
       .map((sheet) => {
         return {
-          spreadsheetId: spreadsheetId,
+          spreadsheetId,
           sheetId: sheet.properties?.sheetId,
           title: sheet.properties?.title,
           index: sheet.properties?.index,
@@ -193,12 +193,12 @@ const _duplicateSheet = async (
   sourceSheetTitle: string
 ) => {
   const request = {
-    spreadsheetId: spreadsheetId,
+    spreadsheetId,
     resource: {
       requests: [
         {
           duplicateSheet: {
-            sourceSheetId: sourceSheetId,
+            sourceSheetId,
             insertSheetIndex: 1,
             newSheetId: undefined,
             newSheetName: `Copy of ${sourceSheetTitle}`,
@@ -217,13 +217,13 @@ const _renameSheet = async (
   newSheetTitle: string
 ) => {
   const request = {
-    spreadsheetId: spreadsheetId,
+    spreadsheetId,
     resource: {
       requests: [
         {
           updateSheetProperties: {
             properties: {
-              sheetId: sheetId,
+              sheetId,
               title: newSheetTitle,
             },
             fields: 'title',
@@ -241,13 +241,13 @@ const _addProtectedRange = async (
   ownerEmail: string
 ) => {
   const request = {
-    spreadsheetId: spreadsheetId,
+    spreadsheetId,
     resource: {
       requests: [
         {
           addProtectedRange: {
             protectedRange: {
-              range: { sheetId: sheetId },
+              range: { sheetId },
               requestingUserCanEdit: true,
               editors: { users: [ownerEmail] },
             },
@@ -345,7 +345,7 @@ const _updateSheetData = async (
   let { title } = sheetInfo.properties;
   let { rowCount } = sheetInfo.properties.gridProperties;
   const request = {
-    spreadsheetId: spreadsheetId,
+    spreadsheetId,
     range: `'${title}'!${column}2:${column}${rowCount}`,
     valueInputOption: 'USER_ENTERED',
     resource: {
@@ -365,7 +365,7 @@ const _getSheetData = async (
     throw '_getSheetData() Error';
 
   const request = {
-    spreadsheetId: spreadsheetId,
+    spreadsheetId,
     range: `'${sheetInfo.properties.title}'!A2:AD${sheetInfo.properties.gridProperties.rowCount}`,
     majorDimension: 'COLUMNS',
     valueRenderOption: 'UNFORMATTED_VALUE',
@@ -391,7 +391,7 @@ export const getSheetDataForReport = async (
       sheetInfo.properties.gridProperties
     ) {
       const request: sheets_v4.Params$Resource$Spreadsheets$Values$Get = {
-        spreadsheetId: spreadsheetId,
+        spreadsheetId,
         range: `'${sheetInfo.properties.title}'!A1:AD${sheetInfo.properties.gridProperties.rowCount}`,
         majorDimension: 'ROWS',
         valueRenderOption: 'UNFORMATTED_VALUE',

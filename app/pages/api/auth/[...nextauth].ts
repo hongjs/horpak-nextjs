@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { FirestoreAdapter } from '@next-auth/firebase-adapter';
+import { cert } from 'firebase-admin/app';
 import keys from 'config/keys';
 
 export const authOptions: NextAuthOptions = {
@@ -11,12 +12,11 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   adapter: FirestoreAdapter({
-    apiKey: keys.FIREBASE_API_KEY,
-    authDomain: keys.FIREBASE_AUTH_DOMAIN,
-    projectId: keys.FIREBASE_PROJECT_ID,
-    storageBucket: keys.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: keys.FIREBASE_MESSEAGING_ID,
-    appId: keys.FIREBASE_APP_ID,
+    credential: cert({
+      projectId: keys.FIREBASE_SERVICE_ACCOUNT_KEY.project_id,
+      clientEmail: keys.FIREBASE_SERVICE_ACCOUNT_KEY.client_email,
+      privateKey: keys.FIREBASE_SERVICE_ACCOUNT_KEY.private_key,
+    }),
   }),
   session: {
     strategy: 'jwt',

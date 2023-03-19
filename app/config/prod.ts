@@ -12,13 +12,13 @@ const keys: ConfigType = Object.freeze({
   GOOGLE_REDIRECT_URI:
     process.env.GOOGLE_REDIRECT_URI ||
     'http://localhost:3000/auth/spreadsheet/callback',
-  FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
-  FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
-  FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
-  FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL || '',
-  FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || '',
-  FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
-  FIREBASE_MESSEAGING_ID: process.env.FIREBASE_MESSEAGING_ID || '',
+  // FIREBASE_API_KEY: process.env.FIREBASE_API_KEY || '',
+  // FIREBASE_APP_ID: process.env.FIREBASE_APP_ID || '',
+  // FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN || '',
+  // FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL || '',
+  // FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || '',
+  // FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || '',
+  // FIREBASE_MESSEAGING_ID: process.env.FIREBASE_MESSEAGING_ID || '',
   FIREBASE_SERVICE_ACCOUNT_KEY: process.env.FIREBASE_SERVICE_ACCOUNT_KEY
     ? (JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY) as ServiceAccount)
     : undefined,
