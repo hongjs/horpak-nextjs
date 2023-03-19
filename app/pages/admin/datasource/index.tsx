@@ -40,8 +40,8 @@ const DataSource: React.FC = () => {
                   src={user?.picture}
                   alt={'user-pic'}
                   objectFit="cover"
-                  width="60px"
-                  height="60px"
+                  width={60}
+                  height={60}
                 />
               )}
             </div>
