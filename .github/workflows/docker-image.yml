@@ -1,0 +1,23 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "test" ]
+  pull_request:
+    branches: [ "test" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: |
+        export DOCKER_TAG=v1.$(env.BUILD_NUMBER)
+        echo ${{DOCKER_TAG}}
+        echo ${env.DOCKER_PWD} | docker login --username hongjsx --password-stdin
+        docker build . --file Dockerfile --tag hongjsx/horpakjs:${{DOCKER_TAG}}
+        docker push hongjsx/horpakjs:${{DOCKER_TAG}}
