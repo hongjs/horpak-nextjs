@@ -24,13 +24,6 @@ type ConfigType = {
   GOOGLE_ID: string;
   GOOGLE_SECRET: string;
   GOOGLE_REDIRECT_URI: string;
-  // FIREBASE_API_KEY: string;
-  // FIREBASE_APP_ID: string;
-  // FIREBASE_AUTH_DOMAIN: string;
-  // FIREBASE_DATABASE_URL: string;
-  // FIREBASE_PROJECT_ID: string;
-  // FIREBASE_STORAGE_BUCKET: string;
-  // FIREBASE_MESSEAGING_ID: string;
   FIREBASE_SERVICE_ACCOUNT_KEY: IServiceAccount;
 
   BASE_URL: string;

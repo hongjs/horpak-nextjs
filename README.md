@@ -143,12 +143,6 @@ You can following this tutorial for more clearify
 ...
 GOOGLE_ID= <-- paste from 4.8
 GOOGLE_SECRET= <-- paste from 4.8
-// FIREBASE_API_KEY= <-- paste from 3.5
-// FIREBASE_AUTH_DOMAIN= <-- paste from 3.5
-// FIREBASE_PROJECT_ID= <-- paste from 3.5
-// FIREBASE_STORAGE_BUCKET= <-- paste from 3.5
-// FIREBASE_MESSEAGING_ID= <-- paste from 3.5
-// FIREBASE_APP_ID= <-- paste from 3.5
 FIREBASE_SERVICE_ACCOUNT_KEY= <-- put content from 5.3 serviceAccountKey.json here when deploy production
 ...
 ```
