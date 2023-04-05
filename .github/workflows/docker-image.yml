@@ -22,7 +22,6 @@ jobs:
           echo DB_NAME=${{ secrets.DB_NAME }} >> app/.env.production
           echo MONGO_URI=${{ secrets.MONGO_URI }} >> app/.env.production
           echo FIREBASE_SERVICE_ACCOUNT_KEY=${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }} >> app/.env.production
-          cat app/.env.production
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
