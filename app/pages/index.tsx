@@ -21,7 +21,7 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
       </main>
       <footer className={styles.footer}>
         <p>
-          Powered by HongJS
+          Powered by HongJSX
           <br />
           sompote.r@gmail.com
         </p>
