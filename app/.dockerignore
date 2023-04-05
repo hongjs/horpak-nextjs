@@ -4,7 +4,5 @@
 .scannerwork
 node_modules
 Dockerfile
-config/dev.ts
 gulpfile.ts
-serviceAccountKey.json
 README.md
