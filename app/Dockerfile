@@ -1,12 +1,12 @@
 # 1. Build Base
-FROM node:18-alpine as BASE
+FROM --platform=linux/amd64 node:18-alpine as BASE
 
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile && yarn cache clean
 
 # 2. Build Image
-FROM node:18-alpine as BUILD
+FROM --platform=linux/amd64 node:18-alpine as BUILD
 WORKDIR /app
 COPY --from=BASE /app/node_modules ./node_modules
 COPY . .
@@ -26,7 +26,7 @@ RUN yarn add sharp@^0.31.3
 
 
 # 3. Build Production
-FROM node:18-alpine AS PRODUCTION
+FROM --platform=linux/amd64 node:18-alpine AS PRODUCTION
 WORKDIR /app
 
 COPY --from=BUILD /app/package.json /app/yarn.lock ./
