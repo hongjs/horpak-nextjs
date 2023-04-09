@@ -740,6 +740,11 @@
   dependencies:
     lodash "^4.17.21"
 
+"@marsidev/react-turnstile@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@marsidev/react-turnstile/-/react-turnstile-0.1.2.tgz#45a5c24814341b081169c8d76f08a2dba0524723"
+  integrity sha512-aL1/AdES53yxPJKodT20qwJ9Fs0ZcnYRS+Z7yA8iGGFAi4roOS9iB12Ss7GJrm896hXW/YnW1aAPxc079Sad7A==
+
 "@mui/base@5.0.0-alpha.96":
   version "5.0.0-alpha.96"
   resolved "https://registry.yarnpkg.com/@mui/base/-/base-5.0.0-alpha.96.tgz#2189dd1012d0969ace69c3479b0aec2dbe9bbdc1"
@@ -1044,6 +1049,10 @@
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
+
+"@types/@marsidev/react-turnstile":
+  version "0.0.1"
+  resolved "https://codeload.github.com/marsidev/react-turnstile/tar.gz/4e15131bd557c617c9f938292c5b8fc6e643b529"
 
 "@types/body-parser@*":
   version "1.19.2"

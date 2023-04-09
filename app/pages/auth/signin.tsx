@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import type { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { getProviders, getSession, signIn } from 'next-auth/react';
@@ -13,11 +13,26 @@ import {
   Typography,
 } from '@mui/material';
 import { Hidden } from '@mui/material';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { SignInProps } from 'types/auth';
-
+import constants from 'config/constants';
 import styles from './signin.module.css';
 
 const SignIn: React.FC<SignInProps> = ({ providers }) => {
+  const [valid, setValid] = useState(false);
+
+  const handleSignin = useCallback(() => {
+    signIn('google');
+  }, []);
+
+  const handleTurnstileSuccess = (token: string) => {
+    setValid(true);
+  };
+
+  const handleTurnstileFail = () => {
+    setValid(false);
+  };
+
   return (
     <>
       <main>
@@ -44,7 +59,6 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                       alt="cover"
                       width={600}
                       height={400}
-                      layout="responsive"
                     />
                   </Box>
                 </Box>
@@ -63,7 +77,8 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                       variant="outlined"
                       startIcon={<i className="fa-brands fa-google" />}
                       className={styles.button}
-                      onClick={() => signIn('google')}
+                      onClick={handleSignin}
+                      disabled={!valid}
                     >{`Signin with Google`}</Button>
                   </Grid>
                   <Grid item xs={12}>
@@ -76,6 +91,19 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                   </Grid>
                   <Grid item xs={12}>
                     <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Turnstile
+                      options={{
+                        theme: 'light',
+                        size: 'normal',
+                      }}
+                      siteKey={constants.TURNSTILE_PUBLIC_KEY}
+                      onError={handleTurnstileFail}
+                      onExpire={handleTurnstileFail}
+                      onSuccess={handleTurnstileSuccess}
+                      style={{ width: '100%' }}
+                    />
                   </Grid>
                 </Grid>
               </Box>

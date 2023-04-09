@@ -28,5 +28,9 @@ type ConfigType = {
 
   BASE_URL: string;
   NEXTAUTH_SECRET: string;
+};
+
+type ConstantType = {
   PUBLIC_PATHS: string[];
+  TURNSTILE_PUBLIC_KEY: string;
 };

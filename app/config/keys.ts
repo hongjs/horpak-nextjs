@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ConfigType } from 'types';
 
 const config = require(process.env.NODE_ENV === 'production'

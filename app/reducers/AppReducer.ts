@@ -88,7 +88,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
       };
     }
 
-    //---------------- BANK ----------------
+    // ---------------- BANK ----------------
     case LOADING_BANK: {
       return {
         ...state,
@@ -135,7 +135,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
         },
       };
 
-    //---------------- BRANCH ----------------
+    // ---------------- BRANCH ----------------
     case LOADING_BRANCH: {
       return {
         ...state,
@@ -199,7 +199,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
       };
     }
 
-    //---------------- DRIVE & Spreadsheet ----------------
+    // ---------------- DRIVE & Spreadsheet ----------------
     case CHECK_TOKEN: {
       return {
         ...state,
@@ -265,7 +265,9 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
       };
     }
     case PROCESSING_DATA: {
-      var branch = state.branch.branches.find((i) => i._id === action.payload);
+      const branch = state.branch.branches.find(
+        (i) => i._id === action.payload
+      );
       if (branch) {
         branch.processing = true;
       }
@@ -275,7 +277,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
       };
     }
     case PROCESS_DATA_DONE: {
-      var branch = state.branch.branches.find(
+      const branch = state.branch.branches.find(
         (i) => i._id === action.payload.branchId
       );
       if (branch) {
@@ -299,7 +301,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
       };
     }
 
-    //---------------- Report ----------------
+    // ---------------- Report ----------------
     case FETCH_SHEET_CONTENT_PENDING: {
       return {
         ...state,
@@ -313,9 +315,9 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
         report: {
           ...state.report,
           loading: false,
-          sheet: sheet,
-          items: items,
-          errors: errors,
+          sheet,
+          items,
+          errors,
         },
       };
     }
