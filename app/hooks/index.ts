@@ -8,6 +8,7 @@ import useAuthUser from './useAuthUser';
 import useRefresh from './useRefresh';
 import useReport from './useReport';
 import usePrevious from './usePrevious';
+import useTurnstile from './useTurnstile';
 
 export {
   useAppContext,
@@ -20,4 +21,5 @@ export {
   useRefresh,
   useReport,
   useUser,
+  useTurnstile,
 };

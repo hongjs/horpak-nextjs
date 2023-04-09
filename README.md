@@ -20,8 +20,12 @@ yarn
 NODE_ENV=development
 MONGO_URI=mongodb://localhost:27017/admin
 DB_NAME=your-db-name
+TOKEN_SECRET=YOUR_JWT_SECRET
+TOKEN_EXPIRES_IN=7d
+TURNSTILE_SECRET=YOUR_TURNSTILE_SECRET
 GOOGLE_ID=xxx.apps.googleusercontent.com
 GOOGLE_SECRET=xxx
+GOOGLE_REDIRECT_URI=http://localhost:3000/auth/spreadsheet/callback
 FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account", ...}
 NEXTAUTH_URL=http://localhost:3000/
 NEXTAUTH_SECRET=your-random-text
@@ -34,20 +38,21 @@ BASE_URL=http://localhost:3000
 import { ConfigType } from 'types';
 import { ServiceAccount } from 'types/auth';
 import serviceAccountKey from '../serviceAccountKey.json';
-
-const keys: ConfigType = Object.freeze({
+const keys = Object.freeze({
   NODE_ENV: 'development',
-  MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/admin',
-  DB_NAME: process.env.DB_NAME || 'your-db-name',
+  MONGO_URI: 'mongodb://localhost:27017/admin',
+  DB_NAME: 'dbName',
+  TOKEN_SECRET: process.env.JWT_SECRET || 'JWT_SECRET',
+  TOKEN_EXPIRES_IN: process.env.JWT_EXPIRE || '7d',
+  TURNSTILE_SECRET: process.env.TURNSTILE_SECRET || '',
   GOOGLE_ID: process.env.GOOGLE_ID || '',
   GOOGLE_SECRET: process.env.GOOGLE_SECRET || '',
-  GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/auth/spreadsheet/callback',
+  GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI || '',
   FIREBASE_SERVICE_ACCOUNT_KEY: serviceAccountKey as ServiceAccount,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || '',
-  BASE_URL: process.env.BASE_URL || 'http://localhost:3000',
-  PUBLIC_PATHS: ['/auth/signin', '/unauthorized', '/privacyPolicy', '/termOfService'],
+  BASE_URL: process.env.BASE_URL,
 });
-export default keys;
+export default keys as ConfigType;
 ```
 
 ### Firebase setup

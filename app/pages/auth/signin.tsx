@@ -16,21 +16,24 @@ import { Hidden } from '@mui/material';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { SignInProps } from 'types/auth';
 import constants from 'config/constants';
+import { useTurnstile } from 'hooks';
 import styles from './signin.module.css';
 
 const SignIn: React.FC<SignInProps> = ({ providers }) => {
-  const [valid, setValid] = useState(false);
+  const { valid, validateToken, failure } = useTurnstile();
 
   const handleSignin = useCallback(() => {
-    signIn('google');
-  }, []);
+    if (valid) {
+      signIn('google');
+    }
+  }, [valid]);
 
   const handleTurnstileSuccess = (token: string) => {
-    setValid(true);
+    validateToken(token);
   };
 
   const handleTurnstileFail = () => {
-    setValid(false);
+    failure();
   };
 
   return (
@@ -93,17 +96,19 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                     <Divider />
                   </Grid>
                   <Grid item xs={12}>
-                    <Turnstile
-                      options={{
-                        theme: 'light',
-                        size: 'normal',
-                      }}
-                      siteKey={constants.TURNSTILE_PUBLIC_KEY}
-                      onError={handleTurnstileFail}
-                      onExpire={handleTurnstileFail}
-                      onSuccess={handleTurnstileSuccess}
-                      style={{ width: '100%' }}
-                    />
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Turnstile
+                        options={{
+                          theme: 'light',
+                          size: 'normal',
+                        }}
+                        siteKey={constants.TURNSTILE_PUBLIC_KEY}
+                        onError={handleTurnstileFail}
+                        onExpire={handleTurnstileFail}
+                        onSuccess={handleTurnstileSuccess}
+                        style={{ width: '100%' }}
+                      />
+                    </Box>
                   </Grid>
                 </Grid>
               </Box>

@@ -7,6 +7,7 @@ const keys: ConfigType = Object.freeze({
   DB_NAME: process.env.DB_NAME || 'dbname',
   TOKEN_SECRET: process.env.JWT_SECRET || 'JWT_SECRET',
   TOKEN_EXPIRES_IN: process.env.JWT_EXPIRE || '7d',
+  TURNSTILE_SECRET: process.env.TURNSTILE_SECRET || '',
   GOOGLE_ID: process.env.GOOGLE_ID || '',
   GOOGLE_SECRET: process.env.GOOGLE_SECRET || '',
   GOOGLE_REDIRECT_URI:

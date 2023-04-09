@@ -20,6 +20,7 @@ type ConfigType = {
   DB_NAME: string;
   TOKEN_SECRET: string;
   TOKEN_EXPIRES_IN: string;
+  TURNSTILE_SECRET: string;
 
   GOOGLE_ID: string;
   GOOGLE_SECRET: string;
