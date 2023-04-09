@@ -6,15 +6,16 @@ data:
   .env: |-
     NODE_ENV=development
     MONGO_URI=mongodb://localhost:27017/admin
-    DB_NAME=cplace-cluster
+    DB_NAME=dbName
     TOKEN_SECRET=xxx
     TOKEN_EXPIRES_IN=7d
+    TURNSTILE_SECRET=xxx
     GOOGLE_ID=googleId-xxxx.apps.googleusercontent.com
     GOOGLE_SECRET=secret
-    GOOGLE_REDIRECT_URI=https://app.hongjs.dev/auth/spreadsheet/callback
+    GOOGLE_REDIRECT_URI=http://localhost:3000/auth/spreadsheet/callback
     FIREBASE_SERVICE_ACCOUNT_KEY={"type":"service_account","project_id":"horpak-auth","private_key_id":"xxx","private_key":"-----BEGIN PRIVATE KEY-----\nXXXX\n-----END PRIVATE KEY-----\n","client_email":"firebase-adminsdk-lnh6f@horpak-auth.iam.gserviceaccount.com","client_id":"xxx","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_x509_cert_url":"https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-lnh6f%40horpak-auth.iam.gserviceaccount.com"}
-    NEXTAUTH_URL=https://app.hongjs.dev/
+    NEXTAUTH_URL=http://localhost:3000/
     NEXTAUTH_SECRET=secret
-    BASE_URL=https://app.hongjs.dev
+    BASE_URL=http://localhost:3000
+    SECRET=secret
 immutable: true
-  SECRET=secret

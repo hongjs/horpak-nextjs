@@ -6,6 +6,10 @@ const endpoint = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
+    if (!keys.TURNSTILE_SECRET) {
+      return res.json({ success: true });
+    }
+
     try {
       const body = `secret=${encodeURIComponent(
         keys.TURNSTILE_SECRET
