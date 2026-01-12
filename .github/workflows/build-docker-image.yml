@@ -2,9 +2,7 @@ name: Build & Push Docker Image
 
 on:
   push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 jobs:
   build:
@@ -14,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: 'Create env file'
+      - name: "Create env file"
         run: |
           touch app/.env.production
           echo NODE_ENV=production >> app/.env.production
@@ -42,11 +40,11 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/horpakjs:v1.${{ github.run_number }}
 
-      - name: 'Delete env file'
+      - name: "Delete env file"
         run: |
           rm app/.env.production
 
-      - name: 'Trigger manifest repo'
+      - name: "Trigger manifest repo"
         run: |
           curl -L \
               -X POST \
