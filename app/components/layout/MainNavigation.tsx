@@ -8,7 +8,7 @@ import {
   ClickAwayListener,
   Divider,
   Drawer,
-  Hidden,
+
   IconButton,
   List,
   ListItem,
@@ -96,7 +96,7 @@ const MainNavigation: React.FC = () => {
       <>
         <Image src={user.image || ''} alt={'user-pic'} width={30} height={30} />
         <Typography style={{ padding: '15px' }}>{user.name}</Typography>
-        <Hidden mdDown>
+        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <Tooltip title="Sign out">
             <IconButton
               color="inherit"
@@ -108,7 +108,7 @@ const MainNavigation: React.FC = () => {
               <LogoutIcon />
             </IconButton>
           </Tooltip>
-        </Hidden>
+        </Box>
       </>
     );
   }, []);
@@ -179,16 +179,16 @@ const MainNavigation: React.FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Hidden mdDown>
+          <Box sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               C Place App
             </Typography>
-          </Hidden>
-          <Hidden mdUp>
+          </Box>
+          <Box sx={{ display: { xs: 'block', md: 'none' }, flexGrow: 1 }}>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               &nbsp;
             </Typography>
-          </Hidden>
+          </Box>
 
           {data && data.user && renderUser(data.user)}
         </Toolbar>

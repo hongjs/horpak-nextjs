@@ -70,7 +70,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
     <Box className={styles.root}>
       <Paper className={styles.paper}>
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="bank-id"
               label="Bank ID"
@@ -82,7 +82,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               }}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="bank-name"
               label="Bank Bame"
@@ -93,7 +93,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               onChange={(e) => handleTextChange('bankName', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="account-no"
               label="Account No"
@@ -103,7 +103,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               onChange={(e) => handleTextChange('accountNo', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="account-name"
               label="Account Name"
@@ -113,7 +113,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
               onChange={(e) => handleTextChange('accountName', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="remark"
               label="Remark"
@@ -126,8 +126,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
             />
           </Grid>
           <Grid
-            item
-            xs={6}
+            size={{ xs: 6 }}
             sx={{ display: 'flex', justifyContent: 'flex-end' }}
           >
             <Button
@@ -141,8 +140,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
             </Button>
           </Grid>
           <Grid
-            item
-            xs={6}
+            size={{ xs: 6 }}
             sx={{ display: 'flex', justifyContent: 'flex-start' }}
           >
             <Button

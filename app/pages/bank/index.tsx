@@ -121,10 +121,10 @@ const BankList: React.FC = () => {
         <DataGrid
           rows={banks || []}
           columns={columns}
-          pageSize={10}
-          checkboxSelection={false}
-          hideFooterSelectedRowCount={true}
-          rowsPerPageOptions={[10, 20, 50]}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 10 } },
+          }}
+          pageSizeOptions={[10, 20, 50]}
           getRowId={(row: any) => row._id}
         />
       </Box>

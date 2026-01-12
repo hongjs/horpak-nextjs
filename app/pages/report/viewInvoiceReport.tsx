@@ -13,7 +13,6 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
-  Hidden,
   OutlinedInput,
   InputLabel,
   LinearProgress,
@@ -26,6 +25,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  ListItemButton, // Added ListItemButton
 } from '@mui/material';
 import {
   DesktopDatePicker,
@@ -59,11 +59,10 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
   const [invoiceMonth, setInvoiceMonth] = useState(new Date());
   const [dueDate, setDueDate] = useState(new Date());
 
-  const componentRef = useRef();
+  const componentRef = useRef<any>(undefined);
 
   const handlePrintClick = useReactToPrint({
-    content: () =>
-      componentRef && componentRef.current ? componentRef.current : null,
+    contentRef: componentRef,
   });
 
   useEffect(() => {
@@ -153,7 +152,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
     return (
       <Box className={styles.filter}>
         <Grid container>
-          <Grid item xs={6} md={6} lg={3} xl={2} className={styles.filterBox}>
+          <Grid size={{ xs: 6, md: 6, lg: 3, xl: 2 }} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl}>
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
@@ -177,7 +176,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} md={6} lg={3} xl={2} className={styles.filterBox}>
+          <Grid size={{ xs: 6, md: 6, lg: 3, xl: 2 }} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl}>
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
@@ -201,57 +200,57 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} md={6} lg={3} xl={2} className={styles.filterBox}>
+          <Grid size={{ xs: 6, md: 6, lg: 3, xl: 2 }} className={styles.filterBox}>
             <LocalizationProvider dateAdapter={AdapterDateFns as any}>
-              <Hidden mdDown>
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                 <DesktopDatePicker
                   label="Invoice date"
-                  inputFormat="yyyy-MM"
+                  format="yyyy-MM"
                   openTo="month"
                   views={['year', 'month']}
                   value={invoiceMonth}
                   onChange={(date) => handleDateChange(date, 'invoiceMonth')}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  slotProps={{ textField: { fullWidth: true } }}
                 />
-              </Hidden>
-              <Hidden mdUp>
+              </Box>
+              <Box sx={{ display: { xs: 'block', md: 'none' } }}>
                 <MobileDatePicker
                   label="Invoice date"
-                  inputFormat="yyyy-MM"
+                  format="yyyy-MM"
                   openTo="month"
                   views={['year', 'month']}
                   value={invoiceMonth}
                   onChange={(date) => handleDateChange(date, 'invoiceMonth')}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  slotProps={{ textField: { fullWidth: true } }}
                   closeOnSelect
                 />
-              </Hidden>
+              </Box>
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={6} md={6} lg={3} xl={2} className={styles.filterBox}>
+          <Grid size={{ xs: 6, md: 6, lg: 3, xl: 2 }} className={styles.filterBox}>
             <LocalizationProvider dateAdapter={AdapterDateFns as any}>
-              <Hidden mdDown>
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                 <DesktopDatePicker
                   label="Due date"
-                  inputFormat="yyyy-MM-dd"
+                  format="yyyy-MM-dd"
                   value={dueDate}
                   onChange={(date) => handleDateChange(date, 'dueDate')}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  slotProps={{ textField: { fullWidth: true } }}
                 />
-              </Hidden>
-              <Hidden mdUp>
+              </Box>
+              <Box sx={{ display: { xs: 'block', md: 'none' } }}>
                 <MobileDatePicker
                   label="Due date"
-                  inputFormat="yyyy-MM-dd"
+                  format="yyyy-MM-dd"
                   value={dueDate}
                   onChange={(date) => handleDateChange(date, 'dueDate')}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  slotProps={{ textField: { fullWidth: true } }}
                   closeOnSelect
                 />
-              </Hidden>
+              </Box>
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={6} xl={4} className={styles.filterBox}>
+          <Grid size={{ xs: 6, xl: 4 }} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl}>
               <InputLabel id="room-select-label">Rooms</InputLabel>
               <Select
@@ -292,8 +291,8 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid xs={0} xl={6}></Grid>
-          <Grid item xs={6} sm={3} md={2} lg={2} className={styles.filterBox}>
+          <Grid size={{ xs: 0, xl: 6 }} sx={{ display: { xs: 'none', xl: 'block' } }}></Grid>
+          <Grid size={{ xs: 6, sm: 3, md: 2, lg: 2 }} className={styles.filterBox}>
             <FormControlLabel
               className={styles.formControl}
               control={
@@ -308,8 +307,8 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               label="has Name only"
             />
           </Grid>
-          <Hidden mdDown>
-            <Grid item xs={6} sm={3} md={2} lg={2} className={styles.filterBox}>
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Grid size={{ xs: 6, sm: 3, md: 2, lg: 2 }} className={styles.filterBox}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -323,13 +322,10 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                 Print
               </Button>
             </Grid>
-          </Hidden>
-          <Hidden mdUp>
+          </Box>
+          <Box sx={{ display: { xs: 'block', md: 'none' } }}>
             <Grid
-              item
-              xs={12}
-              sm={3}
-              md={0}
+              size={{ xs: 12, sm: 3, md: 0 }}
               className={styles.filterBox}
               sx={{ display: 'flex', justifyContent: 'flex-end' }}
             >
@@ -352,9 +348,9 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                 </Button>
               </Tooltip>
             </Grid>
-          </Hidden>
-          <Hidden mdDown>
-            <Grid item xs={0} md={2} className={styles.filterBox}>
+          </Box>
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Grid size={{ xs: 0, md: 2 }} sx={{ display: { xs: 'none', md: 'block' } }} className={styles.filterBox}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -368,7 +364,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                 Refresh
               </Button>
             </Grid>
-          </Hidden>
+          </Box>
         </Grid>
       </Box>
     );
@@ -408,8 +404,10 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
           <List component="nav">
             {errors.map((error) => {
               return (
-                <ListItem button key={error}>
-                  <ListItemText primary={error} />
+                <ListItem key={error} disablePadding>
+                  <ListItemButton>
+                    <ListItemText primary={error} />
+                  </ListItemButton>
                 </ListItem>
               );
             })}
@@ -439,7 +437,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
           justifyContent="flex-start"
           alignItems="flex-end"
         >
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             {renderFilter()}
             {(loading || report.loading || driveLoading || bankLoading) && (
               <Box component="p">
@@ -449,13 +447,13 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
           </Grid>
 
           {errors && errors.length > 0 && (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               {renderError()}
             </Grid>
           )}
 
           {(!errors || errors.length === 0) && (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <InvoiceReport
                 ref={componentRef as unknown as any}
                 banks={banks}

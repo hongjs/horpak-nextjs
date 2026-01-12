@@ -136,10 +136,10 @@ const UserList: React.FC<Props> = ({ isAdmin, noAdmin, email }) => {
         <DataGrid
           rows={users || []}
           columns={columns}
-          pageSize={5}
-          checkboxSelection={false}
-          hideFooterSelectedRowCount={true}
-          rowsPerPageOptions={[5, 10, 20]}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 5 } },
+          }}
+          pageSizeOptions={[5, 10, 20]}
         />
       </div>
       <ConfirmDialog

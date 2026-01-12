@@ -108,7 +108,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
     <Box className={styles.root}>
       <Paper className={styles.paper}>
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="branch-name"
               label="Name"
@@ -117,7 +117,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               onChange={(e) => handleTextChange('name', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sx={{ textAlign: 'left', marginLeft: '8px' }}>
+          <Grid size={{ xs: 12 }} sx={{ textAlign: 'left', marginLeft: '8px' }}>
             <i className="fa-brands fa-google" /> Speadsheet :{' '}
             <a
               href={`https://docs.google.com/spreadsheets/d/${
@@ -150,10 +150,10 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               </Button>
             )}
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Divider />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="report-header"
               label="Report Header"
@@ -162,7 +162,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               onChange={(e) => handleTextChange('reportHeader', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="report-address"
               label="Report Address"
@@ -173,7 +173,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               }
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="report-contact"
               label="Report Contact"
@@ -184,7 +184,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               }
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <TextField
               id="report-remark"
               label="Report Remark"
@@ -195,15 +195,14 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
               onChange={(e) => handleTextChange('reportRemark', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Typography>
               Remark Params: [@BANK], [@ACCOUNT_NAME], [@ACCOUNT_NO], use
               &quot;|&quot; (pipe) for new line
             </Typography>
           </Grid>
           <Grid
-            item
-            xs={6}
+            size={{ xs: 6 }}
             sx={{ display: 'flex', justifyContent: 'flex-end' }}
           >
             <Button
@@ -217,8 +216,7 @@ const BranchDetail: React.FC<BranchDetailProps> = ({ id }) => {
             </Button>
           </Grid>
           <Grid
-            item
-            xs={6}
+            size={{ xs: 6 }}
             sx={{ display: 'flex', justifyContent: 'flex-start' }}
           >
             <Button

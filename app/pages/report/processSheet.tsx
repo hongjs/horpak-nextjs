@@ -4,7 +4,6 @@ import {
   Box,
   CircularProgress,
   Grid,
-  Hidden,
   IconButton,
   Paper,
   LinearProgress,
@@ -121,10 +120,11 @@ const ProcessSheet: React.FC = () => {
     if (item.error) {
       return (
         <>
-          <Hidden mdDown>
-            <Grid item xs={1}></Grid>
-          </Hidden>
-          <Grid item xs={12} md={11} className={styles.error}>
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Grid size={{ xs: 1 }}>
+            </Grid>
+          </Box>
+          <Grid size={{ xs: 12, md: 11 }} className={styles.error}>
             <Typography variant="body1" gutterBottom>
               {item.error}
             </Typography>
@@ -153,14 +153,14 @@ const ProcessSheet: React.FC = () => {
                 alignItems="center"
                 className={styles.list}
               >
-                <Hidden mdDown>
-                  <Grid item xs={1}>
+                <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+                  <Grid size={{ xs: 1 }}>
                     <Avatar>
                       <PlaceIcon />
                     </Avatar>
                   </Grid>
-                </Hidden>
-                <Grid item xs={11} md={6}>
+                </Box>
+                <Grid size={{ xs: 11, md: 6 }}>
                   <Box sx={{ textAlign: 'left' }}>
                     <Typography
                       gutterBottom
@@ -204,14 +204,12 @@ const ProcessSheet: React.FC = () => {
                   </Box>
                 </Grid>
                 <Grid
-                  item
-                  xs={6}
-                  md={3}
+                  size={{ xs: 6, md: 3 }}
                   sx={{ textAlign: 'left', paddingLeft: '32px' }}
                 >
                   {renderSheetSelect(branch)}
                 </Grid>
-                <Grid item xs={6} md={2}>
+                <Grid size={{ xs: 6, md: 2 }}>
                   {renderIcon(branch)}
                 </Grid>
                 {renderError(branch)}
