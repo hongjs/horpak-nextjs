@@ -7,12 +7,13 @@ import {
   Box,
   Button,
   Container,
+  CssBaseline,
   Divider,
-  Grid,
+  Paper,
   Toolbar,
   Typography,
+  Grid,
 } from '@mui/material';
-import { Hidden } from '@mui/material';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { SignInProps } from 'types/auth';
 import constants from 'config/constants';
@@ -53,29 +54,30 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
         </AppBar>
         <Container maxWidth="lg" className={styles.container}>
           <Grid container>
-            <Hidden mdDown>
-              <Grid item xs={12} md={7} lg={8}>
+            <Box sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }}>
+              <Grid size={{ xs: 12, md: 7, lg: 8 }}>
                 <Box className={styles.itemLeft}>
                   <Box component="div" className={styles.itemImage}>
                     <Image
-                      src={'/images/cover.jpg'}
-                      alt="cover"
-                      width={600}
-                      height={400}
+                      src="/images/logo.png"
+                      alt="logo"
+                      width={350}
+                      height={350}
+                      priority
                     />
                   </Box>
                 </Box>
               </Grid>
-            </Hidden>
-            <Grid item xs={12} md={5} lg={4}>
+            </Box>
+            <Grid size={{ xs: 12, md: 5, lg: 4 }}>
               <Box className={styles.itemRight}>
                 <Grid container direction="column" rowSpacing={3}>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Typography variant="h4" gutterBottom>
                       Sign in
                     </Typography>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Button
                       variant="outlined"
                       startIcon={<i className="fa-brands fa-google" />}
@@ -84,7 +86,7 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                       disabled={!valid}
                     >{`Signin with Google`}</Button>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Button
                       disabled
                       variant="outlined"
@@ -92,10 +94,10 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                       className={styles.button}
                     >{`Signin with Facebook`}</Button>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Divider />
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid size={{ xs: 12 }}>
                     <Box sx={{ textAlign: 'center' }}>
                       <Turnstile
                         options={{

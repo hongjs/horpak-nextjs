@@ -1,3 +1,4 @@
+
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Box,
@@ -6,11 +7,11 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
-  Hidden,
   InputLabel,
   LinearProgress,
   List,
   ListItem,
+  ListItemButton, // Added ListItemButton
   ListItemText,
   MenuItem,
   Paper,
@@ -38,11 +39,10 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
   const [sheetId, setSheetId] = useState<number | undefined>(undefined);
   const [displaySummary, setDisplaySummary] = useState(false);
 
-  const componentRef = useRef();
+  const componentRef = useRef<any>(undefined);
 
   const handlePrintClick = useReactToPrint({
-    content: () =>
-      componentRef && componentRef.current ? componentRef.current : null,
+    contentRef: componentRef,
   });
 
   useEffect(() => {
@@ -90,7 +90,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
     return (
       <Box className={styles.filter}>
         <Grid container>
-          <Grid item xs={6} md={6} lg={3} className={styles.filterBox}>
+          <Grid size={{ xs: 6, md: 6, lg: 3 }} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl}>
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
@@ -114,7 +114,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} md={6} lg={3} className={styles.filterBox}>
+          <Grid size={{ xs: 6, md: 6, lg: 3 }} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl}>
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
@@ -138,7 +138,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} md={6} lg={2} className={styles.filterBox}>
+          <Grid size={{ xs: 6, md: 6, lg: 2 }} className={styles.filterBox}>
             <FormControlLabel
               className={styles.formControl}
               control={
@@ -153,32 +153,26 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               label="Summary"
             />
           </Grid>
-          <Hidden smDown>
-            <Grid item xs={6} sm={3} md={3} lg={2} className={styles.filterBox}>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="medium"
-                fullWidth
-                className={styles.button}
-                startIcon={<PrintIcon />}
-                disabled={!sheetId || (errors && errors?.length > 0)}
-                onClick={handlePrintClick}
-              >
-                Print
-              </Button>
-            </Grid>
-          </Hidden>
+          <Grid size={{ xs: 6, sm: 3, md: 3, lg: 2 }} className={styles.filterBox} sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="medium"
+              fullWidth
+              className={styles.button}
+              startIcon={<PrintIcon />}
+              disabled={!sheetId || (errors && errors?.length > 0)}
+              onClick={handlePrintClick}
+            >
+              Print
+            </Button>
+          </Grid>
           <Grid
-            item
-            xs={6}
-            sm={3}
-            md={3}
-            lg={2}
+            size={{ xs: 6, sm: 3, md: 3, lg: 2 }}
             className={styles.filterBox}
             sx={{ display: 'flex', justifyContent: 'flex-end' }}
           >
-            <Hidden smUp>
+            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
               <Tooltip title="Print">
                 <Button
                   className={styles.iconButton}
@@ -197,8 +191,8 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                   <RefreshIcon />
                 </Button>
               </Tooltip>
-            </Hidden>
-            <Hidden smDown>
+            </Box>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -211,7 +205,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               >
                 Refresh
               </Button>
-            </Hidden>
+            </Box>
           </Grid>
         </Grid>
       </Box>
@@ -262,10 +256,12 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
             </a>
           </Typography>
           <List component="nav">
-            {errors.map((error) => {
+            {errors.map((err) => {
               return (
-                <ListItem button key={error}>
-                  <ListItemText primary={error} />
+                <ListItem key={err} disablePadding>
+                  <ListItemButton>
+                    <ListItemText primary={`- ${err}`} />
+                  </ListItemButton>
                 </ListItem>
               );
             })}
@@ -287,7 +283,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           justifyContent="flex-start"
           alignItems="flex-end"
         >
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             {renderFilter()}
             {(loading || report.loading || driveLoading) && (
               <Box component="p">
@@ -297,13 +293,13 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           </Grid>
 
           {errors && errors.length > 0 && (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               {renderError()}
             </Grid>
           )}
 
           {(!errors || errors.length === 0) && (
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               {renderReportData()}
             </Grid>
           )}

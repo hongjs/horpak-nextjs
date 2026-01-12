@@ -29,15 +29,15 @@ class ErrorBoundary extends Component<Props, State> {
           container
           style={{ height: '80vh', alignItems: 'center', textAlign: 'center' }}
         >
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <MoodBadIcon />
             <Typography variant="h4" gutterBottom>
               Oops! Something went wrong.
             </Typography>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Typography>{JSON.stringify(this.state)}</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               <Typography variant="h6">
                 For more information please contact sompote.r@gmail.com
               </Typography>

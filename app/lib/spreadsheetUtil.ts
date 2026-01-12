@@ -1,4 +1,4 @@
-import { chain, orderBy } from 'lodash';
+import { orderBy } from 'lodash';
 import axois from 'axios';
 import { google, drive_v3, sheets_v4, Auth } from 'googleapis';
 import { addMonths, format, parseISO } from 'date-fns';
@@ -95,17 +95,15 @@ export const getFile: FuncGetFile = async (fileId: string) => {
 export const listSheets = async (spreadsheetId: string) => {
   const res = await sheets.spreadsheets.get({ spreadsheetId });
   if (res.data && res.data.sheets) {
-    return chain(res.data.sheets)
-      .map((sheet) => {
-        return {
-          spreadsheetId,
-          sheetId: sheet.properties?.sheetId,
-          title: sheet.properties?.title,
-          index: sheet.properties?.index,
-        };
-      })
-      .sortBy((i) => i.index)
-      .value();
+    const sheets = res.data.sheets.map((sheet) => {
+      return {
+        spreadsheetId,
+        sheetId: sheet.properties?.sheetId,
+        title: sheet.properties?.title,
+        index: sheet.properties?.index,
+      };
+    });
+    return orderBy(sheets, 'index');
   } else {
     return [];
   }

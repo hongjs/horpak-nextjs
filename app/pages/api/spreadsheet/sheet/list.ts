@@ -11,6 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const sheets = await listSheets(id as string);
       res.send(sheets);
     } catch (err) {
+      console.error(`Error: ${err}`);
       res.status(500).send(err);
     }
   }

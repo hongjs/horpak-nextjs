@@ -91,12 +91,12 @@ const DataSource: React.FC = () => {
       <Paper className={styles.paper} elevation={0}>
         {loading && <LinearProgress />}
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             <Typography variant="h5">
               Set Authorize for Google Spreadsheet access
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={{ xs: 12 }}>
             {!loading && renderContent()}
           </Grid>
         </Grid>

@@ -16,7 +16,7 @@ const Unauthorized: React.FC<Props> = ({ user }) => {
         <Box className={styles.container}>
           <Box className={styles.main}>
             <Grid container>
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h3" gutterBottom>
                     Unauthorized
@@ -24,7 +24,7 @@ const Unauthorized: React.FC<Props> = ({ user }) => {
                 </Box>
               </Grid>
               {user && (
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Image
                       src={user.image || ''}

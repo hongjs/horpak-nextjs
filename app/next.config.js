@@ -1,11 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  output: "standalone",
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ['lh3.googleusercontent.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+    ],
   },
+  transpilePackages: [
+    "@mui/x-data-grid",
+    "@mui/x-date-pickers",
+    "@mui/material",
+    "@mui/system",
+    "@mui/icons-material",
+  ],
 };
 
 module.exports = nextConfig;

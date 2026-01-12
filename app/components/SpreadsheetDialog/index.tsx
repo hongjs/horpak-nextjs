@@ -85,7 +85,7 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
             alignItems="center"
             sx={{ height: '55px' }}
           >
-            <Grid item xs={2} sm={2} md={3}>
+            <Grid size={{ xs: 2, sm: 2, md: 3 }}>
               <Tooltip title={item.name}>
                 <Avatar className={isFolder ? styles.folder : styles.file}>
                   {isFolder ? (
@@ -96,7 +96,7 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
                 </Avatar>
               </Tooltip>
             </Grid>
-            <Grid item xs={10} sm={10} md={9}>
+            <Grid size={{ xs: 10, sm: 10, md: 9 }}>
               <Typography
                 component="div"
                 variant="caption"
@@ -127,13 +127,13 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
         <DialogContent className={styles.loading}>
           <Grid container>
             {loading && (
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <LinearProgress />
               </Grid>
             )}
             {files.map((item: DriveItem) => {
               return (
-                <Grid key={item.id} item xs={12} sm={6} md={4}>
+                <Grid key={item.id} size={{ xs: 12, sm: 6, md: 4 }}>
                   {renderFileOrFilder(item)}
                 </Grid>
               );
