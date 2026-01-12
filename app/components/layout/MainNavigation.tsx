@@ -4,11 +4,9 @@ import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
 import {
   AppBar,
-  Box,
   ClickAwayListener,
   Divider,
   Drawer,
-
   IconButton,
   List,
   ListItem,
@@ -25,8 +23,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
-
-import styles from './MainNavigation.module.css';
+import { ThemeToggle } from 'components/ThemeToggle';
 
 const MainNavigation: React.FC = () => {
   const { data } = useSession();
@@ -94,21 +91,22 @@ const MainNavigation: React.FC = () => {
   const renderUser = useCallback((user: any) => {
     return (
       <>
-        <Image src={user.image || ''} alt={'user-pic'} width={30} height={30} />
-        <Typography style={{ padding: '15px' }}>{user.name}</Typography>
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Image src={user.image || ''} alt={'user-pic'} width={30} height={30} className="rounded-full" />
+        <Typography className="px-4">{user.name}</Typography>
+        <ThemeToggle />
+        <div className="hidden md:block">
           <Tooltip title="Sign out">
             <IconButton
               color="inherit"
               size="medium"
               aria-label="logout"
-              sx={{ mr: 2 }}
+              className="mr-4"
               onClick={() => signOut()}
             >
               <LogoutIcon />
             </IconButton>
           </Tooltip>
-        </Box>
+        </div>
       </>
     );
   }, []);
@@ -120,24 +118,22 @@ const MainNavigation: React.FC = () => {
           variant="persistent"
           open={openDrawer}
           onClose={handleCloseDrawer}
-          className={styles.drawer}
-          classes={{ paper: styles.drawerPaper }}
+          className="flex-shrink-0 whitespace-nowrap"
+          classes={{ paper: 'w-[280px]' }}
         >
-          <div className={styles.toolbar}>
+          <div className="flex items-center justify-between p-4">
             <Typography color="primary" variant="h6">
               C Place App
             </Typography>
-            <Box className={styles.header}>
-              <IconButton onClick={handleCloseDrawer}>
-                {openDrawer ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-              </IconButton>
-            </Box>
+            <IconButton onClick={handleCloseDrawer}>
+              {openDrawer ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
           </div>
           <Divider />
           <List>
             {menuItems.map((i) => {
               return (
-                <Box key={i.id}>
+                <div key={i.id}>
                   <ListItem disablePadding>
                     <ListItemButton onClick={() => handleMenuClick(i.id)}>
                       <ListItemIcon>
@@ -147,7 +143,7 @@ const MainNavigation: React.FC = () => {
                     </ListItemButton>
                   </ListItem>
                   {i.divider && <Divider />}
-                </Box>
+                </div>
               );
             })}
             <Divider />
@@ -166,29 +162,29 @@ const MainNavigation: React.FC = () => {
   }, [openDrawer, menuItems, handleMenuClick, handleCloseDrawer]);
 
   return (
-    <div className={styles.root}>
-      <AppBar position="static">
+    <div className="flex">
+      <AppBar position="static" className="bg-primary-600 dark:bg-gray-800">
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
+            className="mr-4"
             onClick={handleOpenDrawer}
           >
             <MenuIcon />
           </IconButton>
-          <Box sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <div className="hidden md:block flex-grow">
+            <Typography variant="h6" className="flex-grow">
               C Place App
             </Typography>
-          </Box>
-          <Box sx={{ display: { xs: 'block', md: 'none' }, flexGrow: 1 }}>
-            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          </div>
+          <div className="block md:hidden flex-grow">
+            <Typography variant="h6" className="flex-grow">
               &nbsp;
             </Typography>
-          </Box>
+          </div>
 
           {data && data.user && renderUser(data.user)}
         </Toolbar>

@@ -1,26 +1,39 @@
 import React, { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { ThemeProvider } from '@mui/material/styles';
+import { useTheme } from 'next-themes';
 import Loader from 'components/Loader';
 import ErrorBoundary from 'components/ErrorBoundary';
 import Layout from 'components/layout/Layout';
-import ThemeContextProvider from 'contexts/ThemeContext';
+import { DarkModeProvider } from 'contexts/DarkModeContext';
 import AppContextWrapper from 'contexts/AppContext';
+import { getMuiTheme } from 'styles/muiTheme';
 import { useAuthUser } from 'hooks';
 import { Props } from 'types';
 
 const Providers: React.FC<Props> = ({ children }: Props) => {
   return (
-    <AppContextWrapper>
-      <AuthProvider>
-        <ThemeContextProvider>
-          <Layout>
-            <ErrorBoundary>{children}</ErrorBoundary>
-          </Layout>
-        </ThemeContextProvider>
-      </AuthProvider>
-    </AppContextWrapper>
+    <DarkModeProvider>
+      <AppContextWrapper>
+        <AuthProvider>
+          <MuiThemeProvider>
+            <Layout>
+              <ErrorBoundary>{children}</ErrorBoundary>
+            </Layout>
+          </MuiThemeProvider>
+        </AuthProvider>
+      </AppContextWrapper>
+    </DarkModeProvider>
   );
+};
+
+const MuiThemeProvider: React.FC<Props> = ({ children }) => {
+  const { theme, systemTheme } = useTheme();
+  const currentTheme = theme === 'system' ? systemTheme : theme;
+  const muiTheme = getMuiTheme(currentTheme === 'dark' ? 'dark' : 'light');
+
+  return <ThemeProvider theme={muiTheme}>{children}</ThemeProvider>;
 };
 
 const AuthProvider: React.FC<Props> = ({ children }) => {
