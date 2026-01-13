@@ -1,23 +1,19 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback } from 'react';
 import type { GetServerSideProps } from 'next';
-import Image from 'next/image';
 import { getProviders, getSession, signIn } from 'next-auth/react';
 import {
-  AppBar,
   Box,
   Button,
-  Container,
-  CssBaseline,
+  Card,
   Divider,
-  Paper,
-  Toolbar,
+  Stack,
   Typography,
-  Grid,
 } from '@mui/material';
 import { Turnstile } from '@marsidev/react-turnstile';
 import { SignInProps } from 'types/auth';
 import constants from 'config/constants';
 import { useTurnstile } from 'hooks';
+import FlowFieldBackground from 'components/auth/FlowFieldBackground';
 import styles from './signin.module.css';
 
 const SignIn: React.FC<SignInProps> = ({ providers }) => {
@@ -38,95 +34,89 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
   };
 
   return (
-    <>
-      <main>
-        <AppBar position="static">
-          <Toolbar className={styles.toolbar}>
-            <Image src="/images/logo64.png" width={32} height={32} alt="logo" />
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ marginLeft: '16px' }}
-            >
-              Hong.JS
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Container maxWidth="lg" className={styles.container}>
-          <Grid container>
-            <Box sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }}>
-              <Grid size={{ xs: 12, md: 7, lg: 8 }}>
-                <Box className={styles.itemLeft}>
-                  <Box component="div" className={styles.itemImage}>
-                    <Image
-                      src="/images/logo.png"
-                      alt="logo"
-                      width={350}
-                      height={350}
-                      priority
-                    />
-                  </Box>
-                </Box>
-              </Grid>
+    <Box className={styles.splitContainer}>
+      {/* Left Section - Branding */}
+      <Box className={styles.leftSection}>
+        <Box className={styles.brandingContent}>
+          <Box className={styles.illustrationContainer}>
+            <Box sx={{ width: 420, height: 420, maxWidth: '100%', position: 'relative' }}>
+              <FlowFieldBackground />
             </Box>
-            <Grid size={{ xs: 12, md: 5, lg: 4 }}>
-              <Box className={styles.itemRight}>
-                <Grid container direction="column" rowSpacing={3}>
-                  <Grid size={{ xs: 12 }}>
-                    <Typography variant="h4" gutterBottom>
-                      Sign in
-                    </Typography>
-                  </Grid>
-                  <Grid size={{ xs: 12 }}>
-                    <Button
-                      variant="outlined"
-                      startIcon={<i className="fa-brands fa-google" />}
-                      className={styles.button}
-                      onClick={handleSignin}
-                      disabled={!valid}
-                    >{`Signin with Google`}</Button>
-                  </Grid>
-                  <Grid size={{ xs: 12 }}>
-                    <Button
-                      disabled
-                      variant="outlined"
-                      startIcon={<i className="fa-brands fa-facebook" />}
-                      className={styles.button}
-                    >{`Signin with Facebook`}</Button>
-                  </Grid>
-                  <Grid size={{ xs: 12 }}>
-                    <Divider />
-                  </Grid>
-                  <Grid size={{ xs: 12 }}>
-                    <Box sx={{ textAlign: 'center' }}>
-                      <Turnstile
-                        options={{
-                          theme: 'light',
-                          size: 'normal',
-                        }}
-                        siteKey={constants.TURNSTILE_PUBLIC_KEY}
-                        onError={handleTurnstileFail}
-                        onExpire={handleTurnstileFail}
-                        onSuccess={handleTurnstileSuccess}
-                        style={{ width: '100%' }}
-                      />
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
-          </Grid>
-        </Container>
-      </main>
-      <footer className={styles.footer}>
-        <Divider />
-        <p>
-          Powered by HongJS
-          <br />
-          sompote.r@gmail.com
-        </p>
-      </footer>
-    </>
+          </Box>
+          <Typography variant="h3" className={styles.brandTitle}>
+            Hong.JS
+          </Typography>
+          <Typography variant="body1" className={styles.brandSubtitle}>
+            Your next-generation application platform
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Right Section - Sign In Form */}
+      <Box className={styles.rightSection}>
+        <Box className={styles.formContainer}>
+          <Stack spacing={3}>
+            {/* Header */}
+            <Box>
+              <Typography variant="h4" className={styles.formTitle}>
+                Sign in to Hong.JS
+              </Typography>
+              <Typography variant="body2" className={styles.formSubtitle}>
+                Enter your details below
+              </Typography>
+            </Box>
+
+            {/* Social Login Buttons */}
+            <Stack spacing={2}>
+              <Button
+                variant="outlined"
+                size="large"
+                startIcon={<i className="fa-brands fa-google" />}
+                className={`${styles.socialButton} ${styles.googleButton}`}
+                onClick={handleSignin}
+                disabled={!valid}
+              >
+                Continue with Google
+              </Button>
+              <Button
+                disabled
+                variant="outlined"
+                size="large"
+                startIcon={<i className="fa-brands fa-facebook" />}
+                className={styles.socialButton}
+              >
+                Continue with Facebook
+              </Button>
+            </Stack>
+
+            <Divider>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                OR
+              </Typography>
+            </Divider>
+
+            {/* Turnstile */}
+            <Box className={styles.turnstileContainer}>
+              <Turnstile
+                options={{
+                  theme: 'light',
+                  size: 'normal',
+                }}
+                siteKey={constants.TURNSTILE_PUBLIC_KEY}
+                onError={handleTurnstileFail}
+                onExpire={handleTurnstileFail}
+                onSuccess={handleTurnstileSuccess}
+              />
+            </Box>
+
+            {/* Footer Text */}
+            <Typography variant="body2" className={styles.footerText}>
+              Powered by HongJS • sompote.r@gmail.com
+            </Typography>
+          </Stack>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

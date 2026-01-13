@@ -4,8 +4,7 @@ import { useRouter } from 'next/router';
 import { signOut, useSession } from 'next-auth/react';
 import {
   AppBar,
-  ClickAwayListener,
-  Divider,
+  Box,
   Drawer,
   IconButton,
   List,
@@ -14,183 +13,292 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  Tooltip,
   Typography,
+  useTheme,
+  Avatar,
+  Menu,
+  MenuItem,
+  Divider,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  PowerSettingsNew as LogoutIcon,
+  Dashboard as DashboardIcon,
+  Description as DescriptionIcon,
+  Receipt as ReceiptIcon,
+  Settings as SettingsIcon,
+  Group as GroupIcon,
+  AccountBalance as BankIcon,
+  Business as BusinessIcon,
+  Storage as StorageIcon,
+  Logout as LogoutIcon,
   ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
+  Apartment as ApartmentIcon,
 } from '@mui/icons-material';
 import { ThemeToggle } from 'components/ThemeToggle';
+
+const DRAWER_WIDTH = 280;
 
 const MainNavigation: React.FC = () => {
   const { data } = useSession();
   const router = useRouter();
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const theme = useTheme();
 
   const menuItems = useMemo(() => {
     return [
-      { id: 'home', name: 'Home', icon: 'home', url: '/', divider: true },
+      { id: 'home', name: 'Dashboard', icon: <DashboardIcon />, url: '/' },
       {
         id: 'summaryReport',
         name: 'Summary Report',
-        icon: 'table-list',
+        icon: <DescriptionIcon />,
         url: '/report/viewSummaryReport',
       },
       {
         id: 'invoiceReport',
         name: 'Invoice Report',
-        icon: 'receipt',
+        icon: <ReceiptIcon />,
         url: '/report/viewInvoiceReport',
       },
       {
         id: 'process',
         name: 'Process',
-        icon: 'gear',
+        icon: <SettingsIcon />,
         url: '/report/processSheet',
-        divider: true,
       },
-      { id: 'users', name: 'User', icon: 'user-group', url: '/users' },
-      { id: 'banks', name: 'Bank', icon: 'building-columns', url: '/bank' },
+      { id: 'users', name: 'Users', icon: <GroupIcon />, url: '/users' },
+      { id: 'banks', name: 'Banks', icon: <BankIcon />, url: '/bank' },
       {
         id: 'branches',
-        name: 'Branch',
-        icon: 'building',
+        name: 'Branches',
+        icon: <BusinessIcon />,
         url: '/branch',
       },
       {
         id: 'datasource',
         name: 'Data Source',
-        icon: 'database',
+        icon: <StorageIcon />,
         url: '/admin/datasource',
       },
     ];
   }, []);
 
-  const handleOpenDrawer = useCallback(() => {
-    setOpenDrawer(true);
-  }, []);
+  const handleOpenDrawer = () => setOpenDrawer(true);
+  const handleCloseDrawer = () => setOpenDrawer(false);
 
-  const handleCloseDrawer = useCallback(() => {
-    setOpenDrawer(false);
-  }, []);
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
 
-  const handleMenuClick = useCallback(
-    (id: string) => {
-      const menu = menuItems.find((i) => i.id === id);
-      if (menu && menu.url) {
-        router.push(menu.url);
-        handleCloseDrawer();
-      }
-    },
-    [router, menuItems, handleCloseDrawer]
-  );
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
-  const renderUser = useCallback((user: any) => {
-    return (
-      <>
-        <Image src={user.image || ''} alt={'user-pic'} width={30} height={30} className="rounded-full" />
-        <Typography className="px-4">{user.name}</Typography>
-        <ThemeToggle />
-        <div className="hidden md:block">
-          <Tooltip title="Sign out">
-            <IconButton
-              color="inherit"
-              size="medium"
-              aria-label="logout"
-              className="mr-4"
-              onClick={() => signOut()}
-            >
-              <LogoutIcon />
-            </IconButton>
-          </Tooltip>
-        </div>
-      </>
-    );
-  }, []);
+  const handleMenuClick = (url: string) => {
+    router.push(url);
+    handleCloseDrawer();
+  };
 
-  const renderDrawer = useCallback(() => {
-    return (
-      <ClickAwayListener onClickAway={handleCloseDrawer} mouseEvent="onMouseUp">
-        <Drawer
-          variant="persistent"
-          open={openDrawer}
-          onClose={handleCloseDrawer}
-          className="flex-shrink-0 whitespace-nowrap"
-          classes={{ paper: 'w-[280px]' }}
-        >
-          <div className="flex items-center justify-between p-4">
-            <Typography color="primary" variant="h6">
-              C Place App
-            </Typography>
-            <IconButton onClick={handleCloseDrawer}>
-              {openDrawer ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-            {menuItems.map((i) => {
-              return (
-                <div key={i.id}>
-                  <ListItem disablePadding>
-                    <ListItemButton onClick={() => handleMenuClick(i.id)}>
-                      <ListItemIcon>
-                        <i className={`fa-solid fa-${i.icon}`} />
-                      </ListItemIcon>
-                      <ListItemText primary={i.name} />
-                    </ListItemButton>
-                  </ListItem>
-                  {i.divider && <Divider />}
-                </div>
-              );
-            })}
-            <Divider />
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => signOut()}>
-                <ListItemIcon>
-                  <LogoutIcon />
-                </ListItemIcon>
-                <ListItemText primary="Sign out" />
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </Drawer>
-      </ClickAwayListener>
-    );
-  }, [openDrawer, menuItems, handleMenuClick, handleCloseDrawer]);
+  const handleLogout = () => {
+    handleCloseUserMenu();
+    signOut();
+  };
 
   return (
-    <div className="flex">
-      <AppBar position="static" className="bg-primary-600 dark:bg-gray-800">
+    <>
+      <AppBar 
+        position="fixed" 
+        sx={{ 
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          backgroundColor: 'background.paper',
+          color: 'text.primary',
+          boxShadow: 'none',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
         <Toolbar>
           <IconButton
-            size="large"
-            edge="start"
             color="inherit"
-            aria-label="menu"
-            className="mr-4"
+            aria-label="open drawer"
             onClick={handleOpenDrawer}
+            edge="start"
+            sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
-          <div className="hidden md:block flex-grow">
-            <Typography variant="h6" className="flex-grow">
-              C Place App
-            </Typography>
-          </div>
-          <div className="block md:hidden flex-grow">
-            <Typography variant="h6" className="flex-grow">
-              &nbsp;
-            </Typography>
-          </div>
 
-          {data && data.user && renderUser(data.user)}
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center',
+              fontWeight: 700,
+              color: 'primary.main',
+              cursor: 'pointer'
+            }}
+            onClick={() => router.push('/')}
+          >
+            <ApartmentIcon sx={{ mr: 1 }} />
+            Hong.JS
+          </Typography>
+
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <ThemeToggle />
+            
+            {data?.user && (
+              <Box sx={{ flexGrow: 0 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={data.user.name || 'User'} src={data.user.image || ''} />
+                </IconButton>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <Box sx={{ px: 2, py: 1 }}>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {data.user.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {data.user.email}
+                    </Typography>
+                  </Box>
+                  <Divider />
+                  <MenuItem onClick={handleLogout}>
+                    <ListItemIcon>
+                      <LogoutIcon fontSize="small" />
+                    </ListItemIcon>
+                    <Typography textAlign="center">Sign Out</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
-      {renderDrawer()}
-    </div>
+
+      {/* Desktop Sidebar (Permanent) */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: DRAWER_WIDTH,
+          flexShrink: 0,
+          display: { xs: 'none', md: 'block' },
+          [`& .MuiDrawer-paper`]: { 
+            width: DRAWER_WIDTH, 
+            boxSizing: 'border-box',
+            borderRight: '1px solid',
+            borderColor: 'divider',
+            backgroundColor: 'background.default',
+            top: '64px',
+            height: 'calc(100% - 64px)'
+          },
+        }}
+      >
+        <Box sx={{ overflow: 'auto', py: 2 }}>
+          <List>
+            {menuItems.map((item) => (
+              <ListItem key={item.id} disablePadding sx={{ display: 'block', px: 2, mb: 0.5 }}>
+                <ListItemButton
+                  selected={router.pathname === item.url}
+                  onClick={() => handleMenuClick(item.url)}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: 'initial',
+                    borderRadius: 2,
+                    '&.Mui-selected': {
+                      backgroundColor: 'primary.light',
+                      color: 'primary.dark',
+                      '& .MuiListItemIcon-root': {
+                        color: 'primary.dark',
+                      },
+                      '&:hover': {
+                        backgroundColor: 'primary.light',
+                      }
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: 2,
+                      justifyContent: 'center',
+                      color: router.pathname === item.url ? 'primary.main' : 'text.secondary',
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary={item.name} 
+                    primaryTypographyProps={{ 
+                      fontSize: '0.925rem',
+                      fontWeight: router.pathname === item.url ? 600 : 500
+                    }} 
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+
+      {/* Mobile Drawer (Temporary) */}
+      <Drawer
+        variant="temporary"
+        open={openDrawer}
+        onClose={handleCloseDrawer}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: DRAWER_WIDTH },
+        }}
+      >
+        <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2 }}>
+          <Typography variant="h6" color="primary.main" fontWeight="bold">
+            <ApartmentIcon sx={{ mr: 1, color: 'primary.main' }} />
+            Hong.JS
+          </Typography>
+          <IconButton onClick={handleCloseDrawer}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </Toolbar>
+        <Divider />
+        <List>
+          {menuItems.map((item) => (
+            <ListItem key={item.id} disablePadding>
+              <ListItemButton 
+                selected={router.pathname === item.url}
+                onClick={() => handleMenuClick(item.url)}
+              >
+                <ListItemIcon sx={{ color: router.pathname === item.url ? 'primary.main' : 'inherit' }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </>
   );
 };
 
