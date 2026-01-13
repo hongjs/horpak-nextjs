@@ -11,7 +11,7 @@ import {
   LinearProgress,
   List,
   ListItem,
-  ListItemButton, // Added ListItemButton
+  ListItemButton,
   ListItemText,
   MenuItem,
   Paper,
@@ -89,16 +89,15 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
   const renderFilter = useCallback(() => {
     return (
       <Box className={styles.filter}>
-        <Grid container>
-          <Grid size={{ xs: 6, md: 6, lg: 3 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+            <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
                 labelId="branch-select-label"
                 id="branch-select"
                 value={branch?._id || ''}
                 label="Branch"
-                size="medium"
                 onChange={(event) => handleChange(event, 'branch')}
               >
                 {branches &&
@@ -114,15 +113,14 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 3 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+            <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
                 labelId="sheet-select-label"
                 id="sheet-select"
                 value={sheetId || ''}
                 label="Sheet"
-                size="medium"
                 onChange={(event) => handleChange(event, 'sheet')}
                 disabled={!branch || !branch.sheets}
               >
@@ -138,7 +136,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 2 }} className={styles.filterBox}>
+          <Grid size={{ xs: 6, md: 6, lg: 2 }} sx={{ display: 'flex', alignItems: 'center' }}>
             <FormControlLabel
               className={styles.formControl}
               control={
@@ -147,61 +145,65 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                   onChange={handleCheckChange}
                   name="checkedB"
                   color="primary"
-                  size="small"
                 />
               }
               label="Summary"
             />
           </Grid>
-          <Grid size={{ xs: 6, sm: 3, md: 3, lg: 2 }} className={styles.filterBox} sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Grid size={{ xs: 6, sm: 3, md: 3, lg: 2 }} sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Button
               variant="outlined"
               color="primary"
-              size="medium"
+              size="large"
               fullWidth
-              className={styles.button}
+              className={`${styles.button} ${styles.printButton}`}
               startIcon={<PrintIcon />}
               disabled={!sheetId || (errors && errors?.length > 0)}
               onClick={handlePrintClick}
+              sx={{ height: '56px' }}
             >
               Print
             </Button>
           </Grid>
           <Grid
-            size={{ xs: 6, sm: 3, md: 3, lg: 2 }}
-            className={styles.filterBox}
-            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+            size={{ xs: 12, sm: 3, md: 3, lg: 2 }}
+            sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
           >
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <Tooltip title="Print">
-                <Button
-                  className={styles.iconButton}
-                  disabled={!sheetId || (errors && errors?.length > 0)}
-                  onClick={handlePrintClick}
-                >
-                  <PrintIcon />
-                </Button>
-              </Tooltip>
-              <Tooltip title="Refresh">
-                <Button
-                  className={styles.iconButton}
-                  disabled={sheetId === undefined}
-                  onClick={handleRefreshClick}
-                >
-                  <RefreshIcon />
-                </Button>
-              </Tooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Box sx={{ display: { xs: 'flex', sm: 'none' }, width: '100%', gap: 1 }}>
               <Button
                 variant="outlined"
-                color="primary"
-                size="medium"
                 fullWidth
-                className={styles.button}
+                startIcon={<PrintIcon />}
+                disabled={!sheetId || (errors && errors?.length > 0)}
+                onClick={handlePrintClick}
+                className={`${styles.button} ${styles.printButton}`}
+                sx={{ height: '56px' }}
+              >
+                Print
+              </Button>
+              <Button
+                variant="outlined"
+                fullWidth
                 startIcon={<RefreshIcon />}
                 disabled={sheetId === undefined}
                 onClick={handleRefreshClick}
+                className={`${styles.button} ${styles.refreshButton}`}
+                sx={{ height: '56px' }}
+              >
+                Refresh
+              </Button>
+            </Box>
+            <Box sx={{ display: { xs: 'none', sm: 'block' }, width: '100%' }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                fullWidth
+                className={`${styles.button} ${styles.refreshButton}`}
+                startIcon={<RefreshIcon />}
+                disabled={sheetId === undefined}
+                onClick={handleRefreshClick}
+                sx={{ height: '56px' }}
               >
                 Refresh
               </Button>
@@ -222,6 +224,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
     handlePrintClick,
   ]);
 
+
   const renderReportData = useCallback(() => {
     if (branch && items && report.sheet) {
       return (
@@ -241,26 +244,27 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
   const renderError = useCallback(() => {
     if (branch && errors) {
       return (
-        <Paper className={styles.paperError}>
-          <Typography variant="body1" gutterBottom color="error">
-            Sheet Error
+        <Paper className={styles.paperError} elevation={0}>
+          <Typography variant="h6" gutterBottom color="error" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+             <i className="fa-solid fa-triangle-exclamation"></i> Sheet Error
           </Typography>
           <Typography variant="body2" gutterBottom>
+            Error in:{' '}
             <a
               href={`https://docs.google.com/spreadsheets/d/${branch?.spreadSheetId}#gid=${report.sheet?.sheetId}`}
               target="_blank"
               rel="noreferrer"
-              style={{ color: 'blue', textDecoration: 'underline' }}
+              style={{ color: 'inherit', textDecoration: 'underline', fontWeight: 600 }}
             >
               {`${branch?.spreadSheetName} - ${report.sheet?.title}`}
             </a>
           </Typography>
-          <List component="nav">
-            {errors.map((err) => {
+          <List dense>
+            {errors.map((err, index) => {
               return (
-                <ListItem key={err} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={`- ${err}`} />
+                <ListItem key={index} disablePadding>
+                  <ListItemButton sx={{ borderRadius: 1 }}>
+                    <ListItemText primary={err} primaryTypographyProps={{ color: 'error', variant: 'body2' }} />
                   </ListItemButton>
                 </ListItem>
               );
@@ -273,10 +277,10 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
 
   return (
     <div className={styles.root}>
-      <Typography gutterBottom variant="h5">
+      <Typography variant="h4" className={styles.headerTitle}>
         Summary Report
       </Typography>
-      <Paper className={styles.paper}>
+      <Paper className={styles.paper} elevation={0}>
         <Grid
           container
           direction="row"
@@ -286,8 +290,8 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           <Grid size={{ xs: 12 }}>
             {renderFilter()}
             {(loading || report.loading || driveLoading) && (
-              <Box component="p">
-                <LinearProgress />
+              <Box sx={{ width: '100%', mt: 2 }}>
+                <LinearProgress sx={{ borderRadius: 1 }} />
               </Box>
             )}
           </Grid>

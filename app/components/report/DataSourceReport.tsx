@@ -1,5 +1,6 @@
 import { sumBy } from 'lodash';
 import React, { useMemo, useCallback } from 'react';
+import { useTheme } from 'next-themes';
 import { format as dateFormat } from 'date-fns';
 import { BranchItemState, ReportItem } from 'types/state';
 import { displayInteger, displayUnit } from 'lib/textHelper';
@@ -13,6 +14,15 @@ type Props = {
 
 const DataSourceReport = (props: any, ref: any) => {
   const { branch, items, sheet, displaySummary }: Props = props;
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+
+  // Theme-based colors
+  const bgColor = isDark ? '#1e1e1e' : '#fff';
+  const textColor = isDark ? '#e0e0e0' : '#000';
+  const borderColor = isDark ? '#444' : '#A3A3A3';
+  const screenBg = isDark ? '#121212' : '#666';
+  const headerBorder = isDark ? '#1e1e1e' : '#fff'; // Matches bg to hide border
 
   const getSummaryRow = useCallback((rows: ReportItem[]) => {
     return {
@@ -35,7 +45,7 @@ const DataSourceReport = (props: any, ref: any) => {
 
   const renderHeaderText = useCallback(() => {
     return (
-      <p>
+      <p style={{ color: textColor }}>
         <span style={{ fontSize: '14pt', fontWeight: 'bold' }}>
           {branch && branch.reportHeader}
         </span>{' '}
@@ -47,7 +57,7 @@ const DataSourceReport = (props: any, ref: any) => {
         </span>
       </p>
     );
-  }, [branch, sheet]);
+  }, [branch, sheet, textColor]);
 
   const generateAdditionalText = useCallback((row: ReportItem) => {
     let additionalText = '';
@@ -89,12 +99,59 @@ const DataSourceReport = (props: any, ref: any) => {
   return (
     <div ref={ref}>
       <style>
-        {'@media all {.page-break {display: none;}} @media print { @page { size: A4 landscape; margin-bottom: 5mm; } #content{padding:5mm;} #printDate {display:inline;} } ' +
-          '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow-x:scroll;} #printDate {display:none;} } '}
-        {'#tb { width:100%; min-width:900px; border: 1px solid #A3A3A3; border-collapse:collapse; border-spacing:0px; background-color:#fff; font-size:10pt;} ' +
-          '#tb thead { border: 1px solid #A3A3A3 }  #tb th:first-child {border-right: 1px solid #A3A3A3;} #tb th:last-child {}  #tb th {border-right: 1px solid #A3A3A3; border-bottom: 1px solid #A3A3A3;}' +
-          '#tb thead {text-align: center;}  #tb tbody {text-align: right;} #tb .text {text-align:left;} .additionalText {text-align:left;} #tb td { padding-right: 5px; border-top: 1px solid #A3A3A3;} ' +
-          '#tb .last {border-left: 1px solid #A3A3A3;}  #tb .summary {border-weight: bold;} #tb .header {border-top:1px solid #fff; border-left:1px solid #fff; border-right:1px solid #fff !important; text-align:left; padding-left:10mm; } '}
+        {`
+          @media all {
+            .page-break { display: none; }
+          }
+          @media print {
+            @page { size: A4 landscape; margin-bottom: 5mm; }
+            #content { padding: 5mm; }
+            #printDate { display: inline; }
+            /* Force white background for print if desired, or keep screen colors */
+            /* Usually print should be white paper */
+            #tb { background-color: #fff !important; color: #000 !important; border-color: #A3A3A3 !important; }
+            #tb th, #tb td { border-color: #A3A3A3 !important; }
+            #tb .header { border-color: #fff !important; }
+          }
+          @media screen {
+            #content { padding: 5mm; text-align: -webkit-center; background-color: ${screenBg}; overflow-x: scroll; }
+            #printDate { display: none; }
+          }
+          #tb {
+            width: 100%;
+            min-width: 900px;
+            border: 1px solid ${borderColor};
+            border-collapse: collapse;
+            border-spacing: 0px;
+            background-color: ${bgColor};
+            color: ${textColor};
+            font-size: 10pt;
+          }
+          #tb thead {
+            border: 1px solid ${borderColor};
+          }
+          #tb th:first-child {
+            border-right: 1px solid ${borderColor};
+          }
+          #tb th {
+            border-right: 1px solid ${borderColor};
+            border-bottom: 1px solid ${borderColor};
+          }
+          #tb thead { text-align: center; }
+          #tb tbody { text-align: right; }
+          #tb .text { text-align: left; }
+          .additionalText { text-align: left; }
+          #tb td { padding-right: 5px; border-top: 1px solid ${borderColor}; }
+          #tb .last { border-left: 1px solid ${borderColor}; }
+          #tb .summary { font-weight: bold; }
+          #tb .header {
+            border-top: 1px solid ${headerBorder};
+            border-left: 1px solid ${headerBorder};
+            border-right: 1px solid ${headerBorder} !important;
+            text-align: left;
+            padding-left: 10mm;
+          }
+        `}
       </style>
       {items && items.length > 0 && (
         <div id="content">

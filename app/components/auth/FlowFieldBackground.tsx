@@ -22,11 +22,11 @@ const FlowFieldBackground = () => {
     // Configuration
     const particleCount = 500;
     const speed = 2; // Base speed
-    
+
     const isDark = resolvedTheme === 'dark';
-    
+
     // Theme-based colors
-    const palette = isDark 
+    const palette = isDark
       ? [
           '#8AB4F8', // Lighter Blue for visibility on dark
           '#8AB4F8',
@@ -35,7 +35,7 @@ const FlowFieldBackground = () => {
         ]
       : [
           '#4285F4', // Blue
-          '#4285F4', 
+          '#4285F4',
           '#202124', // Dark
           '#9AA0A6', // LIGHT GREY
         ];
@@ -59,7 +59,7 @@ const FlowFieldBackground = () => {
         this.vx = 0;
         this.vy = 0;
         this.history = [];
-        this.maxLength = 10 + Math.random() * 20; 
+        this.maxLength = 10 + Math.random() * 20;
         this.color = palette[Math.floor(Math.random() * palette.length)];
         this.age = Math.random() * 100;
         this.lifespan = 400 + Math.random() * 200;
@@ -74,11 +74,11 @@ const FlowFieldBackground = () => {
         const dx = this.x - centerX;
         const dy = this.y - centerY;
         const distanceFromCenter = Math.sqrt(dx * dx + dy * dy);
-        
+
         // Base orbit angle (tangent to radius)
         let angle = Math.atan2(dy, dx) + Math.PI / 2;
-        
-        // Add subtle wave/noise to make it "flow" 
+
+        // Add subtle wave/noise to make it "flow"
         const noiseScale = 0.01;
         const noise = Math.sin(distanceFromCenter * noiseScale - this.age * 0.01) * 0.3;
         angle += noise;
@@ -115,7 +115,7 @@ const FlowFieldBackground = () => {
 
         context.beginPath();
         context.moveTo(this.history[0].x, this.history[0].y);
-        
+
         // Quadratic bezier curve for smoother lines
         for (let i = 1; i < this.history.length - 1; i++) {
             const xc = (this.history[i].x + this.history[i + 1].x) / 2;
@@ -138,20 +138,20 @@ const FlowFieldBackground = () => {
       // High DPI Canvas Setup
       const dpr = window.devicePixelRatio || 1;
       const parent = canvas.parentElement;
-      
+
       if (parent) {
         width = parent.clientWidth;
         height = parent.clientHeight;
         centerX = width / 2;
         centerY = height / 2;
-        
+
         // Set actual size in memory (scaled to account for extra pixel density)
         canvas.width = width * dpr;
         canvas.height = height * dpr;
-        
+
         // Normalize coordinate system to use css pixels
         ctx.scale(dpr, dpr);
-        
+
         // Reset styling width/height
         canvas.style.width = `${width}px`;
         canvas.style.height = `${height}px`;
@@ -200,7 +200,7 @@ const FlowFieldBackground = () => {
         width: '100%',
         height: '100%',
         borderRadius: '16px',
-        backgroundColor: resolvedTheme === 'dark' ? '#121212' : '#FFFFFF', 
+        backgroundColor: resolvedTheme === 'dark' ? '#121212' : '#FFFFFF',
         transition: 'background-color 0.3s ease',
       }}
     />

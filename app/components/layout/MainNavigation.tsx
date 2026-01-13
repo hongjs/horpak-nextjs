@@ -107,9 +107,9 @@ const MainNavigation: React.FC = () => {
 
   return (
     <>
-      <AppBar 
-        position="fixed" 
-        sx={{ 
+      <AppBar
+        position="fixed"
+        sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
           backgroundColor: 'background.paper',
           color: 'text.primary',
@@ -133,8 +133,8 @@ const MainNavigation: React.FC = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ 
-              display: 'flex', 
+            sx={{
+              display: 'flex',
               alignItems: 'center',
               fontWeight: 700,
               color: 'primary.main',
@@ -150,7 +150,7 @@ const MainNavigation: React.FC = () => {
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <ThemeToggle />
-            
+
             {data?.user && (
               <Box sx={{ flexGrow: 0 }}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -201,8 +201,8 @@ const MainNavigation: React.FC = () => {
           width: DRAWER_WIDTH,
           flexShrink: 0,
           display: { xs: 'none', md: 'block' },
-          [`& .MuiDrawer-paper`]: { 
-            width: DRAWER_WIDTH, 
+          [`& .MuiDrawer-paper`]: {
+            width: DRAWER_WIDTH,
             boxSizing: 'border-box',
             borderRight: '1px solid',
             borderColor: 'divider',
@@ -245,12 +245,12 @@ const MainNavigation: React.FC = () => {
                   >
                     {item.icon}
                   </ListItemIcon>
-                  <ListItemText 
-                    primary={item.name} 
-                    primaryTypographyProps={{ 
+                  <ListItemText
+                    primary={item.name}
+                    primaryTypographyProps={{
                       fontSize: '0.925rem',
                       fontWeight: router.pathname === item.url ? 600 : 500
-                    }} 
+                    }}
                   />
                 </ListItemButton>
               </ListItem>
@@ -285,7 +285,7 @@ const MainNavigation: React.FC = () => {
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.id} disablePadding>
-              <ListItemButton 
+              <ListItemButton
                 selected={router.pathname === item.url}
                 onClick={() => handleMenuClick(item.url)}
               >
