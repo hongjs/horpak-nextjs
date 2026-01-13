@@ -89,8 +89,8 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
   const renderFilter = useCallback(() => {
     return (
       <Box className={styles.filter}>
-        <Grid container spacing={2} alignItems="center">
-          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+        <Grid container alignItems="center">
+          <Grid size={{ xs: 12, md: 6, lg: 3 }} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
@@ -113,7 +113,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }} className={styles.filterBox}>
             <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
@@ -136,7 +136,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 2 }} sx={{ display: 'flex', alignItems: 'center' }}>
+          <Grid size={{ xs: 6, md: 6, lg: 2 }} className={styles.filterBox} sx={{ display: 'flex', alignItems: 'center' }}>
             <FormControlLabel
               className={styles.formControl}
               control={
@@ -150,7 +150,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               label="Summary"
             />
           </Grid>
-          <Grid size={{ xs: 6, sm: 3, md: 3, lg: 2 }} sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Grid size={{ xs: 6, sm: 3, md: 3, lg: 2 }} className={styles.filterBox} sx={{ display: { xs: 'none', sm: 'block' } }}>
             <Button
               variant="outlined"
               color="primary"
@@ -167,6 +167,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           </Grid>
           <Grid
             size={{ xs: 12, sm: 3, md: 3, lg: 2 }}
+            className={styles.filterBox}
             sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
           >
             <Box sx={{ display: { xs: 'flex', sm: 'none' }, width: '100%', gap: 1 }}>
@@ -223,7 +224,6 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
     handleRefreshClick,
     handlePrintClick,
   ]);
-
 
   const renderReportData = useCallback(() => {
     if (branch && items && report.sheet) {

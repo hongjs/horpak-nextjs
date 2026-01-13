@@ -1,60 +1,189 @@
+/* Main Container */
 .root {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  align-items: flex-start;
   width: 100%;
+  animation: fadeIn 0.5s ease-out;
 }
 
-.title {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* Page Title */
+.headerTitle {
+  font-weight: 800 !important;
+  margin-bottom: 24px !important;
+  background: linear-gradient(to right, #1877F2, #00AB55);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
+  display: inline-block;
 }
 
+:global(.dark) .headerTitle {
+  background: linear-gradient(to right, #4285F4, #34A853);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Main Paper Container */
+.paper {
+  width: 100%;
+  padding: 32px;
+  border-radius: 16px !important;
+  box-shadow: 0 0 2px 0 rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: #ffffff !important;
+}
+
+:global(.dark) .paper {
+  background-color: #1e1e1e !important;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 12px 24px -4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Filter Section */
 .filter {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  width: 100%;
+  margin-bottom: 24px;
 }
 
 .filterBox {
-  padding: 8px;
-  display: flex;
+  padding: 12px;
 }
 
+/* Form Controls */
 .formControl {
-  padding: 1px;
-}
-
-.button {
-  height: 45px;
-}
-
-.iconButton {
-  margin: 4px;
-  min-width: 50px;
-  vertical-align: bottom;
-  text-align: center;
-}
-
-.selectEmpty {
-  margin-top: 8px;
-}
-
-.paper {
   width: 100%;
-  padding: 8px 8px 32px 8px;
-  text-align: left;
 }
 
+:global(.dark) .formControl label {
+  color: #919eab;
+}
+
+:global(.dark) .formControl .MuiInputBase-input {
+  color: #ffffff;
+}
+
+:global(.dark) .formControl .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(145, 158, 171, 0.32);
+}
+
+:global(.dark) .formControl .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #ffffff;
+}
+
+/* Action Buttons Base */
+.button {
+  height: 56px !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  font-size: 1rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Print Button - Colorful Outlined */
+.printButton {
+  border: 2px solid rgba(24, 119, 242, 0.48) !important;
+  color: #1877F2 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+:global(.dark) .printButton {
+  border-color: rgba(66, 133, 244, 0.48) !important;
+  color: #4285F4 !important;
+  background: transparent !important;
+}
+
+.printButton:hover:not(:disabled) {
+  border-color: #1877F2 !important;
+  background-color: rgba(24, 119, 242, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+:global(.dark) .printButton:hover:not(:disabled) {
+  border-color: #4285F4 !important;
+  background-color: rgba(66, 133, 244, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+.printButton:disabled {
+  border-color: rgba(145, 158, 171, 0.24) !important;
+  color: rgba(145, 158, 171, 0.8) !important;
+  background: transparent !important;
+}
+
+:global(.dark) .printButton:disabled {
+  border-color: rgba(145, 158, 171, 0.24) !important;
+  color: rgba(145, 158, 171, 0.8) !important;
+}
+
+/* Refresh Button - Colorful Outlined */
+.refreshButton {
+  border: 2px solid rgba(0, 171, 85, 0.48) !important;
+  color: #00AB55 !important;
+}
+
+:global(.dark) .refreshButton {
+  border-color: rgba(52, 168, 83, 0.48) !important;
+  color: #34A853 !important;
+}
+
+.refreshButton:hover:not(:disabled) {
+  border-color: #00AB55 !important;
+  background-color: rgba(0, 171, 85, 0.08) !important;
+}
+
+:global(.dark) .refreshButton:hover:not(:disabled) {
+  border-color: #34A853 !important;
+  background-color: rgba(52, 168, 83, 0.08) !important;
+}
+
+/* Error Paper */
 .paperError {
-  margin: 16px;
-  padding: 16px;
+  margin: 24px 0;
+  padding: 24px;
+  background-color: #ffe7d9 !important;
+  color: #7a0c2e !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  border: 1px solid rgba(255, 72, 66, 0.2);
 }
 
+:global(.dark) .paperError {
+  background-color: rgba(122, 12, 46, 0.16) !important;
+  color: #ff4842 !important;
+  border: 1px solid rgba(255, 72, 66, 0.16);
+}
+
+/* Report Content Area */
 .printArea {
-  margin-top: 16px;
+  margin-top: 32px;
+  border-radius: 12px;
   overflow: hidden;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .paper {
+    padding: 16px;
+  }
+  
+  .filterBox {
+    padding: 8px 0;
+  }
 }

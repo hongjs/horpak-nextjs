@@ -1,3 +1,4 @@
+
 import React, {
   useCallback,
   useEffect,
@@ -6,6 +7,7 @@ import React, {
   useState,
 } from 'react';
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -25,7 +27,7 @@ import {
   TextField,
   Tooltip,
   Typography,
-  ListItemButton, // Added ListItemButton
+  ListItemButton,
 } from '@mui/material';
 import {
   DesktopDatePicker,
@@ -151,16 +153,15 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
   const renderFilter = useCallback(() => {
     return (
       <Box className={styles.filter}>
-        <Grid container>
-          <Grid size={{ xs: 6, md: 6, lg: 3, xl: 2 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid size={{ xs: 12, md: 6, lg: 3, xl: 2 }}>
+            <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
                 labelId="branch-select-label"
                 id="branch-select"
                 value={branch?._id || ''}
                 label="Branch"
-                size="medium"
                 onChange={(event) => handleChange(event, 'branch')}
               >
                 {branches &&
@@ -176,15 +177,14 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 3, xl: 2 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl}>
+          <Grid size={{ xs: 12, md: 6, lg: 3, xl: 2 }}>
+            <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
                 labelId="sheet-select-label"
                 id="sheet-select"
                 value={sheetId || ''}
                 label="Sheet"
-                size="medium"
                 onChange={(event) => handleChange(event, 'sheet')}
                 disabled={!branch || !branch.sheets}
               >
@@ -200,7 +200,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 3, xl: 2 }} className={styles.filterBox}>
+          <Grid size={{ xs: 12, md: 6, lg: 3, xl: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDateFns as any}>
               <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                 <DesktopDatePicker
@@ -210,7 +210,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                   views={['year', 'month']}
                   value={invoiceMonth}
                   onChange={(date) => handleDateChange(date, 'invoiceMonth')}
-                  slotProps={{ textField: { fullWidth: true } }}
+                  slotProps={{ textField: { fullWidth: true, className: styles.formControl } }}
                 />
               </Box>
               <Box sx={{ display: { xs: 'block', md: 'none' } }}>
@@ -221,13 +221,13 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                   views={['year', 'month']}
                   value={invoiceMonth}
                   onChange={(date) => handleDateChange(date, 'invoiceMonth')}
-                  slotProps={{ textField: { fullWidth: true } }}
+                  slotProps={{ textField: { fullWidth: true, className: styles.formControl } }}
                   closeOnSelect
                 />
               </Box>
             </LocalizationProvider>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 3, xl: 2 }} className={styles.filterBox}>
+          <Grid size={{ xs: 12, md: 6, lg: 3, xl: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDateFns as any}>
               <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                 <DesktopDatePicker
@@ -235,7 +235,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                   format="yyyy-MM-dd"
                   value={dueDate}
                   onChange={(date) => handleDateChange(date, 'dueDate')}
-                  slotProps={{ textField: { fullWidth: true } }}
+                  slotProps={{ textField: { fullWidth: true, className: styles.formControl } }}
                 />
               </Box>
               <Box sx={{ display: { xs: 'block', md: 'none' } }}>
@@ -244,55 +244,42 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                   format="yyyy-MM-dd"
                   value={dueDate}
                   onChange={(date) => handleDateChange(date, 'dueDate')}
-                  slotProps={{ textField: { fullWidth: true } }}
+                  slotProps={{ textField: { fullWidth: true, className: styles.formControl } }}
                   closeOnSelect
                 />
               </Box>
             </LocalizationProvider>
           </Grid>
-          <Grid size={{ xs: 6, xl: 4 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl}>
-              <InputLabel id="room-select-label">Rooms</InputLabel>
-              <Select
-                labelId="room-select-label"
-                id="room-select"
-                value={rooms || []}
-                multiple
-                size="medium"
-                onChange={(event) => handleChange(event, 'rooms')}
-                input={<OutlinedInput label="Rooms" />}
-                renderValue={(selected) => (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: 0.5,
-                      maxHeight: '100px',
-                      overflow: 'scroll',
-                    }}
-                  >
-                    {selected.map((value) => (
-                      <Chip key={value} label={value} />
-                    ))}
-                  </Box>
-                )}
-                MenuProps={MenuProps}
-                disabled={!items || items.length === 0}
-              >
-                {items &&
-                  items.map((item) => {
-                    return (
-                      <MenuItem key={item.room} value={item.room}>
-                        <Checkbox checked={rooms.indexOf(item.room) > -1} />
-                        <ListItemText primary={item.room} />
-                      </MenuItem>
-                    );
-                  })}
-              </Select>
-            </FormControl>
+          <Grid size={{ xs: 12, md: 4, lg: 6, xl: 4 }}>
+            <Autocomplete
+              multiple
+              id="room-select"
+              options={items ? items.map((item) => item.room) : []}
+              disableCloseOnSelect
+              value={rooms || []}
+              onChange={(event, newValue) => {
+                setRooms(newValue as any[]);
+              }}
+              getOptionLabel={(option) => option.toString()}
+              renderOption={(props, option, { selected }) => (
+                <li {...props}>
+                  <Checkbox style={{ marginRight: 8 }} checked={selected} />
+                  {option}
+                </li>
+              )}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Rooms"
+                  variant="outlined"
+                  fullWidth
+                  className={styles.formControl}
+                />
+              )}
+              disabled={!items || items.length === 0}
+            />
           </Grid>
-          <Grid size={{ xs: 0, xl: 6 }} sx={{ display: { xs: 'none', xl: 'block' } }}></Grid>
-          <Grid size={{ xs: 6, sm: 3, md: 2, lg: 2 }} className={styles.filterBox}>
+          <Grid size={{ xs: 6, sm: 6, md: 4, lg: 2 }} sx={{ display: 'flex', alignItems: 'center' }}>
             <FormControlLabel
               className={styles.formControl}
               control={
@@ -301,70 +288,71 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                   onChange={(event) => handleChange(event, 'hasName')}
                   name="checkedB"
                   color="primary"
-                  size="small"
                 />
               }
               label="has Name only"
             />
           </Grid>
-          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-            <Grid size={{ xs: 6, sm: 3, md: 2, lg: 2 }} className={styles.filterBox}>
-              <Button
+          
+          <Grid size={{ xs: 6, sm: 3, md: 2, lg: 2 }} sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              fullWidth
+              className={`${styles.button} ${styles.printButton}`}
+              startIcon={<PrintIcon />}
+              disabled={!sheetId || (errors && errors?.length > 0)}
+              onClick={handlePrintClick}
+              sx={{ height: '56px' }}
+            >
+              Print
+            </Button>
+          </Grid>
+          <Grid size={{ xs: 0, sm: 3, md: 2, lg: 2 }} sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              fullWidth
+              className={`${styles.button} ${styles.refreshButton}`}
+              startIcon={<RefreshIcon />}
+              disabled={sheetId === undefined}
+              onClick={handleRefreshClick}
+              sx={{ height: '56px' }}
+            >
+              Refresh
+            </Button>
+          </Grid>
+
+          {/* Mobile Buttons */}
+           <Grid
+            size={{ xs: 12 }}
+            sx={{ display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end', gap: 1 }}
+          >
+             <Button
                 variant="outlined"
-                color="primary"
-                size="medium"
                 fullWidth
-                className={styles.button}
                 startIcon={<PrintIcon />}
                 disabled={!sheetId || (errors && errors?.length > 0)}
                 onClick={handlePrintClick}
+                className={`${styles.button} ${styles.printButton}`}
+                sx={{ height: '56px' }}
               >
                 Print
               </Button>
-            </Grid>
-          </Box>
-          <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-            <Grid
-              size={{ xs: 12, sm: 3, md: 0 }}
-              className={styles.filterBox}
-              sx={{ display: 'flex', justifyContent: 'flex-end' }}
-            >
-              <Tooltip title="Print">
-                <Button
-                  className={styles.iconButton}
-                  disabled={!sheetId || (errors && errors?.length > 0)}
-                  onClick={handlePrintClick}
-                >
-                  <PrintIcon />
-                </Button>
-              </Tooltip>
-              <Tooltip title="Refresh">
-                <Button
-                  className={styles.iconButton}
-                  disabled={sheetId === undefined}
-                  onClick={handleRefreshClick}
-                >
-                  <RefreshIcon />
-                </Button>
-              </Tooltip>
-            </Grid>
-          </Box>
-          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-            <Grid size={{ xs: 0, md: 2 }} sx={{ display: { xs: 'none', md: 'block' } }} className={styles.filterBox}>
               <Button
                 variant="outlined"
-                color="primary"
-                size="medium"
                 fullWidth
-                className={styles.button}
                 startIcon={<RefreshIcon />}
                 disabled={sheetId === undefined}
                 onClick={handleRefreshClick}
+                className={`${styles.button} ${styles.refreshButton}`}
+                sx={{ height: '56px' }}
               >
                 Refresh
               </Button>
-            </Grid>
-          </Box>
+          </Grid>
         </Grid>
       </Box>
     );
@@ -387,26 +375,27 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
   const renderError = useCallback(() => {
     if (branch && errors) {
       return (
-        <Paper className={styles.paperError}>
-          <Typography variant="body1" gutterBottom color="error">
-            Sheet Error
+        <Paper className={styles.paperError} elevation={0}>
+          <Typography variant="h6" gutterBottom color="error" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
+             <i className="fa-solid fa-triangle-exclamation"></i> Sheet Error
           </Typography>
           <Typography variant="body2" gutterBottom>
+             Error in:{' '}
             <a
               href={`https://docs.google.com/spreadsheets/d/${branch?.spreadSheetId}#gid=${report.sheet?.sheetId}`}
               target="_blank"
               rel="noreferrer"
-              style={{ color: 'blue', textDecoration: 'underline' }}
+              style={{ color: 'inherit', textDecoration: 'underline', fontWeight: 600 }}
             >
               {`${branch?.spreadSheetName} - ${report.sheet?.title}`}
             </a>
           </Typography>
-          <List component="nav">
-            {errors.map((error) => {
+          <List dense>
+            {errors.map((error, index) => {
               return (
-                <ListItem key={error} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={error} />
+                <ListItem key={index} disablePadding>
+                  <ListItemButton sx={{ borderRadius: 1 }}>
+                    <ListItemText primary={error} primaryTypographyProps={{ color: 'error', variant: 'body2' }} />
                   </ListItemButton>
                 </ListItem>
               );
@@ -419,18 +408,18 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
 
   return (
     <div className={styles.root}>
-      <Box className={styles.title}>
-        <Typography gutterBottom variant="h5">
+      <Box sx={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', width: '100%', mb: 0 }}>
+        <Typography variant="h4" className={styles.headerTitle}>
           Invoice Report
         </Typography>
         {itemsToDisplay && items && (
-          <Typography gutterBottom variant="body2">
+           <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500 }}>
             {`Total ${itemsToDisplay.length}/${items.length}`}
           </Typography>
         )}
       </Box>
 
-      <Paper className={styles.paper}>
+      <Paper className={styles.paper} elevation={0}>
         <Grid
           container
           direction="row"
@@ -440,8 +429,8 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
           <Grid size={{ xs: 12 }}>
             {renderFilter()}
             {(loading || report.loading || driveLoading || bankLoading) && (
-              <Box component="p">
-                <LinearProgress />
+              <Box sx={{ width: '100%', mt: 2 }}>
+                 <LinearProgress sx={{ borderRadius: 1 }} />
               </Box>
             )}
           </Grid>
