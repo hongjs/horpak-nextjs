@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material';
-import BankDetail from 'components/bank/BankDetail';
+import { Box, Typography } from "@mui/material";
+import BankDetail from "components/bank/BankDetail";
 
 const AddNewBank: React.FC = () => {
   return (

@@ -1,12 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
-import { withActiveAuth } from 'middleware';
-import clientPromise from 'lib/mongodb';
-import { FindOneAndUpdateOptions, ObjectId } from 'mongodb';
-import keys from 'config/keys';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+import { withActiveAuth } from "middleware";
+import clientPromise from "lib/mongodb";
+import { FindOneAndUpdateOptions, ObjectId } from "mongodb";
+import keys from "config/keys";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     const {
       _id,
       name,
@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } = req.body;
 
     if (_id && !ObjectId.isValid(_id)) {
-      res.status(400).send({ status: 'Invalid parameters, require [id]' });
+      res.status(400).send({ status: "Invalid parameters, require [id]" });
       return;
     }
 
@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getSession({ req });
 
     if (_id) {
-      const result = await db.collection('branches').findOneAndUpdate(
+      const result = await db.collection("branches").findOneAndUpdate(
         { _id: new ObjectId(_id) },
         {
           $set: {
@@ -45,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             modifiedDate: new Date(),
           },
         },
-        { returnOriginal: false } as FindOneAndUpdateOptions
+        { returnOriginal: false } as FindOneAndUpdateOptions,
       );
       res.send(result.value);
     } else {
@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         modifiedBy: session?.user?.email,
         modifiedDate: new Date(),
       };
-      const result = await db.collection('branches').insertOne(obj);
+      const result = await db.collection("branches").insertOne(obj);
       res.send({ _id: result.insertedId, ...obj });
     }
   }

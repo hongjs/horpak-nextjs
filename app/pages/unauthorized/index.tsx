@@ -1,9 +1,9 @@
-import type { GetServerSideProps } from 'next';
-import Image from 'next/image';
-import { signOut, getSession } from 'next-auth/react';
-import { Box, Button, Grid, Typography } from '@mui/material';
-import styles from 'styles/Home.module.css';
-import React from 'react';
+import type { GetServerSideProps } from "next";
+import Image from "next/image";
+import { signOut, getSession } from "next-auth/react";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import styles from "styles/Home.module.css";
+import React from "react";
 
 type Props = {
   user: any;
@@ -17,7 +17,7 @@ const Unauthorized: React.FC<Props> = ({ user }) => {
           <Box className={styles.main}>
             <Grid container>
               <Grid size={{ xs: 12 }}>
-                <Box sx={{ textAlign: 'center' }}>
+                <Box sx={{ textAlign: "center" }}>
                   <Typography variant="h3" gutterBottom>
                     Unauthorized
                   </Typography>
@@ -25,10 +25,10 @@ const Unauthorized: React.FC<Props> = ({ user }) => {
               </Grid>
               {user && (
                 <Grid size={{ xs: 12 }}>
-                  <Box sx={{ textAlign: 'center' }}>
+                  <Box sx={{ textAlign: "center" }}>
                     <Image
-                      src={user.image || ''}
-                      alt={'user-pic'}
+                      src={user.image || ""}
+                      alt={"user-pic"}
                       width={50}
                       height={50}
                     />
@@ -38,7 +38,7 @@ const Unauthorized: React.FC<Props> = ({ user }) => {
                       onClick={async () => {
                         const data = await signOut({
                           redirect: true,
-                          callbackUrl: '/auth/signin',
+                          callbackUrl: "/auth/signin",
                         });
                       }}
                     >

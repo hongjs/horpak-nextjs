@@ -1,12 +1,12 @@
-import { Dispatch } from 'react';
-import { AlertColor } from 'types/state';
-export const OPEN_ALERT = 'OPEN_ALERT';
-export const CLOSE_ALERT = 'CLOSE_ALERT';
+import { Dispatch } from "react";
+import { AlertColor } from "types/state";
+export const OPEN_ALERT = "OPEN_ALERT";
+export const CLOSE_ALERT = "CLOSE_ALERT";
 
 export const openAlert = async (
   dispatch: Dispatch<any>,
   message: string,
-  severity: AlertColor
+  severity: AlertColor,
 ) => {
   dispatch({ type: OPEN_ALERT, payload: { message, severity } });
 };

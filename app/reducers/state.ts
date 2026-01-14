@@ -1,4 +1,4 @@
-import { AppState } from 'types/state';
+import { AppState } from "types/state";
 
 const initialState: AppState = {
   auth: {
@@ -8,8 +8,8 @@ const initialState: AppState = {
   },
   alert: {
     open: false,
-    message: '',
-    severity: 'success',
+    message: "",
+    severity: "success",
   },
   users: [],
   bank: {

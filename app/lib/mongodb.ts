@@ -1,5 +1,5 @@
-import { MongoClient, MongoClientOptions } from 'mongodb';
-import keys from 'config/keys';
+import { MongoClient, MongoClientOptions } from "mongodb";
+import keys from "config/keys";
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
@@ -8,13 +8,13 @@ let clientPromise: Promise<MongoClient>;
 
 if (!keys.MONGO_URI) {
   throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
+    "Please define the MONGODB_URI environment variable inside .env.local",
   );
 }
 
 if (!keys.DB_NAME) {
   throw new Error(
-    'Please define the MONGODB_DB environment variable inside .env.local'
+    "Please define the MONGODB_DB environment variable inside .env.local",
   );
 }
 
@@ -24,7 +24,7 @@ const options = {
   useUnifiedTopology: true,
 } as MongoClientOptions;
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   // In development mode, use a global variable so that the value
   // is preserved across module reloads caused by HMR (Hot Module Replacement).
   if (!global.mongoClientPromise) {

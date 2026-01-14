@@ -1,12 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
-import { getUser, checkAdmin } from 'lib/firebaseUtil';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+import { getUser, checkAdmin } from "lib/firebaseUtil";
 
 const withActiveAuth = (handler: any) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getSession({ req });
     if (!session || !session.user || !session.user.email) {
-      res.status(401).send('Unauthorized');
+      res.status(401).send("Unauthorized");
       return;
     }
 
@@ -17,7 +17,7 @@ const withActiveAuth = (handler: any) => {
 
       const user = await getUser(session.user.email);
       if (!user || !user.active) {
-        res.status(401).send('Unauthorized');
+        res.status(401).send("Unauthorized");
         return;
       }
 

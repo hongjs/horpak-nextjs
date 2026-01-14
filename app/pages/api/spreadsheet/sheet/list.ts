@@ -1,10 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { withActiveAuth } from 'middleware';
-import { setCredentials, listSheets } from 'lib/spreadsheetUtil';
-import { getAccessToken } from 'lib/mongoUtil';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { withActiveAuth } from "middleware";
+import { setCredentials, listSheets } from "lib/spreadsheetUtil";
+import { getAccessToken } from "lib/mongoUtil";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'GET') {
+  if (req.method === "GET") {
     const { id } = req.query;
     try {
       setCredentials(await getAccessToken());

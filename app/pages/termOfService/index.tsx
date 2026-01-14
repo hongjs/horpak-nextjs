@@ -2,19 +2,19 @@ const termOfService = () => {
   return (
     <div
       style={{
-        width: '100%',
-        margin: '64px',
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
+        width: "100%",
+        margin: "64px",
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
       <div
         style={{
-          width: '800px',
+          width: "800px",
         }}
       >
-        <h1 style={{ marginTop: '10px' }}>Terms &amp; Conditions</h1>
+        <h1 style={{ marginTop: "10px" }}>Terms &amp; Conditions</h1>
         <p>Updated at 2022-09-23</p> <br /> <h1>General Terms</h1>
         <p>
           <span>

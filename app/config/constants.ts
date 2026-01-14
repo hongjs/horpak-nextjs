@@ -1,12 +1,12 @@
-import { ConstantType } from 'types';
+import { ConstantType } from "types";
 
 const constants: ConstantType = {
-  TURNSTILE_PUBLIC_KEY: '0x4AAAAAAACkDQDLB7FnRosK',
+  TURNSTILE_PUBLIC_KEY: "0x4AAAAAAACkDQDLB7FnRosK",
   PUBLIC_PATHS: [
-    '/auth/signin',
-    '/unauthorized',
-    '/privacyPolicy',
-    '/termOfService',
+    "/auth/signin",
+    "/unauthorized",
+    "/privacyPolicy",
+    "/termOfService",
   ],
 };
 

@@ -1,6 +1,6 @@
-import Ajv from 'ajv';
-import { ReportItem } from 'types/state';
-import schema from './reportSchema';
+import Ajv from "ajv";
+import { ReportItem } from "types/state";
+import schema from "./reportSchema";
 
 const validateReport = (items: ReportItem[]) => {
   const ajv = new Ajv();
@@ -13,9 +13,9 @@ const validateReport = (items: ReportItem[]) => {
       validate.errors.forEach((error) => {
         errors.push(
           `[${(item as ReportItem).room}] '${error.instancePath.replace(
-            '/',
-            ''
-          )}' ${error.message}.`
+            "/",
+            "",
+          )}' ${error.message}.`,
         );
       });
     }

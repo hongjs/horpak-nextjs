@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
-import { useAppContext } from 'hooks';
+import { useCallback } from "react";
+import { useAppContext } from "hooks";
 import {
   fetchBank,
   getBank,
   saveBank,
   deleteBank,
-} from 'reducers/actions/bankAction';
+} from "reducers/actions/bankAction";
 
 const useBank = () => {
   const { state, dispatch } = useAppContext();
@@ -18,21 +18,21 @@ const useBank = () => {
     (id: string | null) => {
       getBank(dispatch, id);
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleSaveBank = useCallback(
     (data: object) => {
       saveBank(dispatch, data);
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleDeleteBank = useCallback(
     (id: string) => {
       deleteBank(dispatch, id);
     },
-    [dispatch]
+    [dispatch],
   );
 
   return {

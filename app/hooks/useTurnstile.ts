@@ -1,11 +1,11 @@
-import { useCallback, useState } from 'react';
-import axios from 'axios';
+import { useCallback, useState } from "react";
+import axios from "axios";
 
 const useUser = () => {
   const [valid, setValid] = useState(false);
 
   const handleValidateToken = useCallback(async (token: string) => {
-    const res = await axios.post('/api/turnstile/validate', { token });
+    const res = await axios.post("/api/turnstile/validate", { token });
     setValid(res.data.success);
   }, []);
 

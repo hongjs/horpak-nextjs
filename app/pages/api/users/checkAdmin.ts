@@ -1,12 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { db } from 'lib/firebaseUtil';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { db } from "lib/firebaseUtil";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'GET') {
+  if (req.method === "GET") {
     try {
       const snapshot = await db
-        .collection('users')
-        .where('admin', '==', true)
+        .collection("users")
+        .where("admin", "==", true)
         .get();
 
       res.send(snapshot.size === 0);

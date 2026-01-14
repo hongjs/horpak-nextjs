@@ -1,7 +1,7 @@
-import { credential } from 'firebase-admin';
-import { initializeApp, getApps } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
-import keys from 'config/keys';
+import { credential } from "firebase-admin";
+import { initializeApp, getApps } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+import keys from "config/keys";
 
 const apps = getApps();
 const app =
@@ -11,7 +11,7 @@ const app =
         {
           credential: credential.cert(keys.FIREBASE_SERVICE_ACCOUNT_KEY as any),
         },
-        keys.FIREBASE_SERVICE_ACCOUNT_KEY.project_id
+        keys.FIREBASE_SERVICE_ACCOUNT_KEY.project_id,
       );
 
 const db = getFirestore(app);
@@ -19,8 +19,8 @@ const db = getFirestore(app);
 const getUser = async (email: string) => {
   if (!email) return null;
   const snapshot = await db
-    .collection('users')
-    .where('email', '==', email)
+    .collection("users")
+    .where("email", "==", email)
     .get();
   if (snapshot.size > 0) {
     return snapshot.docs[0].data();
@@ -30,8 +30,8 @@ const getUser = async (email: string) => {
 
 const checkAdmin = async () => {
   const snapshot = await db
-    .collection('users')
-    .where('admin', '==', true)
+    .collection("users")
+    .where("admin", "==", true)
     .get();
 
   return snapshot.size === 0;

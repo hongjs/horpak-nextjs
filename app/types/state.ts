@@ -1,4 +1,4 @@
-import { AuthState, UserType } from './auth';
+import { AuthState, UserType } from "./auth";
 
 export type AppReducerType = (state: AppState, action: any) => AppState;
 
@@ -28,6 +28,7 @@ export type BankItemState = {
   remark?: string;
   modifiedDate?: Date;
   modifiedBy?: string;
+  logo?: string;
 };
 
 type BranchState = {
@@ -66,7 +67,7 @@ type AlertState = {
   severity: AlertColor;
 };
 
-export type AlertColor = 'success' | 'info' | 'warning' | 'error';
+export type AlertColor = "success" | "info" | "warning" | "error";
 
 export type DriveItem = {
   id: string;

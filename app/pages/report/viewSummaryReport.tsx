@@ -1,5 +1,4 @@
-
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -11,24 +10,24 @@ import {
   LinearProgress,
   List,
   ListItem,
-  ListItemButton, // Added ListItemButton
+  ListItemButton,
   ListItemText,
   MenuItem,
   Paper,
   Select,
   Typography,
   Tooltip,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Print as PrintIcon,
   Refresh as RefreshIcon,
-} from '@mui/icons-material';
-import { useReactToPrint } from 'react-to-print';
-import DataSourceReport from 'components/report/DataSourceReport';
-import { Props } from 'types';
-import { useBranch, useDrive, useReport } from 'hooks';
-import { BranchItemState } from 'types/state';
-import styles from './viewSummaryReport.module.css';
+} from "@mui/icons-material";
+import { useReactToPrint } from "react-to-print";
+import DataSourceReport from "components/report/DataSourceReport";
+import { Props } from "types";
+import { useBranch, useDrive, useReport } from "hooks";
+import { BranchItemState } from "types/state";
+import styles from "./viewSummaryReport.module.css";
 
 const ViewSummaryReport: React.FC<Props> = (props) => {
   const { branches, fetchBranch, loading } = useBranch();
@@ -52,7 +51,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
 
   const handleChange = useCallback(
     (event: any, name: string) => {
-      if (name === 'branch') {
+      if (name === "branch") {
         setSheetId(undefined);
 
         const branch = branches.find((i) => i._id === event.target.value);
@@ -60,20 +59,20 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           setBranch(branch);
           fetchSheets([branch]);
         }
-      } else if (name === 'sheet') {
+      } else if (name === "sheet") {
         setSheetId(event.target.value);
         if (branch && branch.spreadSheetId) {
           fetchReport(branch.spreadSheetId, event.target.value);
         }
       }
     },
-    [branch, branches, fetchSheets, fetchReport]
+    [branch, branches, fetchSheets, fetchReport],
   );
 
   useEffect(() => {
     if (branch && branch.sheets && branch.sheets.length > 0) {
       setSheetId(branch.sheets[0].sheetId);
-      handleChange({ target: { value: branch.sheets[0].sheetId } }, 'sheet');
+      handleChange({ target: { value: branch.sheets[0].sheetId } }, "sheet");
     }
   }, [branch, branch?.sheets, handleChange]);
 
@@ -89,17 +88,20 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
   const renderFilter = useCallback(() => {
     return (
       <Box className={styles.filter}>
-        <Grid container>
-          <Grid size={{ xs: 6, md: 6, lg: 3 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl}>
+        <Grid container alignItems="center">
+          <Grid size={{ xs: 12, md: 6, lg: 3 }} className={styles.filterBox}>
+            <FormControl
+              fullWidth
+              className={styles.formControl}
+              variant="outlined"
+            >
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
                 labelId="branch-select-label"
                 id="branch-select"
-                value={branch?._id || ''}
+                value={branch?._id || ""}
                 label="Branch"
-                size="medium"
-                onChange={(event) => handleChange(event, 'branch')}
+                onChange={(event) => handleChange(event, "branch")}
               >
                 {branches &&
                   branches.map((branch) => {
@@ -114,16 +116,19 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 3 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl}>
+          <Grid size={{ xs: 12, md: 6, lg: 3 }} className={styles.filterBox}>
+            <FormControl
+              fullWidth
+              className={styles.formControl}
+              variant="outlined"
+            >
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
                 labelId="sheet-select-label"
                 id="sheet-select"
-                value={sheetId || ''}
+                value={sheetId || ""}
                 label="Sheet"
-                size="medium"
-                onChange={(event) => handleChange(event, 'sheet')}
+                onChange={(event) => handleChange(event, "sheet")}
                 disabled={!branch || !branch.sheets}
               >
                 {branch &&
@@ -138,7 +143,11 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 2 }} className={styles.filterBox}>
+          <Grid
+            size={{ xs: 6, md: 6, lg: 2 }}
+            className={styles.filterBox}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
             <FormControlLabel
               className={styles.formControl}
               control={
@@ -147,61 +156,80 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                   onChange={handleCheckChange}
                   name="checkedB"
                   color="primary"
-                  size="small"
                 />
               }
               label="Summary"
             />
           </Grid>
-          <Grid size={{ xs: 6, sm: 3, md: 3, lg: 2 }} className={styles.filterBox} sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Grid
+            size={{ xs: 6, sm: 3, md: 3, lg: 2 }}
+            className={styles.filterBox}
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
             <Button
               variant="outlined"
               color="primary"
-              size="medium"
+              size="large"
               fullWidth
-              className={styles.button}
+              className={`${styles.button} ${styles.printButton}`}
               startIcon={<PrintIcon />}
               disabled={!sheetId || (errors && errors?.length > 0)}
               onClick={handlePrintClick}
+              sx={{ height: "56px" }}
             >
               Print
             </Button>
           </Grid>
           <Grid
-            size={{ xs: 6, sm: 3, md: 3, lg: 2 }}
+            size={{ xs: 12, sm: 3, md: 3, lg: 2 }}
             className={styles.filterBox}
-            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
           >
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <Tooltip title="Print">
-                <Button
-                  className={styles.iconButton}
-                  disabled={!sheetId || (errors && errors?.length > 0)}
-                  onClick={handlePrintClick}
-                >
-                  <PrintIcon />
-                </Button>
-              </Tooltip>
-              <Tooltip title="Refresh">
-                <Button
-                  className={styles.iconButton}
-                  disabled={sheetId === undefined}
-                  onClick={handleRefreshClick}
-                >
-                  <RefreshIcon />
-                </Button>
-              </Tooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Box
+              sx={{
+                display: { xs: "flex", sm: "none" },
+                width: "100%",
+                gap: 1,
+              }}
+            >
               <Button
                 variant="outlined"
-                color="primary"
-                size="medium"
                 fullWidth
-                className={styles.button}
+                startIcon={<PrintIcon />}
+                disabled={!sheetId || (errors && errors?.length > 0)}
+                onClick={handlePrintClick}
+                className={`${styles.button} ${styles.printButton}`}
+                sx={{ height: "56px" }}
+              >
+                Print
+              </Button>
+              <Button
+                variant="outlined"
+                fullWidth
                 startIcon={<RefreshIcon />}
                 disabled={sheetId === undefined}
                 onClick={handleRefreshClick}
+                className={`${styles.button} ${styles.refreshButton}`}
+                sx={{ height: "56px" }}
+              >
+                Refresh
+              </Button>
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" }, width: "100%" }}>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                fullWidth
+                className={`${styles.button} ${styles.refreshButton}`}
+                startIcon={<RefreshIcon />}
+                disabled={sheetId === undefined}
+                onClick={handleRefreshClick}
+                sx={{ height: "56px" }}
               >
                 Refresh
               </Button>
@@ -241,26 +269,47 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
   const renderError = useCallback(() => {
     if (branch && errors) {
       return (
-        <Paper className={styles.paperError}>
-          <Typography variant="body1" gutterBottom color="error">
-            Sheet Error
+        <Paper className={styles.paperError} elevation={0}>
+          <Typography
+            variant="h6"
+            gutterBottom
+            color="error"
+            sx={{
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <i className="fa-solid fa-triangle-exclamation"></i> Sheet Error
           </Typography>
           <Typography variant="body2" gutterBottom>
+            Error in:{" "}
             <a
               href={`https://docs.google.com/spreadsheets/d/${branch?.spreadSheetId}#gid=${report.sheet?.sheetId}`}
               target="_blank"
               rel="noreferrer"
-              style={{ color: 'blue', textDecoration: 'underline' }}
+              style={{
+                color: "inherit",
+                textDecoration: "underline",
+                fontWeight: 600,
+              }}
             >
               {`${branch?.spreadSheetName} - ${report.sheet?.title}`}
             </a>
           </Typography>
-          <List component="nav">
-            {errors.map((err) => {
+          <List dense>
+            {errors.map((err, index) => {
               return (
-                <ListItem key={err} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={`- ${err}`} />
+                <ListItem key={index} disablePadding>
+                  <ListItemButton sx={{ borderRadius: 1 }}>
+                    <ListItemText
+                      primary={err}
+                      primaryTypographyProps={{
+                        color: "error",
+                        variant: "body2",
+                      }}
+                    />
                   </ListItemButton>
                 </ListItem>
               );
@@ -273,10 +322,10 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
 
   return (
     <div className={styles.root}>
-      <Typography gutterBottom variant="h5">
+      <Typography variant="h4" className={styles.headerTitle}>
         Summary Report
       </Typography>
-      <Paper className={styles.paper}>
+      <Paper className={styles.paper} elevation={0}>
         <Grid
           container
           direction="row"
@@ -286,22 +335,18 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           <Grid size={{ xs: 12 }}>
             {renderFilter()}
             {(loading || report.loading || driveLoading) && (
-              <Box component="p">
-                <LinearProgress />
+              <Box sx={{ width: "100%", mt: 2 }}>
+                <LinearProgress sx={{ borderRadius: 1 }} />
               </Box>
             )}
           </Grid>
 
           {errors && errors.length > 0 && (
-            <Grid size={{ xs: 12 }}>
-              {renderError()}
-            </Grid>
+            <Grid size={{ xs: 12 }}>{renderError()}</Grid>
           )}
 
           {(!errors || errors.length === 0) && (
-            <Grid size={{ xs: 12 }}>
-              {renderReportData()}
-            </Grid>
+            <Grid size={{ xs: 12 }}>{renderReportData()}</Grid>
           )}
         </Grid>
       </Paper>

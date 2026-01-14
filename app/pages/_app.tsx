@@ -1,10 +1,14 @@
-import { useMemo } from 'react';
-import type { AppProps } from 'next/app';
-import { SessionProvider } from 'next-auth/react';
-import Head from 'next/head';
-import Providers from '../Providers';
-import constants from 'config/constants';
-import '../styles/globals.css';
+import { useMemo } from "react";
+import type { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
+import { MuiThemeProvider, AuthProvider } from "../Providers";
+import { DarkModeProvider } from "../contexts/DarkModeContext";
+import AppContextWrapper from "../contexts/AppContext";
+import ErrorBoundary from "../components/ErrorBoundary";
+import Layout from "../components/layout/Layout";
+import constants from "config/constants";
+import "../styles/globals.css";
 
 const MyApp: React.FC<AppProps> = ({
   Component,
@@ -20,12 +24,23 @@ const MyApp: React.FC<AppProps> = ({
       <Head>
         <title>C Place App</title>
       </Head>
-      {!publicAccess && (
-        <Providers>
-          <Component {...pageProps} />
-        </Providers>
-      )}
-      {publicAccess && <Component {...pageProps} />}
+      <DarkModeProvider>
+        <AppContextWrapper>
+          <MuiThemeProvider>
+            {!publicAccess ? (
+              <AuthProvider>
+                <Layout>
+                  <ErrorBoundary>
+                    <Component {...pageProps} />
+                  </ErrorBoundary>
+                </Layout>
+              </AuthProvider>
+            ) : (
+              <Component {...pageProps} />
+            )}
+          </MuiThemeProvider>
+        </AppContextWrapper>
+      </DarkModeProvider>
     </SessionProvider>
   );
 };

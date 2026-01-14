@@ -1,24 +1,31 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from "react";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-} from '@mui/material';
+  Typography,
+  Box,
+  useTheme,
+  alpha,
+} from "@mui/material";
+import { Warning as WarningIcon } from "@mui/icons-material";
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onOk,
   onClose,
   open,
-  title,
+  title = "Confirm Action",
   content,
-  okButtonText,
-  cancelButtonText,
+  okButtonText = "Confirm",
+  cancelButtonText = "Cancel",
   disableBackdropClick,
   disableEscapeKeyDown,
   ...props
 }) => {
+  const theme = useTheme();
+
   const handleCancel = useCallback(() => {
     onClose();
   }, [onClose]);
@@ -28,20 +35,20 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   }, [onOk]);
 
   const handleClose = useCallback(
-    (reason: 'backdropClick' | 'escapeKeyDown') => {
-      if (!disableBackdropClick && reason === 'backdropClick') {
+    (reason: "backdropClick" | "escapeKeyDown") => {
+      if (!disableBackdropClick && reason === "backdropClick") {
         onClose();
       }
 
-      if (!disableEscapeKeyDown && reason === 'escapeKeyDown') {
+      if (!disableEscapeKeyDown && reason === "escapeKeyDown") {
         onClose();
       }
 
-      if (typeof onClose === 'function') {
+      if (typeof onClose === "function") {
         onClose();
       }
     },
-    [onClose, disableBackdropClick, disableEscapeKeyDown]
+    [onClose, disableBackdropClick, disableEscapeKeyDown],
   );
 
   return (
@@ -50,16 +57,83 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       aria-labelledby="confirm-dialog"
       open={open}
       onClose={handleClose}
+      PaperProps={{
+        elevation: 24,
+        sx: {
+          borderRadius: 3,
+          p: 2,
+          backgroundImage: "none",
+          boxShadow: theme.shadows[24],
+        },
+      }}
       {...props}
     >
-      {title && <DialogTitle id="confirm-dialog-title">{title}</DialogTitle>}
-      {content && <DialogContent dividers>{content}</DialogContent>}
-      <DialogActions>
-        <Button autoFocus onClick={handleCancel} color="primary">
-          {cancelButtonText || 'Cancel'}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          pt: 1,
+        }}
+      >
+        <Box
+          sx={{
+            bgcolor: alpha(theme.palette.warning.main, 0.1),
+            color: theme.palette.warning.main,
+            borderRadius: "50%",
+            p: 2,
+            mb: 2,
+          }}
+        >
+          <WarningIcon fontSize="large" />
+        </Box>
+        <DialogTitle
+          id="confirm-dialog-title"
+          sx={{ p: 0, mb: 1, fontWeight: 700 }}
+        >
+          {title}
+        </DialogTitle>
+      </Box>
+
+      {content && (
+        <DialogContent sx={{ textAlign: "center", py: 1 }}>
+          <Typography variant="body1" color="text.secondary">
+            {content}
+          </Typography>
+        </DialogContent>
+      )}
+
+      <DialogActions
+        sx={{ justifyContent: "center", px: 2, pb: 1, mt: 2, gap: 1 }}
+      >
+        <Button
+          onClick={handleCancel}
+          color="inherit"
+          variant="outlined"
+          sx={{
+            borderRadius: 2,
+            textTransform: "none",
+            fontWeight: 600,
+            flex: 1,
+          }}
+        >
+          {cancelButtonText}
         </Button>
-        <Button onClick={handleOk} color="primary">
-          {okButtonText || 'Ok'}
+        <Button
+          onClick={handleOk}
+          color="primary"
+          variant="contained"
+          autoFocus
+          sx={{
+            borderRadius: 2,
+            textTransform: "none",
+            fontWeight: 600,
+            flex: 1,
+            boxShadow: "0 8px 16px 0 rgba(66, 133, 244, 0.24)",
+          }}
+        >
+          {okButtonText}
         </Button>
       </DialogActions>
     </Dialog>

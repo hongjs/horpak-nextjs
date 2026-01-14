@@ -1,12 +1,13 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from "react";
+import { useTheme } from "next-themes";
 import {
   displayInteger,
   displayUnit,
   displayMoney,
   toFullMonthYear,
   toShortMonthYear,
-} from 'lib/textHelper';
-import { BankItemState, BranchItemState, ReportItem } from 'types/state';
+} from "lib/textHelper";
+import { BankItemState, BranchItemState, ReportItem } from "types/state";
 
 type Props = {
   items: ReportItem[];
@@ -20,6 +21,14 @@ type Props = {
 
 const InvoiceReport = (props: any, ref: any) => {
   const { items, branch, banks, invoiceMonth, dueDate }: Props = props;
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
+
+  const bgColor = isDark ? "#1e1e1e" : "#fff";
+  const textColor = isDark ? "#e0e0e0" : "#000";
+  const screenBg = isDark ? "#121212" : "#666";
+  const borderColor = isDark ? "#555" : "#555";
+  const dashedBorder = isDark ? "#444" : "#A3A3A3";
 
   const generateRemark = useCallback(
     (bank_id: number) => {
@@ -28,20 +37,20 @@ const InvoiceReport = (props: any, ref: any) => {
       if (bank) {
         const remark = branch.reportRemark
           ? branch.reportRemark
-              .replace('[@BANK]', bank.bankName ? bank.bankName : '')
-              .replace('[@ACCOUNT_NO]', bank.accountNo ? bank.accountNo : '')
+              .replace("[@BANK]", bank.bankName ? bank.bankName : "")
+              .replace("[@ACCOUNT_NO]", bank.accountNo ? bank.accountNo : "")
               .replace(
-                '[@ACCOUNT_NAME]',
-                bank.accountName ? bank.accountName : ''
+                "[@ACCOUNT_NAME]",
+                bank.accountName ? bank.accountName : "",
               )
-          : '';
+          : "";
 
         return (
           <div>
-            {remark.split('|').map((i, index) => {
+            {remark.split("|").map((i, index) => {
               return (
                 <div key={index}>{`${
-                  index === 1 ? 'หมายเหตุ: ' : ''
+                  index === 1 ? "หมายเหตุ: " : ""
                 }${i}`}</div>
               );
             })}
@@ -51,7 +60,7 @@ const InvoiceReport = (props: any, ref: any) => {
         return branch.reportRemark;
       }
     },
-    [branch, banks]
+    [branch, banks],
   );
 
   const renderRow = useCallback(
@@ -72,7 +81,7 @@ const InvoiceReport = (props: any, ref: any) => {
               <td colSpan={3}>
                 ใบแจ้งค่าใช้บริการ เดือน {toFullMonthYear(invoiceMonth)}
               </td>
-              <td colSpan={2} style={{ textAlign: 'right', fontSize: '10pt' }}>
+              <td colSpan={2} style={{ textAlign: "right", fontSize: "10pt" }}>
                 ชำระเงินภายในวันที่ {toShortMonthYear(dueDate)}
               </td>
             </tr>
@@ -88,7 +97,7 @@ const InvoiceReport = (props: any, ref: any) => {
               <td className="space"></td>
               <td>มิเตอร์ไฟ </td>
               <td>
-                ครั้งก่อน {displayUnit(row.electric_start, 4)} ครั้งหลัง{' '}
+                ครั้งก่อน {displayUnit(row.electric_start, 4)} ครั้งหลัง{" "}
                 {displayUnit(row.electric_end, 4)} (
                 {displayInteger(row.electric_unit)} น.)
               </td>
@@ -99,7 +108,7 @@ const InvoiceReport = (props: any, ref: any) => {
               <td className="space"></td>
               <td>มิเตอร์น้ำ </td>
               <td>
-                ครั้งก่อน {displayUnit(row.water_start, 4)} ครั้งหลัง{' '}
+                ครั้งก่อน {displayUnit(row.water_start, 4)} ครั้งหลัง{" "}
                 {displayUnit(row.water_end, 4)} (
                 {displayInteger(row.water_unit)} น.)
               </td>
@@ -202,24 +211,41 @@ const InvoiceReport = (props: any, ref: any) => {
         </table>
       );
     },
-    [branch, dueDate, invoiceMonth, generateRemark]
+    [branch, dueDate, invoiceMonth, generateRemark],
   );
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: "relative" }}>
       <div ref={ref}>
         <style>
-          {
-            '@media print { @page { size: A4 portrait; } #content{padding:0mm;} footer {page-break-after: always;} } '
-          }
-          {
-            '@media screen { #content{padding:5mm; text-align:-webkit-center; background-color:#666; overflow-x:scroll;} footer {margin-bottom: 5mm;} } '
-          }
-          {'#tb {width:100%; background-color:#fff; font-size:10pt;} #tb .space {width: 20mm;} #tb .amount {text-align:right;} #tb .summary {font-weight:bold; } #tb .summary td {padding-bottom:2mm;} #tb .remark p {font-size:9pt;} ' +
-            '#tb .header td {font-size:15pt; font-weight:bold; padding: 2mm; border-top:1px solid #555; border-bottom:1px solid #555; } ' +
-            '#tb .title td {font-size:12pt; font-weight:bold;} #tb .divider td {height:1px; border-bottom:1px solid #555;}  ' +
-            '#tb .title2 td {font-size:12pt; padding-bottom:3mm;} .section { width: 210mm; height: 148mm; padding:10mm; background-color: #fff; } .section-first { border-bottom: 1px dashed #A3A3A3; }' +
-            '#tb .contact td {font-size:8pt;} #tb .border-bottom td {border-bottom:2px solid #555;} '}
+          {`
+            @media print { 
+              @page { size: A4 portrait; } 
+              #content { padding: 0mm; } 
+              footer { page-break-after: always; } 
+              .section { background-color: #fff !important; color: #000 !important; }
+              #tb { background-color: #fff !important; color: #000 !important; }
+              #tb td { border-color: #555 !important; }
+            } 
+            @media screen { 
+              #content { padding: 5mm; text-align: -webkit-center; background-color: ${screenBg}; overflow-x: scroll; } 
+              footer { margin-bottom: 5mm; } 
+            } 
+            #tb { width: 100%; background-color: ${bgColor}; font-size: 10pt; color: ${textColor}; } 
+            #tb .space { width: 20mm; } 
+            #tb .amount { text-align: right; } 
+            #tb .summary { font-weight: bold; } 
+            #tb .summary td { padding-bottom: 2mm; } 
+            #tb .remark p { font-size: 9pt; } 
+            #tb .header td { font-size: 15pt; font-weight: bold; padding: 2mm; border-top: 1px solid ${borderColor}; border-bottom: 1px solid ${borderColor}; } 
+            #tb .title td { font-size: 12pt; font-weight: bold; } 
+            #tb .divider td { height: 1px; border-bottom: 1px solid ${borderColor}; } 
+            #tb .title2 td { font-size: 12pt; padding-bottom: 3mm; } 
+            .section { width: 210mm; height: 148mm; padding: 10mm; background-color: ${bgColor}; color: ${textColor}; } 
+            .section-first { border-bottom: 1px dashed ${dashedBorder}; } 
+            #tb .contact td { font-size: 8pt; } 
+            #tb .border-bottom td { border-bottom: 2px solid ${borderColor}; }
+          `}
         </style>
         {items && items.length > 0 && (
           <div id="content">
@@ -228,7 +254,7 @@ const InvoiceReport = (props: any, ref: any) => {
                 <div key={index}>
                   <div
                     className={`section ${
-                      index % 2 === 0 ? 'section-first' : ''
+                      index % 2 === 0 ? "section-first" : ""
                     }`}
                   >
                     {renderRow(row)}
@@ -244,6 +270,6 @@ const InvoiceReport = (props: any, ref: any) => {
   );
 };
 
-InvoiceReport.displayName = 'InvoiceReport';
+InvoiceReport.displayName = "InvoiceReport";
 
 export default React.forwardRef(InvoiceReport);

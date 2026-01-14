@@ -1,22 +1,78 @@
-## Overview
+# Horpak Next.js
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+A modern business management application built with Next.js for managing banks, branches, and generating detailed reports from Google Spreadsheets.
 
-This repo containing the following packages: `next` `next-auth` `firebase` `@mui/material` `mongodb` `googleapis`
+## Features
 
-## Setup
+- **Authentication & Authorization**
+  - Google OAuth integration via NextAuth.js
+  - Firebase authentication
+  - Role-based access control (Admin/User)
+  - Cloudflare Turnstile protection
 
-1. Run install packages
+- **Bank & Branch Management**
+  - Create, edit, and manage bank records
+  - Branch information management
+  - Data validation and error handling
 
+- **Report Generation**
+  - Invoice report generation from Google Spreadsheets
+  - Summary report with data visualization
+  - Print-friendly report layouts
+  - Integration with Google Sheets API
+
+- **Data Source Management**
+  - Admin panel for data source configuration
+  - Google Spreadsheet integration
+  - Real-time data synchronization
+
+- **User Interface**
+  - Modern Material-UI components
+  - Dark mode support
+  - Responsive design
+  - Interactive data grids
+
+## Tech Stack
+
+- **Framework**: Next.js 16.1.1 (React 19)
+- **Authentication**: NextAuth.js with Firebase
+- **Database**: MongoDB
+- **UI Components**: Material-UI (MUI) v7
+- **Styling**: TailwindCSS + Emotion
+- **APIs**: Google Sheets API, Google Drive API
+- **Testing**: Jest + React Testing Library
+- **Language**: TypeScript
+
+## Prerequisites
+
+- Node.js >= 22.0.0
+- MongoDB instance
+- Firebase project
+- Google Cloud Project (for Sheets API)
+- Cloudflare Turnstile site key
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd horpak-nextjs/app
+```
+
+2. Install dependencies:
 ```bash
 npm install
 # or
-yarn
+yarn install
 ```
 
-2. Create file .env.local at root path
+## Configuration
 
-```javascript
+### 1. Environment Variables
+
+Create a `.env.local` file in the `app` directory:
+
+```env
 NODE_ENV=development
 MONGO_URI=mongodb://localhost:27017/admin
 DB_NAME=your-db-name
@@ -32,16 +88,79 @@ NEXTAUTH_SECRET=your-random-text
 BASE_URL=http://localhost:3000
 ```
 
-3. Create file /config/dev.js
+### 2. Firebase Setup
 
-```javascript
+#### Create Firebase Project
+1. Go to [Firebase Console](https://console.firebase.google.com)
+2. Click **Add Project**
+3. Enter project name (e.g., `horpak-nextjs`)
+4. Disable Google Analytics (optional)
+5. Click **Create project**
+
+#### Setup Firestore Database
+1. Navigate to **Build → Firestore Database**
+2. Click **Create database**
+3. Select **Start in production mode**
+4. Choose your Cloud Firestore location
+5. Click **Enable**
+6. Go to **Rules** tab
+7. Change `allow read, write: if false;` to `allow read, write: if true;`
+8. Click **Publish**
+
+#### Configure Firebase Authentication
+1. Go to **Build → Authentication**
+2. Click **Get started**
+3. Select **Sign-in method** tab
+4. Enable **Google** provider
+5. Set project public-facing name
+6. Click **Save**
+
+#### Get Service Account Key
+1. Go to **Project Settings → Service Accounts**
+2. Click **Generate new private key**
+3. Save as `serviceAccountKey.json` in the project root
+4. Copy the content to `FIREBASE_SERVICE_ACCOUNT_KEY` in `.env.local`
+
+### 3. Google Cloud Setup
+
+#### Enable Required APIs
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Select your project
+3. Navigate to **APIs & Services → Library**
+4. Enable the following APIs:
+   - Google Drive API
+   - Google Sheets API
+
+#### Configure OAuth Consent Screen
+1. Go to **APIs & Services → OAuth consent screen**
+2. Configure your consent screen
+3. Add test users if needed
+
+#### Setup OAuth Client
+1. Go to **APIs & Services → Credentials**
+2. Click **Create Credentials → OAuth client ID**
+3. Application type: **Web application**
+4. Add **Authorized JavaScript origins**:
+   - `http://localhost:3000`
+5. Add **Authorized redirect URIs**:
+   - `http://localhost:3000/api/auth/callback/google`
+   - `http://localhost:3000/auth/spreadsheet/callback`
+6. Save and copy the **Client ID** and **Client Secret**
+7. Update `GOOGLE_ID` and `GOOGLE_SECRET` in `.env.local`
+
+### 4. Configuration File
+
+Create `config/dev.ts`:
+
+```typescript
 import { ConfigType } from 'types';
 import { ServiceAccount } from 'types/auth';
 import serviceAccountKey from '../serviceAccountKey.json';
+
 const keys = Object.freeze({
   NODE_ENV: 'development',
   MONGO_URI: 'mongodb://localhost:27017/admin',
-  DB_NAME: 'dbName',
+  DB_NAME: 'your-db-name',
   TOKEN_SECRET: process.env.JWT_SECRET || 'JWT_SECRET',
   TOKEN_EXPIRES_IN: process.env.JWT_EXPIRE || '7d',
   TURNSTILE_SECRET: process.env.TURNSTILE_SECRET || '',
@@ -52,109 +171,13 @@ const keys = Object.freeze({
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || '',
   BASE_URL: process.env.BASE_URL,
 });
+
 export default keys as ConfigType;
 ```
 
-### Firebase setup
+## Running the Application
 
-#### 1. Create Firebase project
-
-You can following this tutorial for more clearify
-
-[NextAuthJs-V4 | Next Authentication With Firebase | ServerSide Rendering (Google Auth Provider)](https://www.youtube.com/watch?v=so9JJ0YFB-s)
-
-1. Go to [Firebase console](https://console.firebase.google.com)
-2. Click Add Project
-3. Enter project name `nextjs-tutorial`
-4. Disable Google Analytics for this project
-5. Click Create project
-6. When it’s ready click Continue
-
-#### 2. Setup Firestore database
-
-1. Go to menu Build -> Firebase Database
-2. Click Create database
-3. Select Start in production mode
-4. Select Cloud Firestore location
-5. Click Enable
-6. Go to tab Rules
-7. Change `allow read, write: if false;` to `allow read, write: if true;`
-8. Click Publish
-
-#### 3. Setup Firebase project
-
-1. Go to Firebase Project settings
-2. Under section Your apps -> Click web icon
-3. App nickname = `your-project-name`
-4. Click Register app
-5. Copy firebaseConfig = `{apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId}`
-6. Click Continue to console
-
-#### 4. Setup Google Authentication
-
-1. Go to menu Build -> Authentication
-2. Click Get started
-3. Go to tab Sign-in method Click Google -> Enable
-4. Project public-facing name = `nextjs-tutorial-auth`
-5. Click Save button
-6. Click Edit on `Google` record
-7. Expand Web SDK configuration
-8. Copy `Web client ID` and `Web client secret`
-9. Hover mouse at `?` after Web SDK configuration
-10. Click link Google API Console
-11. Under OAuth 2.0 Client IDs click `Web client (auto created by Google Service)`
-12. Add following URL to `Authorized JavaScript origins`
-
-- http://localhost:3000
-
-13. Add following URLs to `Authorized redirect URIs`
-
-- http://localhost:3000/api/auth/callback/google
-- http://localhost:3000/auth/spreadsheet/callback
-
-14. Click SAVE
-
-#### 5. Get serviceAccountKey.json
-
-1. Go to Firebase project settings > Service accounts > Firebase Admin SDK
-2. Click Generate new private key
-3. Save as `serviceAccountKey.json` in the root project
-
-```json
-{
-  "type": "service_account",
-  "project_id": "nextjs-tutorial-xxx",
-  "private_key_id": "xxx",
-  "private_key": "-----BEGIN PRIVATE KEY-----\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-xxx@nextjs-tutorial-xxx.iam.gserviceaccount.com",
-  "client_id": "123",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-xxx%40nextjs-tutorial-xxx.iam.gserviceaccount.com"
-}
-```
-
-#### 6. Enable Google Spreadsheet API
-
-1. Go to https://console.cloud.google.com
-2. Select your project
-3. Go to Library menu
-4. Enable `Drive API` & `Google Sheets API`
-
-#### 7. Edit file .env.local
-
-```javascript
-...
-GOOGLE_ID= <-- paste from 4.8
-GOOGLE_SECRET= <-- paste from 4.8
-FIREBASE_SERVICE_ACCOUNT_KEY= <-- put content from 5.3 serviceAccountKey.json here when deploy production
-...
-```
-
-## Getting Started
-
-1. Run command
+### Development Mode
 
 ```bash
 npm run dev
@@ -162,6 +185,114 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Go to tab User then Active your user (First active user will be assign as Admin)
+### Production Build
+
+```bash
+npm run build
+npm start
+# or
+yarn build
+yarn start
+```
+
+## First-Time Setup
+
+1. Start the application in development mode
+2. Navigate to [http://localhost:3000](http://localhost:3000)
+3. Sign in with Google
+4. Go to the **Users** tab
+5. Activate your user (first activated user becomes Admin)
+
+## Project Structure
+
+```
+app/
+├── components/          # React components
+│   ├── auth/           # Authentication components
+│   ├── bank/           # Bank management
+│   ├── branch/         # Branch management
+│   ├── layout/         # Layout components
+│   └── report/         # Report components
+├── contexts/           # React context providers
+├── hooks/              # Custom React hooks
+├── lib/                # Utility libraries
+├── middleware/         # Next.js middleware
+├── pages/              # Next.js pages and API routes
+│   ├── api/           # API endpoints
+│   ├── admin/         # Admin pages
+│   ├── auth/          # Authentication pages
+│   ├── bank/          # Bank management pages
+│   ├── branch/        # Branch management pages
+│   └── report/        # Report pages
+├── public/             # Static assets
+├── reducers/           # State reducers
+├── styles/             # Global styles
+├── types/              # TypeScript type definitions
+├── __tests__/          # Test files
+└── config/             # Configuration files
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint errors
+- `npm run prettier:fix` - Format code with Prettier
+- `npm test` - Run tests
+- `npm run test:watch` - Run tests in watch mode
+
+## Testing
+
+The project uses Jest and React Testing Library for testing.
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+## Environment-Specific Configuration
+
+- **Development**: Uses `config/dev.ts`
+- **Production**: Uses `config/prod.ts` or environment variables
+
+## Security Considerations
+
+1. Never commit `.env` or `.env.local` files
+2. Keep `serviceAccountKey.json` secure and out of version control
+3. Rotate secrets regularly
+4. Use strong values for `TOKEN_SECRET` and `NEXTAUTH_SECRET`
+5. Enable Cloudflare Turnstile for additional security
+
+## Docker Support
+
+The project includes Docker configuration:
+
+```bash
+# Build image
+docker build -t horpak-nextjs .
+
+# Run with docker-compose
+docker-compose up
+```
+
+## Contributing
+
+1. Create a feature branch from `main`
+2. Make your changes
+3. Run tests and linting
+4. Submit a pull request
+
+## License
+
+[Specify your license here]
+
+## Support
+
+For issues and questions, please open an issue in the repository.

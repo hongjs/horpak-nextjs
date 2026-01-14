@@ -1,17 +1,17 @@
-import _ from 'lodash';
-import { format } from 'date-fns';
+import _ from "lodash";
+import { format } from "date-fns";
 import {
   FETCH_USERS,
   FETCH_AUTH_USER_PENDING,
   FETCH_AUTH_USER_SUCCESS,
-} from 'reducers/actions/userAction';
+} from "reducers/actions/userAction";
 import {
   LOADING_BANK,
   FETCH_BANKS,
   GET_BANK,
   EDIT_BANK,
   DELETE_BANK,
-} from 'reducers/actions/bankAction';
+} from "reducers/actions/bankAction";
 import {
   LOADING_BRANCH,
   FETCH_BRANCHS,
@@ -19,7 +19,7 @@ import {
   EDIT_BRANCH,
   DELETE_BRANCH,
   SHEET_SELECT,
-} from 'reducers/actions/branchAction';
+} from "reducers/actions/branchAction";
 import {
   CHECK_TOKEN,
   LOADING_DRIVE,
@@ -32,9 +32,9 @@ import {
   FETCH_SHEET_CONTENT_PENDING,
   FETCH_SHEET_CONTENT_SUCCESS,
   CLEAR_REPORT,
-} from 'reducers/actions/driveAction';
-import { OPEN_ALERT, CLOSE_ALERT } from 'reducers/actions/globalAction';
-import { AppReducerType, AppState } from 'types/state';
+} from "reducers/actions/driveAction";
+import { OPEN_ALERT, CLOSE_ALERT } from "reducers/actions/globalAction";
+import { AppReducerType, AppState } from "types/state";
 
 export const AppReducer: AppReducerType = (state: AppState, action: any) => {
   switch (action.type) {
@@ -183,7 +183,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
       };
     case SHEET_SELECT: {
       const branch = state.branch.branches.find(
-        (i) => i._id === action.payload.branchId
+        (i) => i._id === action.payload.branchId,
       );
 
       if (branch) {
@@ -233,7 +233,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
         drive: {
           ...state.drive,
           loading: false,
-          files: _.orderBy(action.payload, ['mimeType', 'name']),
+          files: _.orderBy(action.payload, ["mimeType", "name"]),
         },
       };
 
@@ -248,7 +248,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
       };
     case FETCH_SHEETS: {
       const branch = state.branch.branches.find(
-        (i) => i._id === action.payload.branchId
+        (i) => i._id === action.payload.branchId,
       );
       if (branch) {
         branch.sheets = action.payload.sheets;
@@ -266,7 +266,7 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
     }
     case PROCESSING_DATA: {
       const branch = state.branch.branches.find(
-        (i) => i._id === action.payload
+        (i) => i._id === action.payload,
       );
       if (branch) {
         branch.processing = true;
@@ -278,12 +278,12 @@ export const AppReducer: AppReducerType = (state: AppState, action: any) => {
     }
     case PROCESS_DATA_DONE: {
       const branch = state.branch.branches.find(
-        (i) => i._id === action.payload.branchId
+        (i) => i._id === action.payload.branchId,
       );
       if (branch) {
         branch.processing = false;
         branch.error = undefined;
-        branch.lastProcessSheet = format(new Date(), 'yyyy-MM-dd HH:mm:ss');
+        branch.lastProcessSheet = format(new Date(), "yyyy-MM-dd HH:mm:ss");
         action.payload.updatedSheets.forEach((sheet: any) => {
           if (branch && branch.sheets) {
             let item = branch.sheets.find((i) => i.sheetId === sheet.sheetId);

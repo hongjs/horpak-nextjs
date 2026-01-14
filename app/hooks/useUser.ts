@@ -1,6 +1,6 @@
-import { useCallback, useEffect } from 'react';
-import { useAppContext } from 'hooks';
-import { fetchUsers, toggleUserStatus } from '../reducers/actions/userAction';
+import { useCallback, useEffect } from "react";
+import { useAppContext } from "hooks";
+import { fetchUsers, toggleUserStatus } from "../reducers/actions/userAction";
 
 const useUser = () => {
   const { state, dispatch } = useAppContext();
@@ -13,7 +13,7 @@ const useUser = () => {
     (id: string) => {
       toggleUserStatus(dispatch, id);
     },
-    [dispatch]
+    [dispatch],
   );
 
   return { users: state.users, toggleUserStatus: toggleUserStatusHandler };

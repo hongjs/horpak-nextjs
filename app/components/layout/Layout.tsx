@@ -1,39 +1,60 @@
-import React, { useState } from 'react';
-import Router from 'next/router';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Box, Container, CircularProgress } from '@mui/material';
-import MainNavigation from './MainNavigation';
-import styles from './Layout.module.css';
-import { Props } from 'types';
+import React, { useState } from "react";
+import Router from "next/router";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Box } from "@mui/material";
+import MainNavigation from "./MainNavigation";
+import { Props } from "types";
+import Loading from "../Loading";
 
 const Layout: React.FC<Props> = ({ children }) => {
   const [loadingPage, setLoadingPage] = useState(false);
 
-  Router.events.on('routeChangeStart', (url) => {
+  Router.events.on("routeChangeStart", (url) => {
     setLoadingPage(true);
   });
-  Router.events.on('routeChangeComplete', (url) => {
+  Router.events.on("routeChangeComplete", (url) => {
     setLoadingPage(false);
   });
-  Router.events.on('routeChangeError', (url) => {
+  Router.events.on("routeChangeError", (url) => {
     setLoadingPage(false);
   });
 
   return (
-    <>
-      <Container className={styles.container}>
-        <CssBaseline />
-        <MainNavigation />
-        <main className={styles.main}>
-          {loadingPage && (
-            <Box className={styles.pageLoading}>
-              <CircularProgress />
-            </Box>
-          )}
-          {!loadingPage && <>{children}</>}
-        </main>
-      </Container>
-    </>
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        backgroundColor: "background.default",
+      }}
+    >
+      <CssBaseline />
+      <MainNavigation />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          mt: "64px", // Height of AppBar
+          width: "100%", // Ensure it takes available width
+          overflowX: "hidden", // Prevent horizontal scroll
+        }}
+      >
+        {loadingPage ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "calc(100vh - 128px)",
+            }}
+          >
+            <Loading />
+          </Box>
+        ) : (
+          children
+        )}
+      </Box>
+    </Box>
   );
 };
 

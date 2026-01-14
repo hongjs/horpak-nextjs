@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from 'react';
-import { useSession } from 'next-auth/react';
-import { useAppContext, usePrevious } from 'hooks';
-import { fetchAuthUser } from '../reducers/actions/userAction';
-import { Session } from 'next-auth';
+import { useEffect, useMemo } from "react";
+import { useSession } from "next-auth/react";
+import { useAppContext, usePrevious } from "hooks";
+import { fetchAuthUser } from "../reducers/actions/userAction";
+import { Session } from "next-auth";
 
 const useAuthUser = () => {
   const { state, dispatch } = useAppContext();
@@ -20,10 +20,10 @@ const useAuthUser = () => {
 
   useEffect(() => {
     if (isUpdated) {
-      if (status === 'authenticated' && data.user && data.user.email) {
+      if (status === "authenticated" && data.user && data.user.email) {
         fetchAuthUser(dispatch, data.user.email);
       } else {
-        fetchAuthUser(dispatch, '');
+        fetchAuthUser(dispatch, "");
       }
     }
   }, [dispatch, data, status, isUpdated]);

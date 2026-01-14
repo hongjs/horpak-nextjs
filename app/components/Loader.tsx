@@ -1,17 +1,9 @@
-import React from 'react';
-import { CircularProgress } from '@mui/material';
+import React from "react";
+import { CircularProgress } from "@mui/material";
 
 const Loader: React.FC = () => {
   return (
-    <div
-      style={{
-        alignItems: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        height: '100vh',
-        width: '100vw',
-      }}
-    >
+    <div className="flex items-center justify-center h-screen w-screen">
       <CircularProgress color="primary" />
     </div>
   );

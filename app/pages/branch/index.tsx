@@ -1,23 +1,36 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/router';
-import { Box, Fab, IconButton, Typography } from '@mui/material';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import {
+  Box,
+  IconButton,
+  Typography,
+  Container,
+  Stack,
+  Button,
+  Card,
+  useTheme,
+  alpha,
+  Tooltip,
+  Link as MuiLink,
+} from "@mui/material";
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-} from '@mui/icons-material';
-import { DataGrid } from '@mui/x-data-grid';
-import { format as dateFormat, parseISO } from 'date-fns';
-import { useBranch } from 'hooks';
-import ConfirmDialog from 'components/ConfirmDialog';
-
-import styles from './index.module.css';
+  Store as StoreIcon,
+  Description as SheetIcon,
+} from "@mui/icons-material";
+import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { format as dateFormat, parseISO } from "date-fns";
+import { useBranch } from "hooks";
+import ConfirmDialog from "components/ConfirmDialog";
 
 const BranchList: React.FC = () => {
   const router = useRouter();
+  const theme = useTheme();
   const { branches, fetchBranch, deleteBranch } = useBranch();
   const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState({ id: '', name: '' });
+  const [current, setCurrent] = useState({ id: "", name: "" });
 
   useEffect(() => {
     fetchBranch();
@@ -32,142 +45,219 @@ const BranchList: React.FC = () => {
   const handleDelete = useCallback(() => {
     if (current) deleteBranch(current.id);
 
-    setCurrent({ id: '', name: '' });
+    setCurrent({ id: "", name: "" });
     setOpen(false);
   }, [current, deleteBranch]);
 
   const handleCancel = useCallback(() => {
-    setCurrent({ id: '', name: '' });
+    setCurrent({ id: "", name: "" });
     setOpen(false);
   }, []);
 
-  const columns = useMemo(() => {
+  const columns: GridColDef[] = useMemo(() => {
     return [
       {
-        field: 'name',
-        headerName: 'Branch',
-        width: 150,
+        field: "name",
+        headerName: "Branch Name",
+        width: 200,
+        renderCell: (params: GridRenderCellParams) => (
+          <Stack direction="row" spacing={1} alignItems="center">
+            <StoreIcon color="primary" fontSize="small" />
+            <Typography variant="body2" fontWeight="600">
+              {params.row.name}
+            </Typography>
+          </Stack>
+        ),
       },
       {
-        field: 'spreadSheetName',
-        headerName: 'Spreadsheet',
-        width: 150,
+        field: "spreadSheetName",
+        headerName: "Spreadsheet",
+        width: 250,
         renderCell: (params: any) => {
           return (
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href={`https://docs.google.com/spreadsheets/d/${params.row.spreadSheetId}`}
-              style={{ color: 'blue', textDecoration: 'underline' }}
-            >
-              {params.row.spreadSheetName}
-            </a>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <SheetIcon fontSize="small" color="action" />
+              <MuiLink
+                href={`https://docs.google.com/spreadsheets/d/${params.row.spreadSheetId}`}
+                target="_blank"
+                rel="noreferrer"
+                underline="hover"
+                sx={{ fontWeight: 500 }}
+              >
+                {params.row.spreadSheetName || "Open Spreadsheet"}
+              </MuiLink>
+            </Stack>
           );
         },
       },
-      { field: 'modifiedBy', headerName: 'Modified by', width: 150 },
+      { field: "modifiedBy", headerName: "Modified by", width: 200 },
       {
-        field: 'modifiedDate',
-        headerName: 'Modified Date',
-        width: 200,
+        field: "modifiedDate",
+        headerName: "Last Modified",
+        width: 180,
         renderCell: (params: any) => {
           return (
-            <span>
+            <Typography variant="body2" color="text.secondary">
               {dateFormat(
                 parseISO(params.row.modifiedDate),
-                'yyyy-MM-dd HH:mm'
+                "yyyy-MM-dd HH:mm",
               )}
-            </span>
+            </Typography>
           );
         },
       },
       {
-        field: 'edit',
-        headerName: 'Edit',
-        width: 70,
+        field: "actions",
+        headerName: "Actions",
+        width: 120,
+        sortable: false,
         renderCell: (params: any) => {
           return (
-            <section>
-              <IconButton
-                onClick={() => {
-                  router.push(`/branch/edit/${params.row._id}`);
-                }}
-              >
-                <EditIcon />
-              </IconButton>
-            </section>
-          );
-        },
-      },
-      {
-        field: 'delete',
-        headerName: 'Delete',
-        width: 70,
-        renderCell: (params: any) => {
-          return (
-            <section>
-              <IconButton
-                onClick={(event) => {
-                  const data = {
-                    id: params.row._id,
-                    name: params.row.name,
-                  };
-                  handleDeleteClick(event, data);
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </section>
+            <Stack direction="row" spacing={1}>
+              <Tooltip title="Edit">
+                <IconButton
+                  size="small"
+                  onClick={() => router.push(`/branch/edit/${params.row._id}`)}
+                  sx={{
+                    color: theme.palette.info.main,
+                    bgcolor: alpha(theme.palette.info.main, 0.1),
+                  }}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton
+                  size="small"
+                  onClick={(event) => {
+                    const data = {
+                      id: params.row._id,
+                      name: params.row.name,
+                    };
+                    handleDeleteClick(event, data);
+                  }}
+                  sx={{
+                    color: theme.palette.error.main,
+                    bgcolor: alpha(theme.palette.error.main, 0.1),
+                  }}
+                >
+                  <DeleteIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Stack>
           );
         },
       },
     ];
-  }, [router, handleDeleteClick]);
+  }, [router, handleDeleteClick, theme]);
 
   return (
-    <Box className={styles.root}>
-      <Box sx={{ textAlign: 'left' }}>
-        <Typography variant="h5" gutterBottom>
-          Branch List
-        </Typography>
-      </Box>
-      <Box sx={{ height: 600, width: '100%' }}>
-        <DataGrid
-          rows={branches || []}
-          columns={columns}
-          initialState={{
-            pagination: { paginationModel: { pageSize: 10 } },
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Stack spacing={4}>
+        {/* Header */}
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems={{ xs: "start", sm: "center" }}
+          spacing={2}
+        >
+          <Box>
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 800,
+                mb: 1,
+                background:
+                  theme.palette.mode === "dark"
+                    ? "linear-gradient(45deg, #90CAF9 30%, #66BB6A 90%)"
+                    : "linear-gradient(45deg, #4285F4 30%, #34A853 90%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                display: "inline-block",
+              }}
+            >
+              Branches
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Manage physical locations and their associated data.
+            </Typography>
+          </Box>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => router.push("/branch/new")}
+            sx={{
+              borderRadius: 2,
+              px: 3,
+              py: 1.5,
+              fontWeight: 700,
+              boxShadow: "0 8px 16px 0 rgba(66, 133, 244, 0.24)",
+            }}
+          >
+            New Branch
+          </Button>
+        </Stack>
+
+        <Card
+          sx={{
+            borderRadius: 4,
+            boxShadow: theme.shadows[4],
+            border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            overflow: "hidden",
           }}
-          pageSizeOptions={[10, 20, 50]}
-          getRowId={(row: any) => row._id}
-        />
-      </Box>
-      <Fab
-        color="primary"
-        className={styles.fab}
-        aria-label="add"
-        onClick={() => {
-          router.push('/branch/new');
-        }}
-      >
-        <AddIcon className={styles.fabIcon} />
-      </Fab>
+        >
+          <DataGrid
+            rows={branches || []}
+            columns={columns}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 10 } },
+            }}
+            pageSizeOptions={[10, 20, 50]}
+            getRowId={(row: any) => row._id}
+            disableRowSelectionOnClick
+            autoHeight
+            sx={{
+              border: "none",
+              "& .MuiDataGrid-cell": {
+                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+              },
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: alpha(theme.palette.primary.main, 0.04),
+                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+              },
+              "& .MuiDataGrid-columnHeaderTitle": {
+                fontWeight: 700,
+                color: theme.palette.text.primary,
+              },
+              "& .MuiDataGrid-row:hover": {
+                backgroundColor: alpha(theme.palette.primary.main, 0.02),
+              },
+              "& .MuiDataGrid-cell, & .MuiDataGrid-columnHeader": {
+                px: 3,
+              },
+            }}
+          />
+        </Card>
+      </Stack>
+
       <ConfirmDialog
         open={open}
         onOk={handleDelete}
         onClose={handleCancel}
         content={
           <Box>
-            Are you sure you want to delete{' '}
-            <Typography sx={{ fontWeight: 'bold' }} component="span">
-              {current.name}
+            <Typography variant="body1">
+              Are you sure you want to delete{" "}
+              <Typography component="span" fontWeight="bold" color="error">
+                {current.name}
+              </Typography>
+              ?
             </Typography>
-            ?
           </Box>
         }
         okButtonText="Delete"
       />
-    </Box>
+    </Container>
   );
 };
 
