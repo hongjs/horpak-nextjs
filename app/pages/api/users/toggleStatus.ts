@@ -1,14 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { db, checkAdmin } from 'lib/firebaseUtil';
-import { withActiveAuth } from 'middleware';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { db, checkAdmin } from "lib/firebaseUtil";
+import { withActiveAuth } from "middleware";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     try {
       const { id } = req.body;
       const noAdmin = await checkAdmin();
 
-      const snapshot = await db.collection('users').doc(id).get();
+      const snapshot = await db.collection("users").doc(id).get();
       const user = snapshot.data();
       if (user) {
         const isActive = user?.active || false;
@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const update = noAdmin
           ? { active: true, admin: true }
           : { active: !isActive };
-        await db.collection('users').doc(id).update(update);
+        await db.collection("users").doc(id).update(update);
         res.send(true);
       } else {
         res.send(false);

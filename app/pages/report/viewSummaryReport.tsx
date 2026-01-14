@@ -1,5 +1,4 @@
-
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -18,17 +17,17 @@ import {
   Select,
   Typography,
   Tooltip,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Print as PrintIcon,
   Refresh as RefreshIcon,
-} from '@mui/icons-material';
-import { useReactToPrint } from 'react-to-print';
-import DataSourceReport from 'components/report/DataSourceReport';
-import { Props } from 'types';
-import { useBranch, useDrive, useReport } from 'hooks';
-import { BranchItemState } from 'types/state';
-import styles from './viewSummaryReport.module.css';
+} from "@mui/icons-material";
+import { useReactToPrint } from "react-to-print";
+import DataSourceReport from "components/report/DataSourceReport";
+import { Props } from "types";
+import { useBranch, useDrive, useReport } from "hooks";
+import { BranchItemState } from "types/state";
+import styles from "./viewSummaryReport.module.css";
 
 const ViewSummaryReport: React.FC<Props> = (props) => {
   const { branches, fetchBranch, loading } = useBranch();
@@ -52,7 +51,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
 
   const handleChange = useCallback(
     (event: any, name: string) => {
-      if (name === 'branch') {
+      if (name === "branch") {
         setSheetId(undefined);
 
         const branch = branches.find((i) => i._id === event.target.value);
@@ -60,20 +59,20 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           setBranch(branch);
           fetchSheets([branch]);
         }
-      } else if (name === 'sheet') {
+      } else if (name === "sheet") {
         setSheetId(event.target.value);
         if (branch && branch.spreadSheetId) {
           fetchReport(branch.spreadSheetId, event.target.value);
         }
       }
     },
-    [branch, branches, fetchSheets, fetchReport]
+    [branch, branches, fetchSheets, fetchReport],
   );
 
   useEffect(() => {
     if (branch && branch.sheets && branch.sheets.length > 0) {
       setSheetId(branch.sheets[0].sheetId);
-      handleChange({ target: { value: branch.sheets[0].sheetId } }, 'sheet');
+      handleChange({ target: { value: branch.sheets[0].sheetId } }, "sheet");
     }
   }, [branch, branch?.sheets, handleChange]);
 
@@ -91,14 +90,18 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
       <Box className={styles.filter}>
         <Grid container alignItems="center">
           <Grid size={{ xs: 12, md: 6, lg: 3 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl} variant="outlined">
+            <FormControl
+              fullWidth
+              className={styles.formControl}
+              variant="outlined"
+            >
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
                 labelId="branch-select-label"
                 id="branch-select"
-                value={branch?._id || ''}
+                value={branch?._id || ""}
                 label="Branch"
-                onChange={(event) => handleChange(event, 'branch')}
+                onChange={(event) => handleChange(event, "branch")}
               >
                 {branches &&
                   branches.map((branch) => {
@@ -114,14 +117,18 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 3 }} className={styles.filterBox}>
-            <FormControl fullWidth className={styles.formControl} variant="outlined">
+            <FormControl
+              fullWidth
+              className={styles.formControl}
+              variant="outlined"
+            >
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
                 labelId="sheet-select-label"
                 id="sheet-select"
-                value={sheetId || ''}
+                value={sheetId || ""}
                 label="Sheet"
-                onChange={(event) => handleChange(event, 'sheet')}
+                onChange={(event) => handleChange(event, "sheet")}
                 disabled={!branch || !branch.sheets}
               >
                 {branch &&
@@ -136,7 +143,11 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid size={{ xs: 6, md: 6, lg: 2 }} className={styles.filterBox} sx={{ display: 'flex', alignItems: 'center' }}>
+          <Grid
+            size={{ xs: 6, md: 6, lg: 2 }}
+            className={styles.filterBox}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
             <FormControlLabel
               className={styles.formControl}
               control={
@@ -150,7 +161,11 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               label="Summary"
             />
           </Grid>
-          <Grid size={{ xs: 6, sm: 3, md: 3, lg: 2 }} className={styles.filterBox} sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Grid
+            size={{ xs: 6, sm: 3, md: 3, lg: 2 }}
+            className={styles.filterBox}
+            sx={{ display: { xs: "none", sm: "block" } }}
+          >
             <Button
               variant="outlined"
               color="primary"
@@ -160,7 +175,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               startIcon={<PrintIcon />}
               disabled={!sheetId || (errors && errors?.length > 0)}
               onClick={handlePrintClick}
-              sx={{ height: '56px' }}
+              sx={{ height: "56px" }}
             >
               Print
             </Button>
@@ -168,9 +183,19 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           <Grid
             size={{ xs: 12, sm: 3, md: 3, lg: 2 }}
             className={styles.filterBox}
-            sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
           >
-            <Box sx={{ display: { xs: 'flex', sm: 'none' }, width: '100%', gap: 1 }}>
+            <Box
+              sx={{
+                display: { xs: "flex", sm: "none" },
+                width: "100%",
+                gap: 1,
+              }}
+            >
               <Button
                 variant="outlined"
                 fullWidth
@@ -178,7 +203,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                 disabled={!sheetId || (errors && errors?.length > 0)}
                 onClick={handlePrintClick}
                 className={`${styles.button} ${styles.printButton}`}
-                sx={{ height: '56px' }}
+                sx={{ height: "56px" }}
               >
                 Print
               </Button>
@@ -189,12 +214,12 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                 disabled={sheetId === undefined}
                 onClick={handleRefreshClick}
                 className={`${styles.button} ${styles.refreshButton}`}
-                sx={{ height: '56px' }}
+                sx={{ height: "56px" }}
               >
                 Refresh
               </Button>
             </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' }, width: '100%' }}>
+            <Box sx={{ display: { xs: "none", sm: "block" }, width: "100%" }}>
               <Button
                 variant="outlined"
                 color="primary"
@@ -204,7 +229,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                 startIcon={<RefreshIcon />}
                 disabled={sheetId === undefined}
                 onClick={handleRefreshClick}
-                sx={{ height: '56px' }}
+                sx={{ height: "56px" }}
               >
                 Refresh
               </Button>
@@ -245,16 +270,30 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
     if (branch && errors) {
       return (
         <Paper className={styles.paperError} elevation={0}>
-          <Typography variant="h6" gutterBottom color="error" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
-             <i className="fa-solid fa-triangle-exclamation"></i> Sheet Error
+          <Typography
+            variant="h6"
+            gutterBottom
+            color="error"
+            sx={{
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <i className="fa-solid fa-triangle-exclamation"></i> Sheet Error
           </Typography>
           <Typography variant="body2" gutterBottom>
-            Error in:{' '}
+            Error in:{" "}
             <a
               href={`https://docs.google.com/spreadsheets/d/${branch?.spreadSheetId}#gid=${report.sheet?.sheetId}`}
               target="_blank"
               rel="noreferrer"
-              style={{ color: 'inherit', textDecoration: 'underline', fontWeight: 600 }}
+              style={{
+                color: "inherit",
+                textDecoration: "underline",
+                fontWeight: 600,
+              }}
             >
               {`${branch?.spreadSheetName} - ${report.sheet?.title}`}
             </a>
@@ -264,7 +303,13 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
               return (
                 <ListItem key={index} disablePadding>
                   <ListItemButton sx={{ borderRadius: 1 }}>
-                    <ListItemText primary={err} primaryTypographyProps={{ color: 'error', variant: 'body2' }} />
+                    <ListItemText
+                      primary={err}
+                      primaryTypographyProps={{
+                        color: "error",
+                        variant: "body2",
+                      }}
+                    />
                   </ListItemButton>
                 </ListItem>
               );
@@ -290,22 +335,18 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           <Grid size={{ xs: 12 }}>
             {renderFilter()}
             {(loading || report.loading || driveLoading) && (
-              <Box sx={{ width: '100%', mt: 2 }}>
+              <Box sx={{ width: "100%", mt: 2 }}>
                 <LinearProgress sx={{ borderRadius: 1 }} />
               </Box>
             )}
           </Grid>
 
           {errors && errors.length > 0 && (
-            <Grid size={{ xs: 12 }}>
-              {renderError()}
-            </Grid>
+            <Grid size={{ xs: 12 }}>{renderError()}</Grid>
           )}
 
           {(!errors || errors.length === 0) && (
-            <Grid size={{ xs: 12 }}>
-              {renderReportData()}
-            </Grid>
+            <Grid size={{ xs: 12 }}>{renderReportData()}</Grid>
           )}
         </Grid>
       </Paper>

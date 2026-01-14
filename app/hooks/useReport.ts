@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
-import { useAppContext } from 'hooks';
-import { clearReport, fetchSheetContent } from 'reducers/actions/driveAction';
+import { useCallback } from "react";
+import { useAppContext } from "hooks";
+import { clearReport, fetchSheetContent } from "reducers/actions/driveAction";
 
 const useReport = () => {
   const { state, dispatch } = useAppContext();
@@ -9,7 +9,7 @@ const useReport = () => {
     (spreadsheetId: string, sheetId: number) => {
       fetchSheetContent(dispatch, spreadsheetId, sheetId);
     },
-    [dispatch]
+    [dispatch],
   );
 
   const handleClearReport = useCallback(() => {

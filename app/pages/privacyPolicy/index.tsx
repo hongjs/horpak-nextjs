@@ -1,17 +1,17 @@
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 
 const PrivacyPolicy: React.FC = () => {
   return (
     <Box
       sx={{
-        width: '100%',
-        margin: '64px',
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
+        width: "100%",
+        margin: "64px",
+        textAlign: "center",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
-      <Box sx={{ width: '800px' }}>
+      <Box sx={{ width: "800px" }}>
         <h1>Privacy Policy for C-Place</h1>
 
         <p>
@@ -31,8 +31,8 @@ const PrivacyPolicy: React.FC = () => {
           for visitors to our website with regards to the information that they
           shared and/or collect in C-Place App. This policy is not applicable to
           any information collected offline or via channels other than this
-          website. Our Privacy Policy was created with the help of the{' '}
-          <a>Privacy Policy Generator</a> and the{' '}
+          website. Our Privacy Policy was created with the help of the{" "}
+          <a>Privacy Policy Generator</a> and the{" "}
           <a>Free Privacy Policy Generator</a>.
         </p>
 
@@ -108,7 +108,7 @@ const PrivacyPolicy: React.FC = () => {
         </p>
 
         <p>
-          For more general information on cookies, please read{' '}
+          For more general information on cookies, please read{" "}
           <a href="https://www.cookieconsent.com/what-are-cookies/">
             &quot;What Are Cookies&quot;
           </a>
@@ -144,7 +144,7 @@ const PrivacyPolicy: React.FC = () => {
           or websites. Thus, we are advising you to consult the respective
           Privacy Policies of these third-party ad servers for more detailed
           information. It may include their practices and instructions about how
-          to opt-out of certain options.{' '}
+          to opt-out of certain options.{" "}
         </p>
 
         <p>

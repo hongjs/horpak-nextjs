@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { useTheme } from 'next-themes';
+import React, { useEffect, useRef } from "react";
+import { useTheme } from "next-themes";
 
 const FlowFieldBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -9,7 +9,7 @@ const FlowFieldBackground = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -23,21 +23,21 @@ const FlowFieldBackground = () => {
     const particleCount = 500;
     const speed = 2; // Base speed
 
-    const isDark = resolvedTheme === 'dark';
+    const isDark = resolvedTheme === "dark";
 
     // Theme-based colors
     const palette = isDark
       ? [
-          '#8AB4F8', // Lighter Blue for visibility on dark
-          '#8AB4F8',
-          '#E8EAED', // Light Grey/White
-          '#BDC1C6', // Grey
+          "#8AB4F8", // Lighter Blue for visibility on dark
+          "#8AB4F8",
+          "#E8EAED", // Light Grey/White
+          "#BDC1C6", // Grey
         ]
       : [
-          '#4285F4', // Blue
-          '#4285F4',
-          '#202124', // Dark
-          '#9AA0A6', // LIGHT GREY
+          "#4285F4", // Blue
+          "#4285F4",
+          "#202124", // Dark
+          "#9AA0A6", // LIGHT GREY
         ];
 
     class Particle {
@@ -80,7 +80,8 @@ const FlowFieldBackground = () => {
 
         // Add subtle wave/noise to make it "flow"
         const noiseScale = 0.01;
-        const noise = Math.sin(distanceFromCenter * noiseScale - this.age * 0.01) * 0.3;
+        const noise =
+          Math.sin(distanceFromCenter * noiseScale - this.age * 0.01) * 0.3;
         angle += noise;
 
         const currentSpeed = speed * this.radiusMod;
@@ -92,8 +93,13 @@ const FlowFieldBackground = () => {
         this.y += this.vy;
 
         const margin = 50;
-        if (this.x < -margin || this.x > w + margin || this.y < -margin || this.y > h + margin) {
-            this.reset(w, h);
+        if (
+          this.x < -margin ||
+          this.x > w + margin ||
+          this.y < -margin ||
+          this.y > h + margin
+        ) {
+          this.reset(w, h);
         }
 
         // Maintain tail
@@ -118,9 +124,14 @@ const FlowFieldBackground = () => {
 
         // Quadratic bezier curve for smoother lines
         for (let i = 1; i < this.history.length - 1; i++) {
-            const xc = (this.history[i].x + this.history[i + 1].x) / 2;
-            const yc = (this.history[i].y + this.history[i + 1].y) / 2;
-            context.quadraticCurveTo(this.history[i].x, this.history[i].y, xc, yc);
+          const xc = (this.history[i].x + this.history[i + 1].x) / 2;
+          const yc = (this.history[i].y + this.history[i + 1].y) / 2;
+          context.quadraticCurveTo(
+            this.history[i].x,
+            this.history[i].y,
+            xc,
+            yc,
+          );
         }
         // Connect the last point
         const last = this.history[this.history.length - 1];
@@ -128,8 +139,8 @@ const FlowFieldBackground = () => {
 
         context.strokeStyle = this.color;
         context.lineWidth = this.lineWidth;
-        context.lineCap = 'round';
-        context.lineJoin = 'round';
+        context.lineCap = "round";
+        context.lineJoin = "round";
         context.stroke();
       }
     }
@@ -168,7 +179,7 @@ const FlowFieldBackground = () => {
 
       ctx.clearRect(0, 0, width, height);
 
-      particles.forEach(p => {
+      particles.forEach((p) => {
         p.update(width, height);
         p.draw(ctx);
       });
@@ -181,13 +192,13 @@ const FlowFieldBackground = () => {
     animate();
 
     const handleResize = () => {
-        init();
+      init();
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animationFrameId);
     };
   }, [resolvedTheme]); // Re-run when theme changes
@@ -196,12 +207,12 @@ const FlowFieldBackground = () => {
     <canvas
       ref={canvasRef}
       style={{
-        display: 'block',
-        width: '100%',
-        height: '100%',
-        borderRadius: '16px',
-        backgroundColor: resolvedTheme === 'dark' ? '#121212' : '#FFFFFF',
-        transition: 'background-color 0.3s ease',
+        display: "block",
+        width: "100%",
+        height: "100%",
+        borderRadius: "16px",
+        backgroundColor: resolvedTheme === "dark" ? "#121212" : "#FFFFFF",
+        transition: "background-color 0.3s ease",
       }}
     />
   );

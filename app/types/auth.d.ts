@@ -1,5 +1,5 @@
-import { ClientSafeProvider } from 'next-auth/react';
-import { Session } from 'next-auth';
+import { ClientSafeProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
 export type ServiceAccount = {
   type: string;

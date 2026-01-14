@@ -1,5 +1,5 @@
-import { Dispatch } from 'react';
-import { AppState } from 'types/state';
+import { Dispatch } from "react";
+import { AppState } from "types/state";
 
 export type Props = {
   children: React.ReactNode;

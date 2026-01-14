@@ -12,7 +12,7 @@
 .headerTitle {
   font-weight: 800 !important;
   margin-bottom: 24px !important;
-  background: linear-gradient(to right, #1877F2, #00AB55);
+  background: linear-gradient(to right, #1877f2, #00ab55);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -21,7 +21,7 @@
 }
 
 :global(.dark) .headerTitle {
-  background: linear-gradient(to right, #4285F4, #34A853);
+  background: linear-gradient(to right, #4285f4, #34a853);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -32,14 +32,18 @@
   width: 100%;
   padding: 32px;
   border-radius: 16px !important;
-  box-shadow: 0 0 2px 0 rgba(145, 158, 171, 0.2), 0 12px 24px -4px rgba(145, 158, 171, 0.12) !important;
+  box-shadow:
+    0 0 2px 0 rgba(145, 158, 171, 0.2),
+    0 12px 24px -4px rgba(145, 158, 171, 0.12) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: #ffffff !important;
 }
 
 :global(.dark) .paper {
   background-color: #1e1e1e !important;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 12px 24px -4px rgba(0, 0, 0, 0.3) !important;
+  box-shadow:
+    0 0 2px 0 rgba(0, 0, 0, 0.2),
+    0 12px 24px -4px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Filter Section */
@@ -69,7 +73,10 @@
   border-color: rgba(145, 158, 171, 0.32);
 }
 
-:global(.dark) .formControl .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
+:global(.dark)
+  .formControl
+  .MuiInputBase-root:hover
+  .MuiOutlinedInput-notchedOutline {
   border-color: #ffffff;
 }
 
@@ -86,25 +93,25 @@
 /* Print Button - Colorful Outlined */
 .printButton {
   border: 2px solid rgba(24, 119, 242, 0.48) !important;
-  color: #1877F2 !important;
+  color: #1877f2 !important;
   background: transparent !important;
   box-shadow: none !important;
 }
 
 :global(.dark) .printButton {
   border-color: rgba(66, 133, 244, 0.48) !important;
-  color: #4285F4 !important;
+  color: #4285f4 !important;
   background: transparent !important;
 }
 
 .printButton:hover:not(:disabled) {
-  border-color: #1877F2 !important;
+  border-color: #1877f2 !important;
   background-color: rgba(24, 119, 242, 0.08) !important;
   transform: translateY(-1px);
 }
 
 :global(.dark) .printButton:hover:not(:disabled) {
-  border-color: #4285F4 !important;
+  border-color: #4285f4 !important;
   background-color: rgba(66, 133, 244, 0.08) !important;
 }
 
@@ -122,21 +129,21 @@
 /* Refresh Button - Colorful Outlined */
 .refreshButton {
   border: 2px solid rgba(0, 171, 85, 0.48) !important;
-  color: #00AB55 !important;
+  color: #00ab55 !important;
 }
 
 :global(.dark) .refreshButton {
   border-color: rgba(52, 168, 83, 0.48) !important;
-  color: #34A853 !important;
+  color: #34a853 !important;
 }
 
 .refreshButton:hover:not(:disabled) {
-  border-color: #00AB55 !important;
+  border-color: #00ab55 !important;
   background-color: rgba(0, 171, 85, 0.08) !important;
 }
 
 :global(.dark) .refreshButton:hover:not(:disabled) {
-  border-color: #34A853 !important;
+  border-color: #34a853 !important;
   background-color: rgba(52, 168, 83, 0.08) !important;
 }
 
@@ -181,7 +188,7 @@
   .paper {
     padding: 16px;
   }
-  
+
   .filterBox {
     padding: 8px 0;
   }

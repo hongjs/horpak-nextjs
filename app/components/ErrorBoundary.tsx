@@ -1,7 +1,7 @@
-import React, { Component, ErrorInfo } from 'react';
-import { MoodBad as MoodBadIcon } from '@mui/icons-material';
-import { Typography } from '@mui/material';
-import { Props } from 'types';
+import React, { Component, ErrorInfo } from "react";
+import { MoodBad as MoodBadIcon } from "@mui/icons-material";
+import { Typography } from "@mui/material";
+import { Props } from "types";
 
 interface State {
   hasError: boolean;
@@ -18,7 +18,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   public render() {

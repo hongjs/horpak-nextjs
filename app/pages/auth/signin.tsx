@@ -1,27 +1,20 @@
-import React, { useCallback } from 'react';
-import type { GetServerSideProps } from 'next';
-import { getProviders, getSession, signIn } from 'next-auth/react';
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { Turnstile } from '@marsidev/react-turnstile';
-import { SignInProps } from 'types/auth';
-import constants from 'config/constants';
-import { useTurnstile } from 'hooks';
-import FlowFieldBackground from 'components/auth/FlowFieldBackground';
-import styles from './signin.module.css';
+import React, { useCallback } from "react";
+import type { GetServerSideProps } from "next";
+import { getProviders, getSession, signIn } from "next-auth/react";
+import { Box, Button, Card, Divider, Stack, Typography } from "@mui/material";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { SignInProps } from "types/auth";
+import constants from "config/constants";
+import { useTurnstile } from "hooks";
+import FlowFieldBackground from "components/auth/FlowFieldBackground";
+import styles from "./signin.module.css";
 
 const SignIn: React.FC<SignInProps> = ({ providers }) => {
   const { valid, validateToken, failure } = useTurnstile();
 
   const handleSignin = useCallback(() => {
     if (valid) {
-      signIn('google');
+      signIn("google");
     }
   }, [valid]);
 
@@ -39,7 +32,14 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
       <Box className={styles.leftSection}>
         <Box className={styles.brandingContent}>
           <Box className={styles.illustrationContainer}>
-            <Box sx={{ width: 420, height: 420, maxWidth: '100%', position: 'relative' }}>
+            <Box
+              sx={{
+                width: 420,
+                height: 420,
+                maxWidth: "100%",
+                position: "relative",
+              }}
+            >
               <FlowFieldBackground />
             </Box>
           </Box>
@@ -90,7 +90,7 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
             </Stack>
 
             <Divider>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 OR
               </Typography>
             </Divider>
@@ -99,8 +99,8 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
             <Box className={styles.turnstileContainer}>
               <Turnstile
                 options={{
-                  theme: 'light',
-                  size: 'normal',
+                  theme: "light",
+                  size: "normal",
                 }}
                 siteKey={constants.TURNSTILE_PUBLIC_KEY}
                 onError={handleTurnstileFail}
@@ -126,7 +126,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req });
   if (session && res) {
     res.statusCode = 302;
-    res.setHeader('Location', '/');
+    res.setHeader("Location", "/");
     return { props: { session, providers } };
   }
   return {

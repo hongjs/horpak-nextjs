@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { RefreshContext } from 'contexts/RefreshContext';
+import { useContext } from "react";
+import { RefreshContext } from "contexts/RefreshContext";
 
 const useRefresh = () => {
   const { fast, slow } = useContext(RefreshContext);

@@ -22,16 +22,24 @@
    Currently it's already quite dark/vibrant. Let's leave it or make it slightly darker. */
 
 .leftSection::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-image:
-    url('https://images.unsplash.com/photo-1557683316-973673baf926?w=1200&q=80'),
-    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    url("https://images.unsplash.com/photo-1557683316-973673baf926?w=1200&q=80"),
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    );
   background-size: cover;
   background-position: center;
   background-blend-mode: overlay;
@@ -40,13 +48,17 @@
 }
 
 .leftSection::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 60%
+  );
   pointer-events: none;
 }
 
@@ -60,7 +72,9 @@
 
 .illustrationContainer {
   margin-bottom: 48px;
-  animation: fadeInUp 0.8s ease-out, float 3s ease-in-out infinite;
+  animation:
+    fadeInUp 0.8s ease-out,
+    float 3s ease-in-out infinite;
 }
 
 .illustrationContainer img {
@@ -145,13 +159,18 @@
 }
 
 .socialButton::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.5s;
 }
 
@@ -249,7 +268,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -279,7 +299,11 @@
   }
 
   .leftSection::before {
-    background-image: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    background-image: radial-gradient(
+      circle at 50% 20%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    );
   }
 
   .brandingContent {
