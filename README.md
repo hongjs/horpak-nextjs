@@ -291,7 +291,7 @@ docker-compose up
 
 ## License
 
-[Specify your license here]
+MIT
 
 ## Support
 
