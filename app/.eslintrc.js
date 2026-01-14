@@ -2,6 +2,7 @@ module.exports = {
   env: {
     es2022: true,
   },
+  ignorePatterns: ["next-env.d.ts", "gulpfile.ts", "eslint.config.js"],
   parserOptions: {
     tsconfigRootDir: __dirname,
     project: "tsconfig.json",

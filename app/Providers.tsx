@@ -28,7 +28,7 @@ const Providers: React.FC<Props> = ({ children }: Props) => {
   );
 };
 
-const MuiThemeProvider: React.FC<Props> = ({ children }) => {
+export const MuiThemeProvider: React.FC<Props> = ({ children }) => {
   const { theme, systemTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
   const muiTheme = getMuiTheme(currentTheme === "dark" ? "dark" : "light");
@@ -36,7 +36,7 @@ const MuiThemeProvider: React.FC<Props> = ({ children }) => {
   return <ThemeProvider theme={muiTheme}>{children}</ThemeProvider>;
 };
 
-const AuthProvider: React.FC<Props> = ({ children }) => {
+export const AuthProvider: React.FC<Props> = ({ children }) => {
   const router = useRouter();
   const { data, status } = useSession();
   const { currentUser, noAdmin, loading } = useAuthUser();

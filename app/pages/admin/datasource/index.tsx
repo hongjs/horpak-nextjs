@@ -140,7 +140,7 @@ const DataSource: React.FC = () => {
                   }}
                 >
                   <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                       <Typography
                         variant="caption"
                         color="text.secondary"
@@ -152,7 +152,7 @@ const DataSource: React.FC = () => {
                         {user.updatedBy}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography
                         variant="caption"
                         color="text.secondary"
@@ -167,7 +167,7 @@ const DataSource: React.FC = () => {
                         )}
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid size={6}>
                       <Typography
                         variant="caption"
                         color="text.secondary"

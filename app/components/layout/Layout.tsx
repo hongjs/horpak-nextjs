@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import Router from "next/router";
 import CssBaseline from "@mui/material/CssBaseline";
-import { CircularProgress, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import MainNavigation from "./MainNavigation";
 import { Props } from "types";
-
-const DRAWER_WIDTH = 280;
+import Loading from "../Loading";
 
 const Layout: React.FC<Props> = ({ children }) => {
   const [loadingPage, setLoadingPage] = useState(false);
@@ -49,7 +48,7 @@ const Layout: React.FC<Props> = ({ children }) => {
               height: "calc(100vh - 128px)",
             }}
           >
-            <CircularProgress />
+            <Loading />
           </Box>
         ) : (
           children
