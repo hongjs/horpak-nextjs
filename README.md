@@ -282,6 +282,21 @@ docker build -t horpak-nextjs .
 docker-compose up
 ```
 
+## Continuous Integration
+
+### Lint & Test Workflow
+
+This project includes an automated lint and test workflow that can be triggered on pull requests.
+
+**To run linting and tests on a PR:**
+1. Open the pull request on GitHub
+2. Add the label `Lint & Test` to the PR
+3. The workflow will automatically run:
+   - `yarn lint` - ESLint checks
+   - `yarn test` - Jest test suite
+
+The workflow runs in the `app/` directory using Node.js 22 with yarn caching for optimal performance.
+
 ## Deployment
 
 This project uses semantic versioning for automated deployments to Kubernetes via GitHub Actions.
