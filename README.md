@@ -282,6 +282,68 @@ docker build -t horpak-nextjs .
 docker-compose up
 ```
 
+## Deployment
+
+This project uses semantic versioning for automated deployments to Kubernetes via GitHub Actions.
+
+### Creating a Release
+
+Deployments are triggered by pushing semantic version tags to the repository:
+
+1. Ensure all changes are merged to the `main` branch:
+```bash
+git checkout main
+git pull origin main
+```
+
+2. Create and push a semantic version tag:
+```bash
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+3. Monitor the deployment:
+   - **GitHub Actions**: https://github.com/hongjs/horpak-nextjs/actions
+   - **Docker Hub**: https://hub.docker.com/r/hongjsx/horpakjs/tags
+   - **Kubernetes**: `kubectl get pods -n horpakjs`
+
+### Tag Format Requirements
+
+Tags must follow semantic versioning with the pattern `v*.*.*`:
+
+- ✅ Valid: `v1.0.0`, `v2.5.3`, `v10.20.30`
+- ❌ Invalid: `v1`, `v1.0`, `latest`, `1.0.0` (missing 'v')
+
+The deployment workflow validates tag format and will fail if the tag doesn't match the required pattern.
+
+### Versioning Guide
+
+- **Patch version (v1.0.X)**: Bug fixes, security patches, minor improvements
+- **Minor version (v1.X.0)**: New features, backwards-compatible changes
+- **Major version (vX.0.0)**: Breaking changes, major refactoring
+
+### Deployment Process
+
+When a tag is pushed:
+1. GitHub Actions validates the tag format
+2. Builds a Docker image with the tag version
+3. Pushes the image to Docker Hub
+4. Triggers the manifest repository to update Kubernetes deployments
+5. Kubernetes deploys the new version with auto-scaling
+
+### Rollback
+
+If a deployment needs to be rolled back:
+
+```bash
+# Rollback to previous deployment
+kubectl rollout undo deployment/horpakjs-deployment -n horpakjs
+
+# Or deploy a specific version
+kubectl set image deployment/horpakjs-deployment \
+  horpakjs=hongjsx/horpakjs:v1.0.0 -n horpakjs
+```
+
 ## Contributing
 
 1. Create a feature branch from `main`
