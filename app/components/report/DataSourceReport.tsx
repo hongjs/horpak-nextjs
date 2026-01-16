@@ -104,7 +104,7 @@ const DataSourceReport = (props: any, ref: any) => {
           }
           @media print {
             @page { size: A4 landscape; margin-top: 5mm; margin-bottom: 5mm; }
-            #content { padding: 5mm; }
+            #content { padding: 5mm; background-color: #fff !important; }
             #printDate { display: inline; }
             /* Force white background for print if desired, or keep screen colors */
             /* Usually print should be white paper */
@@ -117,6 +117,12 @@ const DataSourceReport = (props: any, ref: any) => {
             #content { padding: 5mm; text-align: -webkit-center; background-color: ${screenBg}; overflow-x: scroll; }
             #printDate { display: none; }
           }
+          /* PDF export specific - applied via class */
+          .pdf-export #content { background-color: #fff !important; padding: 0 !important; }
+          .pdf-export #tb { background-color: #fff !important; color: #000 !important; border-color: #A3A3A3 !important; }
+          .pdf-export #tb th, .pdf-export #tb td { border-color: #A3A3A3 !important; color: #000 !important; }
+          .pdf-export #tb .header { border-color: #A3A3A3 !important; }
+          .pdf-export #tb .header p, .pdf-export #tb .header span { color: #000 !important; }
           #tb {
             width: 100%;
             min-width: 900px;
@@ -136,12 +142,13 @@ const DataSourceReport = (props: any, ref: any) => {
           #tb th {
             border-right: 1px solid ${borderColor};
             border-bottom: 1px solid ${borderColor};
+            padding: 4px 6px;
           }
           #tb thead { text-align: center; }
           #tb tbody { text-align: right; }
-          #tb .text { text-align: left; }
-          .additionalText { text-align: left; }
-          #tb td { padding-right: 5px; border-top: 1px solid ${borderColor}; }
+          #tb .text { text-align: left; padding-left: 6px; }
+          .additionalText { text-align: left; padding-left: 6px; }
+          #tb td { padding: 3px 6px; border-top: 1px solid ${borderColor}; }
           #tb .last { border-left: 1px solid ${borderColor}; }
           #tb .summary { font-weight: bold; }
           #tb .header {

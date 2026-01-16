@@ -38,8 +38,10 @@ import { format as dateFormat, addMonths } from "date-fns";
 import {
   Print as PrintIcon,
   Refresh as RefreshIcon,
+  PictureAsPdf as PdfIcon,
 } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
+import html2pdf from "html2pdf.js";
 import { useBank, useBranch, useDrive, useReport } from "hooks";
 import InvoiceReport from "components/report/InvoiceReport";
 
@@ -148,6 +150,30 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
       fetchReport(branch.spreadSheetId, sheetId);
     }
   }, [branch, sheetId, fetchReport]);
+
+  const handleExportPdf = useCallback(() => {
+    if (!componentRef.current) return;
+
+    const element = componentRef.current;
+    const sheetTitle = report.sheet?.title || "invoice";
+    const filename = `invoice_${branch?.name || "report"}_${sheetTitle}.pdf`;
+
+    // Add pdf-export class for white background styling
+    element.classList.add("pdf-export");
+
+    const opt = {
+      margin: 0,
+      filename,
+      image: { type: "jpeg" as const, quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+      jsPDF: { unit: "mm" as const, format: "a4", orientation: "landscape" as const },
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+      // Remove pdf-export class after save
+      element.classList.remove("pdf-export");
+    });
+  }, [branch, report.sheet]);
 
   const renderFilter = useCallback(() => {
     return (
@@ -328,38 +354,61 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
             size={{ xs: 6, sm: 3, md: 2, lg: 2 }}
             sx={{ display: { xs: "none", md: "block" } }}
           >
-            <Button
-              variant="outlined"
-              color="primary"
-              size="large"
-              fullWidth
-              className={`${styles.button} ${styles.printButton}`}
-              startIcon={<PrintIcon />}
-              disabled={!sheetId || (errors && errors?.length > 0)}
-              onClick={handlePrintClick}
-              sx={{ height: "56px" }}
-            >
-              Print
-            </Button>
+            <Tooltip title="Print">
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                fullWidth
+                className={`${styles.button} ${styles.printButton}`}
+                disabled={!sheetId || (errors && errors?.length > 0)}
+                onClick={handlePrintClick}
+                sx={{ height: "44px", minWidth: "44px" }}
+              >
+                <PrintIcon />
+              </Button>
+            </Tooltip>
           </Grid>
           <Grid
             size={{ xs: 0, sm: 3, md: 2, lg: 2 }}
             sx={{ display: { xs: "none", md: "block" } }}
           >
-            <Button
-              variant="outlined"
-              color="primary"
-              size="large"
-              fullWidth
-              className={`${styles.button} ${styles.refreshButton}`}
-              startIcon={<RefreshIcon />}
-              disabled={sheetId === undefined}
-              onClick={handleRefreshClick}
-              sx={{ height: "56px" }}
-            >
-              Refresh
-            </Button>
+            <Tooltip title="Refresh">
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                fullWidth
+                className={`${styles.button} ${styles.refreshButton}`}
+                disabled={sheetId === undefined}
+                onClick={handleRefreshClick}
+                sx={{ height: "44px", minWidth: "44px" }}
+              >
+                <RefreshIcon />
+              </Button>
+            </Tooltip>
           </Grid>
+          {/* PDF Button - Hidden for now
+          <Grid
+            size={{ xs: 0, sm: 3, md: 2, lg: 2 }}
+            sx={{ display: { xs: "none", md: "block" } }}
+          >
+            <Tooltip title="Export PDF">
+              <Button
+                variant="outlined"
+                color="secondary"
+                size="large"
+                fullWidth
+                className={`${styles.button} ${styles.pdfButton}`}
+                disabled={!sheetId || (errors && errors?.length > 0)}
+                onClick={handleExportPdf}
+                sx={{ height: "44px", minWidth: "44px" }}
+              >
+                <PdfIcon />
+              </Button>
+            </Tooltip>
+          </Grid>
+          */}
 
           {/* Mobile Buttons */}
           <Grid
@@ -370,28 +419,44 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               gap: 1,
             }}
           >
-            <Button
-              variant="outlined"
-              fullWidth
-              startIcon={<PrintIcon />}
-              disabled={!sheetId || (errors && errors?.length > 0)}
-              onClick={handlePrintClick}
-              className={`${styles.button} ${styles.printButton}`}
-              sx={{ height: "56px" }}
-            >
-              Print
-            </Button>
-            <Button
-              variant="outlined"
-              fullWidth
-              startIcon={<RefreshIcon />}
-              disabled={sheetId === undefined}
-              onClick={handleRefreshClick}
-              className={`${styles.button} ${styles.refreshButton}`}
-              sx={{ height: "56px" }}
-            >
-              Refresh
-            </Button>
+            <Tooltip title="Print">
+              <Button
+                variant="outlined"
+                fullWidth
+                disabled={!sheetId || (errors && errors?.length > 0)}
+                onClick={handlePrintClick}
+                className={`${styles.button} ${styles.printButton}`}
+                sx={{ height: "44px", flex: 1, minWidth: "44px" }}
+              >
+                <PrintIcon />
+              </Button>
+            </Tooltip>
+            {/* PDF Button - Hidden for now
+            <Tooltip title="Export PDF">
+              <Button
+                variant="outlined"
+                fullWidth
+                disabled={!sheetId || (errors && errors?.length > 0)}
+                onClick={handleExportPdf}
+                className={`${styles.button} ${styles.pdfButton}`}
+                sx={{ height: "44px", flex: 1, minWidth: "44px" }}
+              >
+                <PdfIcon />
+              </Button>
+            </Tooltip>
+            */}
+            <Tooltip title="Refresh">
+              <Button
+                variant="outlined"
+                fullWidth
+                disabled={sheetId === undefined}
+                onClick={handleRefreshClick}
+                className={`${styles.button} ${styles.refreshButton}`}
+                sx={{ height: "44px", flex: 1, minWidth: "44px" }}
+              >
+                <RefreshIcon />
+              </Button>
+            </Tooltip>
           </Grid>
         </Grid>
       </Box>
@@ -410,6 +475,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
     handleRefreshClick,
     handleChange,
     handleDateChange,
+    handleExportPdf,
   ]);
 
   const renderError = useCallback(() => {
