@@ -32,8 +32,7 @@
   width: 100%;
   padding: 32px;
   border-radius: 16px !important;
-  box-shadow:
-    0 0 2px 0 rgba(145, 158, 171, 0.2),
+  box-shadow: 0 0 2px 0 rgba(145, 158, 171, 0.2),
     0 12px 24px -4px rgba(145, 158, 171, 0.12) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: #ffffff !important;
@@ -41,9 +40,7 @@
 
 :global(.dark) .paper {
   background-color: #1e1e1e !important;
-  box-shadow:
-    0 0 2px 0 rgba(0, 0, 0, 0.2),
-    0 12px 24px -4px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 12px 24px -4px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Filter Section */
@@ -82,8 +79,9 @@
 
 /* Action Buttons Base */
 .button {
-  height: 56px !important;
-  border-radius: 12px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  border-radius: 10px !important;
   font-weight: 700 !important;
   text-transform: none !important;
   font-size: 1rem !important;
@@ -145,6 +143,42 @@
 :global(.dark) .refreshButton:hover:not(:disabled) {
   border-color: #34a853 !important;
   background-color: rgba(52, 168, 83, 0.08) !important;
+}
+
+/* PDF Button - Colorful Outlined */
+.pdfButton {
+  border: 2px solid rgba(234, 67, 53, 0.48) !important;
+  color: #ea4335 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+:global(.dark) .pdfButton {
+  border-color: rgba(234, 67, 53, 0.48) !important;
+  color: #ea4335 !important;
+  background: transparent !important;
+}
+
+.pdfButton:hover:not(:disabled) {
+  border-color: #ea4335 !important;
+  background-color: rgba(234, 67, 53, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+:global(.dark) .pdfButton:hover:not(:disabled) {
+  border-color: #ea4335 !important;
+  background-color: rgba(234, 67, 53, 0.08) !important;
+}
+
+.pdfButton:disabled {
+  border-color: rgba(145, 158, 171, 0.24) !important;
+  color: rgba(145, 158, 171, 0.8) !important;
+  background: transparent !important;
+}
+
+:global(.dark) .pdfButton:disabled {
+  border-color: rgba(145, 158, 171, 0.24) !important;
+  color: rgba(145, 158, 171, 0.8) !important;
 }
 
 /* Error Paper */

@@ -220,47 +220,65 @@ const InvoiceReport = (props: any, ref: any) => {
         <style>
           {`
             @media print { 
-              @page { size: A4 portrait; } 
-              #content { padding: 0mm; } 
+              @page { size: A4 landscape; margin: 5mm; } 
+              #content { padding: 0mm; background-color: #fff !important; } 
               footer { page-break-after: always; } 
               .section { background-color: #fff !important; color: #000 !important; }
               #tb { background-color: #fff !important; color: #000 !important; }
-              #tb td { border-color: #555 !important; }
+              #tb td { border-color: #555 !important; color: #000 !important; }
             } 
             @media screen { 
               #content { padding: 5mm; text-align: -webkit-center; background-color: ${screenBg}; overflow-x: scroll; } 
               footer { margin-bottom: 5mm; } 
-            } 
-            #tb { width: 100%; background-color: ${bgColor}; font-size: 10pt; color: ${textColor}; } 
-            #tb .space { width: 20mm; } 
-            #tb .amount { text-align: right; } 
+            }
+            /* PDF export specific - applied via class */
+            .pdf-export #content { background-color: #fff !important; padding: 0 !important; }
+            .pdf-export .section { background-color: #fff !important; color: #000 !important; }
+            .pdf-export #tb { background-color: #fff !important; color: #000 !important; }
+            .pdf-export #tb td { border-color: #555 !important; color: #000 !important; }
+            .pdf-export .section-border-right { border-color: #A3A3A3 !important; }
+            .pdf-export .section-border-bottom { border-color: #A3A3A3 !important; }
+            #tb { width: 100%; background-color: ${bgColor}; font-size: 9pt; color: ${textColor}; } 
+            #tb .space { width: 10mm; } 
+            #tb .amount { text-align: right; padding-right: 8px; } 
             #tb .summary { font-weight: bold; } 
             #tb .summary td { padding-bottom: 2mm; } 
-            #tb .remark p { font-size: 9pt; } 
-            #tb .header td { font-size: 15pt; font-weight: bold; padding: 2mm; border-top: 1px solid ${borderColor}; border-bottom: 1px solid ${borderColor}; } 
-            #tb .title td { font-size: 12pt; font-weight: bold; } 
+            #tb .remark { font-size: 8pt; padding: 4px 8px; } 
+            #tb .header td { font-size: 12pt; font-weight: bold; padding: 3mm 8px; border-top: 1px solid ${borderColor}; border-bottom: 1px solid ${borderColor}; } 
+            #tb .title td { font-size: 10pt; font-weight: bold; padding: 4px 8px; } 
             #tb .divider td { height: 1px; border-bottom: 1px solid ${borderColor}; } 
-            #tb .title2 td { font-size: 12pt; padding-bottom: 3mm; } 
-            .section { width: 210mm; height: 148mm; padding: 10mm; background-color: ${bgColor}; color: ${textColor}; } 
-            .section-first { border-bottom: 1px dashed ${dashedBorder}; } 
-            #tb .contact td { font-size: 8pt; } 
+            #tb .title2 td { font-size: 10pt; padding: 4px 8px 3mm 8px; } 
+            #tb .contact td { font-size: 7pt; padding: 2px 8px; } 
             #tb .border-bottom td { border-bottom: 2px solid ${borderColor}; }
+            #tb td { padding: 4px 8px; }
+            .page-container { display: flex; flex-wrap: wrap; width: 287mm; }
+            .section { width: 143mm; height: 100mm; padding: 5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; }
+            .section-border-right { border-right: 1px dashed ${dashedBorder}; }
+            .section-border-bottom { border-bottom: 1px dashed ${dashedBorder}; }
           `}
         </style>
         {items && items.length > 0 && (
           <div id="content">
-            {items.map((row, index) => {
+            {Array.from({ length: Math.ceil(items.length / 4) }).map((_, pageIndex) => {
+              const pageItems = items.slice(pageIndex * 4, (pageIndex + 1) * 4);
               return (
-                <div key={index}>
-                  <div
-                    className={`section ${
-                      index % 2 === 0 ? "section-first" : ""
-                    }`}
-                  >
-                    {renderRow(row)}
+                <React.Fragment key={pageIndex}>
+                  <div className="page-container">
+                    {pageItems.map((row, idx) => {
+                      const isRightColumn = idx === 1 || idx === 3;
+                      const isTopRow = idx === 0 || idx === 1;
+                      return (
+                        <div
+                          key={idx}
+                          className={`section ${!isRightColumn ? "section-border-right" : ""} ${isTopRow ? "section-border-bottom" : ""}`}
+                        >
+                          {renderRow(row)}
+                        </div>
+                      );
+                    })}
                   </div>
-                  {index % 2 === 1 && <footer />}
-                </div>
+                  <footer />
+                </React.Fragment>
               );
             })}
           </div>
