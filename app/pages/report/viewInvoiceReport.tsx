@@ -41,7 +41,6 @@ import {
   PictureAsPdf as PdfIcon,
 } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
-import html2pdf from "html2pdf.js";
 import { useBank, useBranch, useDrive, useReport } from "hooks";
 import InvoiceReport from "components/report/InvoiceReport";
 
@@ -66,6 +65,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
 
   const handlePrintClick = useReactToPrint({
     contentRef: componentRef,
+    documentTitle: `invoice_${branch?.name || "report"}_${report.sheet?.title || "report"}`,
   });
 
   useEffect(() => {
@@ -151,9 +151,10 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
     }
   }, [branch, sheetId, fetchReport]);
 
-  const handleExportPdf = useCallback(() => {
+  const handleExportPdf = useCallback(async () => {
     if (!componentRef.current) return;
 
+    const html2pdf = (await import("html2pdf.js")).default;
     const element = componentRef.current;
     const sheetTitle = report.sheet?.title || "invoice";
     const filename = `invoice_${branch?.name || "report"}_${sheetTitle}.pdf`;
