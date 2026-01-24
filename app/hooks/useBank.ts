@@ -1,39 +1,34 @@
-import { useCallback } from "react";
-import { useAppContext } from "hooks";
-import {
-  fetchBank,
-  getBank,
-  saveBank,
-  deleteBank,
-} from "reducers/actions/bankAction";
+import { useCallback } from 'react'
+import { useAppContext } from 'hooks'
+import { fetchBank, getBank, saveBank, deleteBank } from 'reducers/actions/bankAction'
 
 const useBank = () => {
-  const { state, dispatch } = useAppContext();
+  const { state, dispatch } = useAppContext()
 
   const handleFetchBank = useCallback(() => {
-    fetchBank(dispatch);
-  }, [dispatch]);
+    fetchBank(dispatch)
+  }, [dispatch])
 
   const handleGetBank = useCallback(
     (id: string | null) => {
-      getBank(dispatch, id);
+      getBank(dispatch, id)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   const handleSaveBank = useCallback(
     (data: object) => {
-      saveBank(dispatch, data);
+      saveBank(dispatch, data)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   const handleDeleteBank = useCallback(
     (id: string) => {
-      deleteBank(dispatch, id);
+      deleteBank(dispatch, id)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   return {
     saved: state.bank.saved,
@@ -43,8 +38,8 @@ const useBank = () => {
     fetchBank: handleFetchBank,
     getBank: handleGetBank,
     saveBank: handleSaveBank,
-    deleteBank: handleDeleteBank,
-  };
-};
+    deleteBank: handleDeleteBank
+  }
+}
 
-export default useBank;
+export default useBank

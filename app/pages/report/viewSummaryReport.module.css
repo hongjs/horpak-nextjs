@@ -32,7 +32,8 @@
   width: 100%;
   padding: 32px;
   border-radius: 16px !important;
-  box-shadow: 0 0 2px 0 rgba(145, 158, 171, 0.2),
+  box-shadow:
+    0 0 2px 0 rgba(145, 158, 171, 0.2),
     0 12px 24px -4px rgba(145, 158, 171, 0.12) !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: #ffffff !important;
@@ -40,7 +41,9 @@
 
 :global(.dark) .paper {
   background-color: #1e1e1e !important;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 12px 24px -4px rgba(0, 0, 0, 0.3) !important;
+  box-shadow:
+    0 0 2px 0 rgba(0, 0, 0, 0.2),
+    0 12px 24px -4px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Filter Section */
@@ -70,10 +73,7 @@
   border-color: rgba(145, 158, 171, 0.32);
 }
 
-:global(.dark)
-  .formControl
-  .MuiInputBase-root:hover
-  .MuiOutlinedInput-notchedOutline {
+:global(.dark) .formControl .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
   border-color: #ffffff;
 }
 

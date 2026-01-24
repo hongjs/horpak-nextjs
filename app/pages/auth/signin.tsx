@@ -1,6 +1,6 @@
-import React, { useCallback } from "react";
-import type { GetServerSideProps } from "next";
-import { getProviders, getSession, signIn } from "next-auth/react";
+import React, { useCallback } from 'react'
+import type { GetServerSideProps } from 'next'
+import { getProviders, getSession, signIn } from 'next-auth/react'
 import {
   Box,
   Button,
@@ -11,50 +11,50 @@ import {
   Typography,
   useTheme,
   alpha,
-  Container,
-} from "@mui/material";
-import { Turnstile } from "@marsidev/react-turnstile";
-import { SignInProps } from "types/auth";
-import constants from "config/constants";
-import { useTurnstile } from "hooks";
+  Container
+} from '@mui/material'
+import { Turnstile } from '@marsidev/react-turnstile'
+import { SignInProps } from 'types/auth'
+import constants from 'config/constants'
+import { useTurnstile } from 'hooks'
 
-import FacebookIcon from "@mui/icons-material/Facebook";
-import { ThemeToggle } from "components/ThemeToggle";
+import FacebookIcon from '@mui/icons-material/Facebook'
+import { ThemeToggle } from 'components/ThemeToggle'
 
 const SignIn: React.FC<SignInProps> = ({ providers }) => {
-  const { valid, validateToken, failure } = useTurnstile();
-  const theme = useTheme();
+  const { valid, validateToken, failure } = useTurnstile()
+  const theme = useTheme()
 
   const handleSignin = useCallback(() => {
     if (valid) {
-      signIn("google");
+      signIn('google')
     }
-  }, [valid]);
+  }, [valid])
 
   const handleTurnstileSuccess = (token: string) => {
-    validateToken(token);
-  };
+    validateToken(token)
+  }
 
   const handleTurnstileFail = () => {
-    failure();
-  };
+    failure()
+  }
 
   return (
     <Box
       sx={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         background: `linear-gradient(135deg, ${alpha(
           theme.palette.primary.main,
-          0.05,
+          0.05
         )} 0%, ${alpha(theme.palette.secondary.main, 0.05)} 100%)`,
         p: 2,
-        position: "relative",
+        position: 'relative'
       }}
     >
-      <Box sx={{ position: "absolute", top: 16, right: 16 }}>
+      <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
         <ThemeToggle />
       </Box>
       <Container maxWidth="xs">
@@ -64,12 +64,9 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
             p: 4,
             borderRadius: 4,
             border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-            boxShadow: `0 8px 40px -12px ${alpha(
-              theme.palette.primary.main,
-              0.1,
-            )}`,
-            backdropFilter: "blur(20px)",
-            bgcolor: alpha(theme.palette.background.paper, 0.8),
+            boxShadow: `0 8px 40px -12px ${alpha(theme.palette.primary.main, 0.1)}`,
+            backdropFilter: 'blur(20px)',
+            bgcolor: alpha(theme.palette.background.paper, 0.8)
           }}
         >
           <Stack spacing={4} alignItems="center">
@@ -77,16 +74,13 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
             <Box textAlign="center">
               <Box
                 sx={{
-                  display: "inline-flex",
+                  display: 'inline-flex',
                   p: 1.5,
-                  borderRadius: "16px",
+                  borderRadius: '16px',
                   background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                  color: "#fff",
+                  color: '#fff',
                   mb: 2,
-                  boxShadow: `0 8px 24px -4px ${alpha(
-                    theme.palette.primary.main,
-                    0.3,
-                  )}`,
+                  boxShadow: `0 8px 24px -4px ${alpha(theme.palette.primary.main, 0.3)}`
                 }}
               >
                 <svg
@@ -124,7 +118,7 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                 sx={{
                   fontWeight: 800,
                   mb: 1,
-                  letterSpacing: "-0.5px",
+                  letterSpacing: '-0.5px'
                 }}
               >
                 Hong.JS
@@ -141,11 +135,7 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                 variant="outlined"
                 size="large"
                 startIcon={
-                  <Box
-                    component="svg"
-                    viewBox="0 0 24 24"
-                    sx={{ width: 20, height: 20 }}
-                  >
+                  <Box component="svg" viewBox="0 0 24 24" sx={{ width: 20, height: 20 }}>
                     <path
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                       fill="#4285F4"
@@ -169,14 +159,14 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                 sx={{
                   py: 1.5,
                   borderRadius: 2,
-                  textTransform: "none",
-                  fontSize: "1rem",
+                  textTransform: 'none',
+                  fontSize: '1rem',
                   borderColor: alpha(theme.palette.divider, 0.2),
-                  color: "text.primary",
-                  "&:hover": {
+                  color: 'text.primary',
+                  '&:hover': {
                     borderColor: theme.palette.primary.main,
-                    bgcolor: alpha(theme.palette.primary.main, 0.05),
-                  },
+                    bgcolor: alpha(theme.palette.primary.main, 0.05)
+                  }
                 }}
               >
                 Sign in with Google
@@ -190,8 +180,8 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
                 sx={{
                   py: 1.5,
                   borderRadius: 2,
-                  textTransform: "none",
-                  fontSize: "1rem",
+                  textTransform: 'none',
+                  fontSize: '1rem'
                 }}
               >
                 Sign in with Facebook
@@ -207,18 +197,18 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
             {/* Turnstile */}
             <Box
               sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                "& iframe": {
-                  maxWidth: "100%",
-                },
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                '& iframe': {
+                  maxWidth: '100%'
+                }
               }}
             >
               <Turnstile
                 options={{
-                  theme: theme.palette.mode === "dark" ? "dark" : "light",
-                  size: "normal",
+                  theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+                  size: 'normal'
                 }}
                 siteKey={constants.TURNSTILE_PUBLIC_KEY}
                 onError={handleTurnstileFail}
@@ -235,21 +225,21 @@ const SignIn: React.FC<SignInProps> = ({ providers }) => {
         </Card>
       </Container>
     </Box>
-  );
-};
+  )
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res } = context;
-  const providers = await getProviders();
-  const session = await getSession({ req });
+  const { req, res } = context
+  const providers = await getProviders()
+  const session = await getSession({ req })
   if (session && res) {
-    res.statusCode = 302;
-    res.setHeader("Location", "/");
-    return { props: { session, providers } };
+    res.statusCode = 302
+    res.setHeader('Location', '/')
+    return { props: { session, providers } }
   }
   return {
-    props: { providers },
-  };
-};
+    props: { providers }
+  }
+}
 
-export default SignIn;
+export default SignIn

@@ -1,7 +1,7 @@
-import { useCallback, useState, useMemo } from "react";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import { useCallback, useState, useMemo } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { signOut, useSession } from 'next-auth/react'
 import {
   AppBar,
   Box,
@@ -18,8 +18,8 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  Divider,
-} from "@mui/material";
+  Divider
+} from '@mui/material'
 import {
   Menu as MenuIcon,
   Dashboard as DashboardIcon,
@@ -32,78 +32,78 @@ import {
   Storage as StorageIcon,
   Logout as LogoutIcon,
   ChevronLeft as ChevronLeftIcon,
-  Apartment as ApartmentIcon,
-} from "@mui/icons-material";
-import { ThemeToggle } from "components/ThemeToggle";
+  Apartment as ApartmentIcon
+} from '@mui/icons-material'
+import { ThemeToggle } from 'components/ThemeToggle'
 
-const DRAWER_WIDTH = 280;
+const DRAWER_WIDTH = 280
 
 const MainNavigation: React.FC = () => {
-  const { data } = useSession();
-  const router = useRouter();
-  const [openDrawer, setOpenDrawer] = useState(false);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const { data } = useSession()
+  const router = useRouter()
+  const [openDrawer, setOpenDrawer] = useState(false)
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null)
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   const menuItems = useMemo(() => {
     return [
-      { id: "home", name: "Dashboard", icon: <DashboardIcon />, url: "/" },
+      { id: 'home', name: 'Dashboard', icon: <DashboardIcon />, url: '/' },
       {
-        id: "summaryReport",
-        name: "Summary Report",
+        id: 'summaryReport',
+        name: 'Summary Report',
         icon: <DescriptionIcon />,
-        url: "/report/viewSummaryReport",
+        url: '/report/viewSummaryReport'
       },
       {
-        id: "invoiceReport",
-        name: "Invoice Report",
+        id: 'invoiceReport',
+        name: 'Invoice Report',
         icon: <ReceiptIcon />,
-        url: "/report/viewInvoiceReport",
+        url: '/report/viewInvoiceReport'
       },
       {
-        id: "process",
-        name: "Process",
+        id: 'process',
+        name: 'Process',
         icon: <SettingsIcon />,
-        url: "/report/processSheet",
+        url: '/report/processSheet'
       },
-      { id: "users", name: "Users", icon: <GroupIcon />, url: "/users" },
-      { id: "banks", name: "Banks", icon: <BankIcon />, url: "/bank" },
+      { id: 'users', name: 'Users', icon: <GroupIcon />, url: '/users' },
+      { id: 'banks', name: 'Banks', icon: <BankIcon />, url: '/bank' },
       {
-        id: "branches",
-        name: "Branches",
+        id: 'branches',
+        name: 'Branches',
         icon: <BusinessIcon />,
-        url: "/branch",
+        url: '/branch'
       },
       {
-        id: "datasource",
-        name: "Data Source",
+        id: 'datasource',
+        name: 'Data Source',
         icon: <StorageIcon />,
-        url: "/admin/datasource",
-      },
-    ];
-  }, []);
+        url: '/admin/datasource'
+      }
+    ]
+  }, [])
 
-  const handleOpenDrawer = () => setOpenDrawer(true);
-  const handleCloseDrawer = () => setOpenDrawer(false);
+  const handleOpenDrawer = () => setOpenDrawer(true)
+  const handleCloseDrawer = () => setOpenDrawer(false)
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    setAnchorElUser(event.currentTarget)
+  }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+    setAnchorElUser(null)
+  }
 
   const handleMenuClick = (url: string) => {
-    router.push(url);
-    handleCloseDrawer();
-  };
+    router.push(url)
+    handleCloseDrawer()
+  }
 
   const handleLogout = () => {
-    handleCloseUserMenu();
-    signOut();
-  };
+    handleCloseUserMenu()
+    signOut()
+  }
 
   return (
     <>
@@ -111,11 +111,11 @@ const MainNavigation: React.FC = () => {
         position="fixed"
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          backgroundColor: "background.paper",
-          color: "text.primary",
-          boxShadow: "none",
-          borderBottom: "1px solid",
-          borderColor: "divider",
+          backgroundColor: 'background.paper',
+          color: 'text.primary',
+          boxShadow: 'none',
+          borderBottom: '1px solid',
+          borderColor: 'divider'
         }}
       >
         <Toolbar>
@@ -124,7 +124,7 @@ const MainNavigation: React.FC = () => {
             aria-label="open drawer"
             onClick={handleOpenDrawer}
             edge="start"
-            sx={{ mr: 2, display: { md: "none" } }}
+            sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
@@ -134,13 +134,13 @@ const MainNavigation: React.FC = () => {
             noWrap
             component="div"
             sx={{
-              display: "flex",
-              alignItems: "center",
+              display: 'flex',
+              alignItems: 'center',
               fontWeight: 700,
-              color: "primary.main",
-              cursor: "pointer",
+              color: 'primary.main',
+              cursor: 'pointer'
             }}
-            onClick={() => router.push("/")}
+            onClick={() => router.push('/')}
           >
             <ApartmentIcon sx={{ mr: 1 }} />
             Hong.JS
@@ -148,29 +148,26 @@ const MainNavigation: React.FC = () => {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <ThemeToggle />
 
             {data?.user && (
               <Box sx={{ flexGrow: 0 }}>
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt={data.user.name || "User"}
-                    src={data.user.image || ""}
-                  />
+                  <Avatar alt={data.user.name || 'User'} src={data.user.image || ''} />
                 </IconButton>
                 <Menu
-                  sx={{ mt: "45px" }}
+                  sx={{ mt: '45px' }}
                   id="menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
+                    vertical: 'top',
+                    horizontal: 'right'
                   }}
                   keepMounted
                   transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
+                    vertical: 'top',
+                    horizontal: 'right'
                   }}
                   open={Boolean(anchorElUser)}
                   onClose={handleCloseUserMenu}
@@ -203,54 +200,47 @@ const MainNavigation: React.FC = () => {
         sx={{
           width: DRAWER_WIDTH,
           flexShrink: 0,
-          display: { xs: "none", md: "block" },
+          display: { xs: 'none', md: 'block' },
           [`& .MuiDrawer-paper`]: {
             width: DRAWER_WIDTH,
-            boxSizing: "border-box",
-            borderRight: "1px solid",
-            borderColor: "divider",
-            backgroundColor: "background.default",
-            top: "64px",
-            height: "calc(100% - 64px)",
-          },
+            boxSizing: 'border-box',
+            borderRight: '1px solid',
+            borderColor: 'divider',
+            backgroundColor: 'background.default',
+            top: '64px',
+            height: 'calc(100% - 64px)'
+          }
         }}
       >
-        <Box sx={{ overflow: "auto", py: 2 }}>
+        <Box sx={{ overflow: 'auto', py: 2 }}>
           <List>
             {menuItems.map((item) => (
-              <ListItem
-                key={item.id}
-                disablePadding
-                sx={{ display: "block", px: 2, mb: 0.5 }}
-              >
+              <ListItem key={item.id} disablePadding sx={{ display: 'block', px: 2, mb: 0.5 }}>
                 <ListItemButton
                   selected={router.pathname === item.url}
                   onClick={() => handleMenuClick(item.url)}
                   sx={{
                     minHeight: 48,
-                    justifyContent: "initial",
+                    justifyContent: 'initial',
                     borderRadius: 2,
-                    "&.Mui-selected": {
-                      backgroundColor: "primary.light",
-                      color: "primary.dark",
-                      "& .MuiListItemIcon-root": {
-                        color: "primary.dark",
+                    '&.Mui-selected': {
+                      backgroundColor: 'primary.light',
+                      color: 'primary.dark',
+                      '& .MuiListItemIcon-root': {
+                        color: 'primary.dark'
                       },
-                      "&:hover": {
-                        backgroundColor: "primary.light",
-                      },
-                    },
+                      '&:hover': {
+                        backgroundColor: 'primary.light'
+                      }
+                    }
                   }}
                 >
                   <ListItemIcon
                     sx={{
                       minWidth: 0,
                       mr: 2,
-                      justifyContent: "center",
-                      color:
-                        router.pathname === item.url
-                          ? "primary.main"
-                          : "text.secondary",
+                      justifyContent: 'center',
+                      color: router.pathname === item.url ? 'primary.main' : 'text.secondary'
                     }}
                   >
                     {item.icon}
@@ -258,8 +248,8 @@ const MainNavigation: React.FC = () => {
                   <ListItemText
                     primary={item.name}
                     primaryTypographyProps={{
-                      fontSize: "0.925rem",
-                      fontWeight: router.pathname === item.url ? 600 : 500,
+                      fontSize: '0.925rem',
+                      fontWeight: router.pathname === item.url ? 600 : 500
                     }}
                   />
                 </ListItemButton>
@@ -275,26 +265,26 @@ const MainNavigation: React.FC = () => {
         open={openDrawer}
         onClose={handleCloseDrawer}
         ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
+          keepMounted: true // Better open performance on mobile.
         }}
         sx={{
-          display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: DRAWER_WIDTH,
-          },
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: DRAWER_WIDTH
+          }
         }}
       >
         <Toolbar
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            px: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            px: 2
           }}
         >
           <Typography variant="h6" color="primary.main" fontWeight="bold">
-            <ApartmentIcon sx={{ mr: 1, color: "primary.main" }} />
+            <ApartmentIcon sx={{ mr: 1, color: 'primary.main' }} />
             Hong.JS
           </Typography>
           <IconButton onClick={handleCloseDrawer}>
@@ -311,8 +301,7 @@ const MainNavigation: React.FC = () => {
               >
                 <ListItemIcon
                   sx={{
-                    color:
-                      router.pathname === item.url ? "primary.main" : "inherit",
+                    color: router.pathname === item.url ? 'primary.main' : 'inherit'
                   }}
                 >
                   {item.icon}
@@ -324,7 +313,7 @@ const MainNavigation: React.FC = () => {
         </List>
       </Drawer>
     </>
-  );
-};
+  )
+}
 
-export default MainNavigation;
+export default MainNavigation

@@ -1,26 +1,26 @@
-import React, { ReactElement } from "react";
-import { render, RenderOptions } from "@testing-library/react";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
+import React, { ReactElement } from 'react'
+import { render as rtlRender, RenderOptions } from '@testing-library/react'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 
 const theme = createTheme({
   palette: {
-    mode: "light",
+    mode: 'light',
     primary: {
-      main: "#1976d2",
+      main: '#1976d2'
     },
     warning: {
-      main: "#ff9800",
+      main: '#ff9800'
     },
     background: {
-      default: "#fff",
-      paper: "#fff",
-    },
-  },
-});
+      default: '#fff',
+      paper: '#fff'
+    }
+  }
+})
 
 interface AllTheProvidersProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const AllTheProviders: React.FC<AllTheProvidersProps> = ({ children }) => {
@@ -29,13 +29,13 @@ const AllTheProviders: React.FC<AllTheProvidersProps> = ({ children }) => {
       <CssBaseline />
       {children}
     </ThemeProvider>
-  );
-};
+  )
+}
 
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, "wrapper">,
-) => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+  rtlRender(ui, { wrapper: AllTheProviders, ...options })
 
-export * from "@testing-library/react";
-export { customRender as render };
+// eslint-disable-next-line import/export
+export * from '@testing-library/react'
+// eslint-disable-next-line import/export
+export { customRender as render }

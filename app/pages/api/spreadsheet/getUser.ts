@@ -1,19 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { withActiveAuth } from "middleware";
-import clientPromise from "lib/mongodb";
-import keys from "config/keys";
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { withActiveAuth } from 'middleware'
+import clientPromise from 'lib/mongodb'
+import keys from 'config/keys'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === "GET") {
-    const client = await clientPromise;
-    const db = client.db(keys.DB_NAME);
-    const user = await db
-      .collection("configs2")
-      .findOne({ group: "google", name: "user" });
+  if (req.method === 'GET') {
+    const client = await clientPromise
+    const db = client.db(keys.DB_NAME)
+    const user = await db.collection('configs2').findOne({ group: 'google', name: 'user' })
 
-    const token = await db
-      .collection("configs2")
-      .findOne({ group: "google", name: "token" });
+    const token = await db.collection('configs2').findOne({ group: 'google', name: 'token' })
 
     if (user) {
       res.send({
@@ -22,12 +18,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         email: user.value.email,
         updatedBy: user.updatedBy,
         updatedDate: user.updatedDate,
-        expiryDate: new Date(token?.value.expiry_date * 1000),
-      });
+        expiryDate: new Date(token?.value.expiry_date * 1000)
+      })
     } else {
-      res.send({});
+      res.send({})
     }
   }
-};
+}
 
-export default withActiveAuth(handler);
+export default withActiveAuth(handler)

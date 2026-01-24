@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Autocomplete,
   Box,
@@ -26,173 +20,165 @@ import {
   TextField,
   Tooltip,
   Typography,
-  ListItemButton,
-} from "@mui/material";
-import {
-  DesktopDatePicker,
-  MobileDatePicker,
-  LocalizationProvider,
-} from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { format as dateFormat, addMonths } from "date-fns";
+  ListItemButton
+} from '@mui/material'
+import { DesktopDatePicker, MobileDatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { format as dateFormat, addMonths } from 'date-fns'
 import {
   Print as PrintIcon,
   Refresh as RefreshIcon,
-  PictureAsPdf as PdfIcon,
-} from "@mui/icons-material";
-import { useReactToPrint } from "react-to-print";
-import { useBank, useBranch, useDrive, useReport } from "hooks";
-import InvoiceReport from "components/report/InvoiceReport";
+  PictureAsPdf as PdfIcon
+} from '@mui/icons-material'
+import { useReactToPrint } from 'react-to-print'
+import { useBank, useBranch, useDrive, useReport } from 'hooks'
+import InvoiceReport from 'components/report/InvoiceReport'
 
-import styles from "./viewInvoiceReport.module.css";
-import { BranchItemState } from "types/state";
+import styles from './viewInvoiceReport.module.css'
+import { BranchItemState } from 'types/state'
 
-type Props = {};
+type Props = {}
 
 const ViewInvoiceReport: React.FC<Props> = ({}) => {
-  const { banks, fetchBank, loading: bankLoading } = useBank();
-  const { branches, fetchBranch, loading } = useBranch();
-  const { fetchSheets, loading: driveLoading } = useDrive();
-  const { items, errors, fetchReport, clearReport, ...report } = useReport();
-  const [hasName, setHasName] = useState(true);
-  const [branch, setBranch] = useState<BranchItemState | undefined>(undefined);
-  const [sheetId, setSheetId] = useState<number | undefined>(undefined);
-  const [rooms, setRooms] = useState<number[]>([]);
-  const [invoiceMonth, setInvoiceMonth] = useState(new Date());
-  const [dueDate, setDueDate] = useState(new Date());
+  const { banks, fetchBank, loading: bankLoading } = useBank()
+  const { branches, fetchBranch, loading } = useBranch()
+  const { fetchSheets, loading: driveLoading } = useDrive()
+  const { items, errors, fetchReport, clearReport, ...report } = useReport()
+  const [hasName, setHasName] = useState(true)
+  const [branch, setBranch] = useState<BranchItemState | undefined>(undefined)
+  const [sheetId, setSheetId] = useState<number | undefined>(undefined)
+  const [rooms, setRooms] = useState<number[]>([])
+  const [invoiceMonth, setInvoiceMonth] = useState(new Date())
+  const [dueDate, setDueDate] = useState(new Date())
 
-  const componentRef = useRef<any>(undefined);
+  const componentRef = useRef<any>(undefined)
 
   const handlePrintClick = useReactToPrint({
     contentRef: componentRef,
-    documentTitle: `invoice_${branch?.name || "report"}_${report.sheet?.title || "report"}`,
-  });
+    documentTitle: `invoice_${branch?.name || 'report'}_${report.sheet?.title || 'report'}`
+  })
 
   useEffect(() => {
-    setInvoiceMonth(
-      new Date(`${dateFormat(addMonths(new Date(), 1), "yyyy-MM")}-01`),
-    );
-    setDueDate(
-      new Date(`${dateFormat(addMonths(new Date(), 1), "yyyy-MM")}-05`),
-    );
-  }, []);
+    setInvoiceMonth(new Date(`${dateFormat(addMonths(new Date(), 1), 'yyyy-MM')}-01`))
+    setDueDate(new Date(`${dateFormat(addMonths(new Date(), 1), 'yyyy-MM')}-05`))
+  }, [])
 
   useEffect(() => {
-    clearReport();
-    fetchBranch();
-    fetchBank();
-  }, [clearReport, fetchBank, fetchBranch]);
+    clearReport()
+    fetchBranch()
+    fetchBank()
+  }, [clearReport, fetchBank, fetchBranch])
 
   const handleChange = useCallback(
     (event: any, name: string) => {
-      if (name === "branch") {
-        setSheetId(undefined);
+      if (name === 'branch') {
+        setSheetId(undefined)
 
-        const branch = branches.find((i) => i._id === event.target.value);
+        const branch = branches.find((i) => i._id === event.target.value)
         if (branch) {
-          setBranch(branch);
-          fetchSheets([branch]);
+          setBranch(branch)
+          fetchSheets([branch])
         }
-      } else if (name === "sheet") {
-        setSheetId(event.target.value);
+      } else if (name === 'sheet') {
+        setSheetId(event.target.value)
         if (branch && branch.spreadSheetId) {
-          fetchReport(branch.spreadSheetId, event.target.value);
+          fetchReport(branch.spreadSheetId, event.target.value)
         }
-      } else if (name === "rooms") {
-        setRooms(event.target.value);
-      } else if (name === "hasName") {
-        setHasName(event.target.checked);
+      } else if (name === 'rooms') {
+        setRooms(event.target.value)
+      } else if (name === 'hasName') {
+        setHasName(event.target.checked)
       }
     },
-    [branch, branches, fetchSheets, fetchReport],
-  );
+    [branch, branches, fetchSheets, fetchReport]
+  )
 
   useEffect(() => {
     if (branch && branch.sheets && branch.sheets.length > 0) {
-      setSheetId(branch.sheets[0].sheetId);
-      handleChange({ target: { value: branch.sheets[0].sheetId } }, "sheet");
+      setSheetId(branch.sheets[0].sheetId)
+      handleChange({ target: { value: branch.sheets[0].sheetId } }, 'sheet')
     }
-  }, [branch, branch?.sheets, handleChange]);
+  }, [branch, branch?.sheets, handleChange])
 
   const itemsToDisplay = useMemo(() => {
     if (rooms === undefined || rooms.length === 0) {
       return items
         ? hasName === true
           ? items.filter((item) => {
-              return item.name !== "";
+              return item.name !== ''
             })
           : items
-        : [];
+        : []
     } else {
       return items
         ? hasName === true
           ? items.filter((item) => {
-              return item.name !== "" && rooms.includes(item.room);
+              return item.name !== '' && rooms.includes(item.room)
             })
           : items.filter((item) => {
-              return rooms.includes(item.room);
+              return rooms.includes(item.room)
             })
-        : [];
+        : []
     }
-  }, [items, rooms, hasName]);
+  }, [items, rooms, hasName])
 
   const handleDateChange = useCallback((date: Date | null, name: string) => {
-    if (!date) return;
-    if (name === "dueDate") {
-      setDueDate(date);
-    } else if (name === "invoiceMonth") {
-      setInvoiceMonth(date);
+    if (!date) return
+    if (name === 'dueDate') {
+      setDueDate(date)
+    } else if (name === 'invoiceMonth') {
+      setInvoiceMonth(date)
     }
-  }, []);
+  }, [])
 
   const handleRefreshClick = useCallback(() => {
     if (branch && branch.spreadSheetId && sheetId) {
-      fetchReport(branch.spreadSheetId, sheetId);
+      fetchReport(branch.spreadSheetId, sheetId)
     }
-  }, [branch, sheetId, fetchReport]);
+  }, [branch, sheetId, fetchReport])
 
   const handleExportPdf = useCallback(async () => {
-    if (!componentRef.current) return;
+    if (!componentRef.current) return
 
-    const html2pdf = (await import("html2pdf.js")).default;
-    const element = componentRef.current;
-    const sheetTitle = report.sheet?.title || "invoice";
-    const filename = `invoice_${branch?.name || "report"}_${sheetTitle}.pdf`;
+    const html2pdf = (await import('html2pdf.js')).default
+    const element = componentRef.current
+    const sheetTitle = report.sheet?.title || 'invoice'
+    const filename = `invoice_${branch?.name || 'report'}_${sheetTitle}.pdf`
 
     // Add pdf-export class for white background styling
-    element.classList.add("pdf-export");
+    element.classList.add('pdf-export')
 
     const opt = {
       margin: 0,
       filename,
-      image: { type: "jpeg" as const, quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
-      jsPDF: { unit: "mm" as const, format: "a4", orientation: "landscape" as const },
-    };
+      image: { type: 'jpeg' as const, quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+      jsPDF: { unit: 'mm' as const, format: 'a4', orientation: 'landscape' as const }
+    }
 
-    html2pdf().set(opt).from(element).save().then(() => {
-      // Remove pdf-export class after save
-      element.classList.remove("pdf-export");
-    });
-  }, [branch, report.sheet]);
+    html2pdf()
+      .set(opt)
+      .from(element)
+      .save()
+      .then(() => {
+        // Remove pdf-export class after save
+        element.classList.remove('pdf-export')
+      })
+  }, [branch, report.sheet])
 
   const renderFilter = useCallback(() => {
     return (
       <Box className={styles.filter}>
         <Grid container spacing={2} alignItems="center">
           <Grid size={{ xs: 12, md: 6, lg: 3, xl: 2 }}>
-            <FormControl
-              fullWidth
-              className={styles.formControl}
-              variant="outlined"
-            >
+            <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
                 labelId="branch-select-label"
                 id="branch-select"
-                value={branch?._id || ""}
+                value={branch?._id || ''}
                 label="Branch"
-                onChange={(event) => handleChange(event, "branch")}
+                onChange={(event) => handleChange(event, 'branch')}
               >
                 {branches &&
                   branches.map((branch) => {
@@ -201,25 +187,21 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                         <MenuItem key={branch._id} value={branch._id}>
                           {branch.name}
                         </MenuItem>
-                      );
+                      )
                     }
                   })}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 3, xl: 2 }}>
-            <FormControl
-              fullWidth
-              className={styles.formControl}
-              variant="outlined"
-            >
+            <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
                 labelId="sheet-select-label"
                 id="sheet-select"
-                value={sheetId || ""}
+                value={sheetId || ''}
                 label="Sheet"
-                onChange={(event) => handleChange(event, "sheet")}
+                onChange={(event) => handleChange(event, 'sheet')}
                 disabled={!branch || !branch.sheets}
               >
                 {branch &&
@@ -229,42 +211,42 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                       <MenuItem key={sheet.sheetId} value={sheet.sheetId}>
                         {sheet.title}
                       </MenuItem>
-                    );
+                    )
                   })}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 3, xl: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDateFns as any}>
-              <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                 <DesktopDatePicker
                   label="Invoice date"
                   format="yyyy-MM"
                   openTo="month"
-                  views={["year", "month"]}
+                  views={['year', 'month']}
                   value={invoiceMonth}
-                  onChange={(date) => handleDateChange(date, "invoiceMonth")}
+                  onChange={(date) => handleDateChange(date, 'invoiceMonth')}
                   slotProps={{
                     textField: {
                       fullWidth: true,
-                      className: styles.formControl,
-                    },
+                      className: styles.formControl
+                    }
                   }}
                 />
               </Box>
-              <Box sx={{ display: { xs: "block", md: "none" } }}>
+              <Box sx={{ display: { xs: 'block', md: 'none' } }}>
                 <MobileDatePicker
                   label="Invoice date"
                   format="yyyy-MM"
                   openTo="month"
-                  views={["year", "month"]}
+                  views={['year', 'month']}
                   value={invoiceMonth}
-                  onChange={(date) => handleDateChange(date, "invoiceMonth")}
+                  onChange={(date) => handleDateChange(date, 'invoiceMonth')}
                   slotProps={{
                     textField: {
                       fullWidth: true,
-                      className: styles.formControl,
-                    },
+                      className: styles.formControl
+                    }
                   }}
                   closeOnSelect
                 />
@@ -273,31 +255,31 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 3, xl: 2 }}>
             <LocalizationProvider dateAdapter={AdapterDateFns as any}>
-              <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                 <DesktopDatePicker
                   label="Due date"
                   format="yyyy-MM-dd"
                   value={dueDate}
-                  onChange={(date) => handleDateChange(date, "dueDate")}
+                  onChange={(date) => handleDateChange(date, 'dueDate')}
                   slotProps={{
                     textField: {
                       fullWidth: true,
-                      className: styles.formControl,
-                    },
+                      className: styles.formControl
+                    }
                   }}
                 />
               </Box>
-              <Box sx={{ display: { xs: "block", md: "none" } }}>
+              <Box sx={{ display: { xs: 'block', md: 'none' } }}>
                 <MobileDatePicker
                   label="Due date"
                   format="yyyy-MM-dd"
                   value={dueDate}
-                  onChange={(date) => handleDateChange(date, "dueDate")}
+                  onChange={(date) => handleDateChange(date, 'dueDate')}
                   slotProps={{
                     textField: {
                       fullWidth: true,
-                      className: styles.formControl,
-                    },
+                      className: styles.formControl
+                    }
                   }}
                   closeOnSelect
                 />
@@ -312,7 +294,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
               disableCloseOnSelect
               value={rooms || []}
               onChange={(event, newValue) => {
-                setRooms(newValue as any[]);
+                setRooms(newValue as any[])
               }}
               getOptionLabel={(option) => option.toString()}
               renderOption={(props, option, { selected }) => (
@@ -335,14 +317,14 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
           </Grid>
           <Grid
             size={{ xs: 6, sm: 6, md: 4, lg: 2 }}
-            sx={{ display: "flex", alignItems: "center" }}
+            sx={{ display: 'flex', alignItems: 'center' }}
           >
             <FormControlLabel
               className={styles.formControl}
               control={
                 <Checkbox
                   checked={hasName}
-                  onChange={(event) => handleChange(event, "hasName")}
+                  onChange={(event) => handleChange(event, 'hasName')}
                   name="checkedB"
                   color="primary"
                 />
@@ -351,10 +333,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
             />
           </Grid>
 
-          <Grid
-            size={{ xs: 6, sm: 3, md: 2, lg: 2 }}
-            sx={{ display: { xs: "none", md: "block" } }}
-          >
+          <Grid size={{ xs: 6, sm: 3, md: 2, lg: 2 }} sx={{ display: { xs: 'none', md: 'block' } }}>
             <Tooltip title="Print">
               <Button
                 variant="outlined"
@@ -364,16 +343,13 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                 className={`${styles.button} ${styles.printButton}`}
                 disabled={!sheetId || (errors && errors?.length > 0)}
                 onClick={handlePrintClick}
-                sx={{ height: "44px", minWidth: "44px" }}
+                sx={{ height: '44px', minWidth: '44px' }}
               >
                 <PrintIcon />
               </Button>
             </Tooltip>
           </Grid>
-          <Grid
-            size={{ xs: 0, sm: 3, md: 2, lg: 2 }}
-            sx={{ display: { xs: "none", md: "block" } }}
-          >
+          <Grid size={{ xs: 0, sm: 3, md: 2, lg: 2 }} sx={{ display: { xs: 'none', md: 'block' } }}>
             <Tooltip title="Refresh">
               <Button
                 variant="outlined"
@@ -383,7 +359,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                 className={`${styles.button} ${styles.refreshButton}`}
                 disabled={sheetId === undefined}
                 onClick={handleRefreshClick}
-                sx={{ height: "44px", minWidth: "44px" }}
+                sx={{ height: '44px', minWidth: '44px' }}
               >
                 <RefreshIcon />
               </Button>
@@ -415,9 +391,9 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
           <Grid
             size={{ xs: 12 }}
             sx={{
-              display: { xs: "flex", md: "none" },
-              justifyContent: "flex-end",
-              gap: 1,
+              display: { xs: 'flex', md: 'none' },
+              justifyContent: 'flex-end',
+              gap: 1
             }}
           >
             <Tooltip title="Print">
@@ -427,7 +403,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                 disabled={!sheetId || (errors && errors?.length > 0)}
                 onClick={handlePrintClick}
                 className={`${styles.button} ${styles.printButton}`}
-                sx={{ height: "44px", flex: 1, minWidth: "44px" }}
+                sx={{ height: '44px', flex: 1, minWidth: '44px' }}
               >
                 <PrintIcon />
               </Button>
@@ -453,7 +429,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                 disabled={sheetId === undefined}
                 onClick={handleRefreshClick}
                 className={`${styles.button} ${styles.refreshButton}`}
-                sx={{ height: "44px", flex: 1, minWidth: "44px" }}
+                sx={{ height: '44px', flex: 1, minWidth: '44px' }}
               >
                 <RefreshIcon />
               </Button>
@@ -461,7 +437,7 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
           </Grid>
         </Grid>
       </Box>
-    );
+    )
   }, [
     errors,
     branch,
@@ -476,8 +452,8 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
     handleRefreshClick,
     handleChange,
     handleDateChange,
-    handleExportPdf,
-  ]);
+    handleExportPdf
+  ])
 
   const renderError = useCallback(() => {
     if (branch && errors) {
@@ -488,24 +464,24 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
             gutterBottom
             color="error"
             sx={{
-              fontWeight: "bold",
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
+              fontWeight: 'bold',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
             }}
           >
             <i className="fa-solid fa-triangle-exclamation"></i> Sheet Error
           </Typography>
           <Typography variant="body2" gutterBottom>
-            Error in:{" "}
+            Error in:{' '}
             <a
               href={`https://docs.google.com/spreadsheets/d/${branch?.spreadSheetId}#gid=${report.sheet?.sheetId}`}
               target="_blank"
               rel="noreferrer"
               style={{
-                color: "inherit",
-                textDecoration: "underline",
-                fontWeight: 600,
+                color: 'inherit',
+                textDecoration: 'underline',
+                fontWeight: 600
               }}
             >
               {`${branch?.spreadSheetName} - ${report.sheet?.title}`}
@@ -519,63 +495,53 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
                     <ListItemText
                       primary={error}
                       primaryTypographyProps={{
-                        color: "error",
-                        variant: "body2",
+                        color: 'error',
+                        variant: 'body2'
                       }}
                     />
                   </ListItemButton>
                 </ListItem>
-              );
+              )
             })}
           </List>
         </Paper>
-      );
+      )
     }
-  }, [branch, errors, report.sheet]);
+  }, [branch, errors, report.sheet])
 
   return (
     <div className={styles.root}>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-          width: "100%",
-          mb: 0,
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          width: '100%',
+          mb: 0
         }}
       >
         <Typography variant="h4" className={styles.headerTitle}>
           Invoice Report
         </Typography>
         {itemsToDisplay && items && (
-          <Typography
-            variant="body1"
-            sx={{ color: "text.secondary", fontWeight: 500 }}
-          >
+          <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500 }}>
             {`Total ${itemsToDisplay.length}/${items.length}`}
           </Typography>
         )}
       </Box>
 
       <Paper className={styles.paper} elevation={0}>
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-end"
-        >
+        <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
           <Grid size={{ xs: 12 }}>
             {renderFilter()}
             {(loading || report.loading || driveLoading || bankLoading) && (
-              <Box sx={{ width: "100%", mt: 2 }}>
+              <Box sx={{ width: '100%', mt: 2 }}>
                 <LinearProgress sx={{ borderRadius: 1 }} />
               </Box>
             )}
           </Grid>
 
-          {errors && errors.length > 0 && (
-            <Grid size={{ xs: 12 }}>{renderError()}</Grid>
-          )}
+          {errors && errors.length > 0 && <Grid size={{ xs: 12 }}>{renderError()}</Grid>}
 
           {(!errors || errors.length === 0) && (
             <Grid size={{ xs: 12 }}>
@@ -592,18 +558,18 @@ const ViewInvoiceReport: React.FC<Props> = ({}) => {
         </Grid>
       </Paper>
     </div>
-  );
-};
+  )
+}
 
-export default ViewInvoiceReport;
+export default ViewInvoiceReport
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 12 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+      width: 250
+    }
+  }
+}

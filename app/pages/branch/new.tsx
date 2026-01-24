@@ -1,5 +1,5 @@
-import { Box, Typography } from "@mui/material";
-import BranchDetail from "components/branch/BranchDetail";
+import { Box, Typography } from '@mui/material'
+import BranchDetail from 'components/branch/BranchDetail'
 
 const AddNewBranch: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ const AddNewBranch: React.FC = () => {
 
       <BranchDetail id={null} />
     </Box>
-  );
-};
+  )
+}
 
-export default AddNewBranch;
+export default AddNewBranch

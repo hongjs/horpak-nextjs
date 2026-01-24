@@ -1,23 +1,23 @@
-import { useCallback } from "react";
-import { useAppContext } from "hooks";
-import { openAlert, closeAlert } from "reducers/actions/globalAction";
-import { AlertColor } from "types/state";
+import { useCallback } from 'react'
+import { useAppContext } from 'hooks'
+import { openAlert, closeAlert } from 'reducers/actions/globalAction'
+import { AlertColor } from 'types/state'
 
 const useAlert = () => {
-  const { dispatch } = useAppContext();
+  const { dispatch } = useAppContext()
 
   const handleOpenAlert = useCallback(
     (message: string, severity: AlertColor) => {
-      openAlert(dispatch, message, severity);
+      openAlert(dispatch, message, severity)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   const handleCloseAlert = useCallback(() => {
-    closeAlert(dispatch);
-  }, [dispatch]);
+    closeAlert(dispatch)
+  }, [dispatch])
 
-  return { openAlert: handleOpenAlert, closeAlert: handleCloseAlert };
-};
+  return { openAlert: handleOpenAlert, closeAlert: handleCloseAlert }
+}
 
-export default useAlert;
+export default useAlert

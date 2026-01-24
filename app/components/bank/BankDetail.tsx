@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/router";
+import React, { useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/router'
 import {
   Box,
   Button,
@@ -12,87 +12,87 @@ import {
   InputAdornment,
   Avatar,
   useTheme,
-  alpha,
-} from "@mui/material";
+  alpha
+} from '@mui/material'
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,
   AccountBalance as BankIcon,
-  Image as ImageIcon,
-} from "@mui/icons-material";
-import { useAlert, useBank } from "hooks";
-import { BankItemState } from "types/state";
-import ConfirmDialog from "components/ConfirmDialog";
+  Image as ImageIcon
+} from '@mui/icons-material'
+import { useAlert, useBank } from 'hooks'
+import { BankItemState } from 'types/state'
+import ConfirmDialog from 'components/ConfirmDialog'
 
 type BankDetailProps = {
-  id: string | null;
-};
+  id: string | null
+}
 
 const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
-  const router = useRouter();
-  const theme = useTheme();
-  const { item, saved, getBank, saveBank } = useBank();
-  const { openAlert } = useAlert();
-  const [data, setData] = useState<BankItemState>({});
-  const [open, setOpen] = useState(false);
+  const router = useRouter()
+  const theme = useTheme()
+  const { item, saved, getBank, saveBank } = useBank()
+  const { openAlert } = useAlert()
+  const [data, setData] = useState<BankItemState>({})
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    getBank(id);
-  }, [id, getBank]);
+    getBank(id)
+  }, [id, getBank])
 
   useEffect(() => {
-    if (item) setData(item);
-    else setData({});
-  }, [item]);
+    if (item) setData(item)
+    else setData({})
+  }, [item])
 
   useEffect(() => {
     if (saved) {
-      router.push("/bank");
+      router.push('/bank')
     }
-  }, [router, saved]);
+  }, [router, saved])
 
   const handleTextChange = useCallback((name: string, value: string) => {
-    if (name === "bankId") {
+    if (name === 'bankId') {
       setData((prev) => {
-        return { ...prev, [name]: Number(value) };
-      });
+        return { ...prev, [name]: Number(value) }
+      })
     } else {
       setData((prev) => {
-        return { ...prev, [name]: value };
-      });
+        return { ...prev, [name]: value }
+      })
     }
-  }, []);
+  }, [])
 
   const handleSaveClick = useCallback(() => {
     if (!data || !data.bankId || isNaN(data.bankId)) {
-      openAlert("Bank ID must be an integer", "warning");
+      openAlert('Bank ID must be an integer', 'warning')
     } else {
-      setOpen(true);
+      setOpen(true)
     }
-  }, [openAlert, data]);
+  }, [openAlert, data])
 
   const handleSave = useCallback(() => {
     if (!data || !data.bankId || isNaN(data.bankId)) {
-      openAlert("Bank ID must be an integer", "warning");
+      openAlert('Bank ID must be an integer', 'warning')
     } else {
-      saveBank(data);
+      saveBank(data)
     }
-  }, [data, openAlert, saveBank]);
+  }, [data, openAlert, saveBank])
 
   const handleCancel = useCallback(() => {
-    setOpen(false);
-  }, []);
+    setOpen(false)
+  }, [])
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
       <Card
         elevation={0}
         sx={{
-          width: "100%",
+          width: '100%',
           maxWidth: 800,
           borderRadius: 3,
           boxShadow: theme.shadows[3],
-          border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+          border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
         }}
       >
         <CardContent sx={{ p: 4 }}>
@@ -105,7 +105,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
                     bgcolor: alpha(theme.palette.primary.main, 0.1),
                     color: theme.palette.primary.main,
                     width: 56,
-                    height: 56,
+                    height: 56
                   }}
                 >
                   <BankIcon fontSize="large" />
@@ -127,8 +127,8 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
                 label="Bank ID"
                 fullWidth
                 disabled={data && data._id !== undefined}
-                value={data?.bankId || ""}
-                onChange={(e) => handleTextChange("bankId", e.target.value)}
+                value={data?.bankId || ''}
+                onChange={(e) => handleTextChange('bankId', e.target.value)}
                 variant="outlined"
                 helperText="Unique identifier for the bank"
               />
@@ -138,8 +138,8 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
                 id="bank-name"
                 label="Bank Name"
                 fullWidth
-                value={data?.bankName || ""}
-                onChange={(e) => handleTextChange("bankName", e.target.value)}
+                value={data?.bankName || ''}
+                onChange={(e) => handleTextChange('bankName', e.target.value)}
               />
             </Grid>
 
@@ -148,8 +148,8 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
                 id="account-no"
                 label="Account Number"
                 fullWidth
-                value={data?.accountNo || ""}
-                onChange={(e) => handleTextChange("accountNo", e.target.value)}
+                value={data?.accountNo || ''}
+                onChange={(e) => handleTextChange('accountNo', e.target.value)}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
@@ -157,10 +157,8 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
                 id="account-name"
                 label="Account Name"
                 fullWidth
-                value={data?.accountName || ""}
-                onChange={(e) =>
-                  handleTextChange("accountName", e.target.value)
-                }
+                value={data?.accountName || ''}
+                onChange={(e) => handleTextChange('accountName', e.target.value)}
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
@@ -170,23 +168,18 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
                 fullWidth
                 multiline
                 rows={4}
-                value={data?.remark || ""}
-                onChange={(e) => handleTextChange("remark", e.target.value)}
+                value={data?.remark || ''}
+                onChange={(e) => handleTextChange('remark', e.target.value)}
                 placeholder="Additional notes..."
               />
             </Grid>
 
             <Grid size={{ xs: 12 }}>
-              <Stack
-                direction="row"
-                spacing={2}
-                justifyContent="flex-end"
-                mt={2}
-              >
+              <Stack direction="row" spacing={2} justifyContent="flex-end" mt={2}>
                 <Button
                   variant="outlined"
                   startIcon={<CancelIcon />}
-                  onClick={() => router.push("/bank")}
+                  onClick={() => router.push('/bank')}
                   size="large"
                   sx={{ borderRadius: 2, px: 4 }}
                 >
@@ -200,7 +193,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
                   sx={{
                     borderRadius: 2,
                     px: 4,
-                    boxShadow: "0 8px 16px 0 rgba(66, 133, 244, 0.24)",
+                    boxShadow: '0 8px 16px 0 rgba(66, 133, 244, 0.24)'
                   }}
                 >
                   Save
@@ -220,7 +213,7 @@ const BankDetail: React.FC<BankDetailProps> = ({ id }) => {
         okButtonText="Save"
       />
     </Box>
-  );
-};
+  )
+}
 
-export default BankDetail;
+export default BankDetail

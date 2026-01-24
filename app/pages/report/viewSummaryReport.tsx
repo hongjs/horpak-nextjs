@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Box,
   Button,
@@ -16,119 +16,118 @@ import {
   Paper,
   Select,
   Typography,
-  Tooltip,
-} from "@mui/material";
+  Tooltip
+} from '@mui/material'
 import {
   Print as PrintIcon,
   Refresh as RefreshIcon,
-  PictureAsPdf as PdfIcon,
-} from "@mui/icons-material";
-import { useReactToPrint } from "react-to-print";
-import DataSourceReport from "components/report/DataSourceReport";
-import { Props } from "types";
-import { useBranch, useDrive, useReport } from "hooks";
-import { BranchItemState } from "types/state";
-import styles from "./viewSummaryReport.module.css";
+  PictureAsPdf as PdfIcon
+} from '@mui/icons-material'
+import { useReactToPrint } from 'react-to-print'
+import DataSourceReport from 'components/report/DataSourceReport'
+import { Props } from 'types'
+import { useBranch, useDrive, useReport } from 'hooks'
+import { BranchItemState } from 'types/state'
+import styles from './viewSummaryReport.module.css'
 
 const ViewSummaryReport: React.FC<Props> = (props) => {
-  const { branches, fetchBranch, loading } = useBranch();
-  const { fetchSheets, loading: driveLoading } = useDrive();
-  const { items, errors, fetchReport, clearReport, ...report } = useReport();
+  const { branches, fetchBranch, loading } = useBranch()
+  const { fetchSheets, loading: driveLoading } = useDrive()
+  const { items, errors, fetchReport, clearReport, ...report } = useReport()
 
-  const [branch, setBranch] = useState<BranchItemState | undefined>(undefined);
-  const [sheetId, setSheetId] = useState<number | undefined>(undefined);
-  const [displaySummary, setDisplaySummary] = useState(false);
+  const [branch, setBranch] = useState<BranchItemState | undefined>(undefined)
+  const [sheetId, setSheetId] = useState<number | undefined>(undefined)
+  const [displaySummary, setDisplaySummary] = useState(false)
 
-  const componentRef = useRef<any>(undefined);
+  const componentRef = useRef<any>(undefined)
 
   const handlePrintClick = useReactToPrint({
     contentRef: componentRef,
-    documentTitle: `summary_${branch?.name || "report"}_${report.sheet?.title || "report"}`,
-  });
+    documentTitle: `summary_${branch?.name || 'report'}_${report.sheet?.title || 'report'}`
+  })
 
   useEffect(() => {
-    clearReport();
-    fetchBranch();
-  }, [clearReport, fetchBranch]);
+    clearReport()
+    fetchBranch()
+  }, [clearReport, fetchBranch])
 
   const handleChange = useCallback(
     (event: any, name: string) => {
-      if (name === "branch") {
-        setSheetId(undefined);
+      if (name === 'branch') {
+        setSheetId(undefined)
 
-        const branch = branches.find((i) => i._id === event.target.value);
+        const branch = branches.find((i) => i._id === event.target.value)
         if (branch) {
-          setBranch(branch);
-          fetchSheets([branch]);
+          setBranch(branch)
+          fetchSheets([branch])
         }
-      } else if (name === "sheet") {
-        setSheetId(event.target.value);
+      } else if (name === 'sheet') {
+        setSheetId(event.target.value)
         if (branch && branch.spreadSheetId) {
-          fetchReport(branch.spreadSheetId, event.target.value);
+          fetchReport(branch.spreadSheetId, event.target.value)
         }
       }
     },
-    [branch, branches, fetchSheets, fetchReport],
-  );
+    [branch, branches, fetchSheets, fetchReport]
+  )
 
   useEffect(() => {
     if (branch && branch.sheets && branch.sheets.length > 0) {
-      setSheetId(branch.sheets[0].sheetId);
-      handleChange({ target: { value: branch.sheets[0].sheetId } }, "sheet");
+      setSheetId(branch.sheets[0].sheetId)
+      handleChange({ target: { value: branch.sheets[0].sheetId } }, 'sheet')
     }
-  }, [branch, branch?.sheets, handleChange]);
+  }, [branch, branch?.sheets, handleChange])
 
   const handleCheckChange = useCallback((event: any) => {
-    setDisplaySummary(event.target.checked);
-  }, []);
+    setDisplaySummary(event.target.checked)
+  }, [])
 
   const handleRefreshClick = useCallback(() => {
-    if (branch && branch.spreadSheetId && sheetId)
-      fetchReport(branch.spreadSheetId, sheetId);
-  }, [fetchReport, branch, sheetId]);
+    if (branch && branch.spreadSheetId && sheetId) fetchReport(branch.spreadSheetId, sheetId)
+  }, [fetchReport, branch, sheetId])
 
   const handleExportPdf = useCallback(async () => {
-    if (!componentRef.current) return;
+    if (!componentRef.current) return
 
-    const html2pdf = (await import("html2pdf.js")).default;
-    const element = componentRef.current;
-    const sheetTitle = report.sheet?.title || "report";
-    const filename = `summary_${branch?.name || "report"}_${sheetTitle}.pdf`;
+    const html2pdf = (await import('html2pdf.js')).default
+    const element = componentRef.current
+    const sheetTitle = report.sheet?.title || 'report'
+    const filename = `summary_${branch?.name || 'report'}_${sheetTitle}.pdf`
 
     // Add pdf-export class for white background styling
-    element.classList.add("pdf-export");
+    element.classList.add('pdf-export')
 
     const opt = {
       margin: 0,
       filename,
-      image: { type: "jpeg" as const, quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
-      jsPDF: { unit: "mm" as const, format: "a4", orientation: "landscape" as const },
-    };
+      image: { type: 'jpeg' as const, quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+      jsPDF: { unit: 'mm' as const, format: 'a4', orientation: 'landscape' as const }
+    }
 
-    html2pdf().set(opt).from(element).save().then(() => {
-      // Remove pdf-export class after save
-      element.classList.remove("pdf-export");
-    });
-  }, [branch, report.sheet]);
+    html2pdf()
+      .set(opt)
+      .from(element)
+      .save()
+      .then(() => {
+        // Remove pdf-export class after save
+        element.classList.remove('pdf-export')
+      })
+  }, [branch, report.sheet])
 
   const renderFilter = useCallback(() => {
     return (
       <Box className={styles.filter}>
         <Grid container alignItems="center">
           <Grid size={{ xs: 12, md: 6, lg: 3 }} className={styles.filterBox}>
-            <FormControl
-              fullWidth
-              className={styles.formControl}
-              variant="outlined"
-            >
+            <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="branch-select-label">Branch</InputLabel>
               <Select
                 labelId="branch-select-label"
                 id="branch-select"
-                value={branch?._id || ""}
+                value={branch?._id || ''}
                 label="Branch"
-                onChange={(event) => handleChange(event, "branch")}
+                onChange={(event) => handleChange(event, 'branch')}
               >
                 {branches &&
                   branches.map((branch) => {
@@ -137,25 +136,21 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                         <MenuItem key={branch._id} value={branch._id}>
                           {branch.name}
                         </MenuItem>
-                      );
+                      )
                     }
                   })}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 3 }} className={styles.filterBox}>
-            <FormControl
-              fullWidth
-              className={styles.formControl}
-              variant="outlined"
-            >
+            <FormControl fullWidth className={styles.formControl} variant="outlined">
               <InputLabel id="sheet-select-label">Sheet</InputLabel>
               <Select
                 labelId="sheet-select-label"
                 id="sheet-select"
-                value={sheetId || ""}
+                value={sheetId || ''}
                 label="Sheet"
-                onChange={(event) => handleChange(event, "sheet")}
+                onChange={(event) => handleChange(event, 'sheet')}
                 disabled={!branch || !branch.sheets}
               >
                 {branch &&
@@ -165,7 +160,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                       <MenuItem key={sheet.sheetId} value={sheet.sheetId}>
                         {sheet.title}
                       </MenuItem>
-                    );
+                    )
                   })}
               </Select>
             </FormControl>
@@ -173,7 +168,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           <Grid
             size={{ xs: 6, md: 6, lg: 2 }}
             className={styles.filterBox}
-            sx={{ display: "flex", alignItems: "center" }}
+            sx={{ display: 'flex', alignItems: 'center' }}
           >
             <FormControlLabel
               className={styles.formControl}
@@ -191,7 +186,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           <Grid
             size={{ xs: 6, sm: 3, md: 3, lg: 2 }}
             className={styles.filterBox}
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             <Tooltip title="Print">
               <Button
@@ -202,7 +197,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                 className={`${styles.button} ${styles.printButton}`}
                 disabled={!sheetId || (errors && errors?.length > 0)}
                 onClick={handlePrintClick}
-                sx={{ height: "44px", minWidth: "44px" }}
+                sx={{ height: '44px', minWidth: '44px' }}
               >
                 <PrintIcon />
               </Button>
@@ -234,16 +229,16 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
             size={{ xs: 12, sm: 3, md: 3, lg: 2 }}
             className={styles.filterBox}
             sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center'
             }}
           >
             <Box
               sx={{
-                display: { xs: "flex", sm: "none" },
-                width: "100%",
-                gap: 1,
+                display: { xs: 'flex', sm: 'none' },
+                width: '100%',
+                gap: 1
               }}
             >
               <Tooltip title="Print">
@@ -253,7 +248,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                   disabled={!sheetId || (errors && errors?.length > 0)}
                   onClick={handlePrintClick}
                   className={`${styles.button} ${styles.printButton}`}
-                  sx={{ height: "44px", flex: 1, minWidth: "44px" }}
+                  sx={{ height: '44px', flex: 1, minWidth: '44px' }}
                 >
                   <PrintIcon />
                 </Button>
@@ -279,13 +274,13 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                   disabled={sheetId === undefined}
                   onClick={handleRefreshClick}
                   className={`${styles.button} ${styles.refreshButton}`}
-                  sx={{ height: "44px", flex: 1, minWidth: "44px" }}
+                  sx={{ height: '44px', flex: 1, minWidth: '44px' }}
                 >
                   <RefreshIcon />
                 </Button>
               </Tooltip>
             </Box>
-            <Box sx={{ display: { xs: "none", sm: "block" }, width: "100%" }}>
+            <Box sx={{ display: { xs: 'none', sm: 'block' }, width: '100%' }}>
               <Tooltip title="Refresh">
                 <Button
                   variant="outlined"
@@ -295,7 +290,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                   className={`${styles.button} ${styles.refreshButton}`}
                   disabled={sheetId === undefined}
                   onClick={handleRefreshClick}
-                  sx={{ height: "44px", minWidth: "44px" }}
+                  sx={{ height: '44px', minWidth: '44px' }}
                 >
                   <RefreshIcon />
                 </Button>
@@ -304,7 +299,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
           </Grid>
         </Grid>
       </Box>
-    );
+    )
   }, [
     branch,
     displaySummary,
@@ -315,8 +310,8 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
     handleCheckChange,
     handleRefreshClick,
     handlePrintClick,
-    handleExportPdf,
-  ]);
+    handleExportPdf
+  ])
 
   const renderReportData = useCallback(() => {
     if (branch && items && report.sheet) {
@@ -330,9 +325,9 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
             displaySummary={displaySummary}
           />
         </div>
-      );
+      )
     }
-  }, [items, branch, report.sheet, displaySummary]);
+  }, [items, branch, report.sheet, displaySummary])
 
   const renderError = useCallback(() => {
     if (branch && errors) {
@@ -343,24 +338,24 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
             gutterBottom
             color="error"
             sx={{
-              fontWeight: "bold",
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
+              fontWeight: 'bold',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1
             }}
           >
             <i className="fa-solid fa-triangle-exclamation"></i> Sheet Error
           </Typography>
           <Typography variant="body2" gutterBottom>
-            Error in:{" "}
+            Error in:{' '}
             <a
               href={`https://docs.google.com/spreadsheets/d/${branch?.spreadSheetId}#gid=${report.sheet?.sheetId}`}
               target="_blank"
               rel="noreferrer"
               style={{
-                color: "inherit",
-                textDecoration: "underline",
-                fontWeight: 600,
+                color: 'inherit',
+                textDecoration: 'underline',
+                fontWeight: 600
               }}
             >
               {`${branch?.spreadSheetName} - ${report.sheet?.title}`}
@@ -374,19 +369,19 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
                     <ListItemText
                       primary={err}
                       primaryTypographyProps={{
-                        color: "error",
-                        variant: "body2",
+                        color: 'error',
+                        variant: 'body2'
                       }}
                     />
                   </ListItemButton>
                 </ListItem>
-              );
+              )
             })}
           </List>
         </Paper>
-      );
+      )
     }
-  }, [branch, errors, report.sheet]);
+  }, [branch, errors, report.sheet])
 
   return (
     <div className={styles.root}>
@@ -394,32 +389,23 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
         Summary Report
       </Typography>
       <Paper className={styles.paper} elevation={0}>
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-end"
-        >
+        <Grid container direction="row" justifyContent="flex-start" alignItems="flex-end">
           <Grid size={{ xs: 12 }}>
             {renderFilter()}
             {(loading || report.loading || driveLoading) && (
-              <Box sx={{ width: "100%", mt: 2 }}>
+              <Box sx={{ width: '100%', mt: 2 }}>
                 <LinearProgress sx={{ borderRadius: 1 }} />
               </Box>
             )}
           </Grid>
 
-          {errors && errors.length > 0 && (
-            <Grid size={{ xs: 12 }}>{renderError()}</Grid>
-          )}
+          {errors && errors.length > 0 && <Grid size={{ xs: 12 }}>{renderError()}</Grid>}
 
-          {(!errors || errors.length === 0) && (
-            <Grid size={{ xs: 12 }}>{renderReportData()}</Grid>
-          )}
+          {(!errors || errors.length === 0) && <Grid size={{ xs: 12 }}>{renderReportData()}</Grid>}
         </Grid>
       </Paper>
     </div>
-  );
-};
+  )
+}
 
-export default ViewSummaryReport;
+export default ViewSummaryReport

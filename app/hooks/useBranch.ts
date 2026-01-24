@@ -1,47 +1,47 @@
-import { useCallback } from "react";
-import { useAppContext } from "hooks";
+import { useCallback } from 'react'
+import { useAppContext } from 'hooks'
 import {
   fetchBranch,
   getBranch,
   saveBranch,
   deleteBranch,
-  sheetSelect,
-} from "reducers/actions/branchAction";
+  sheetSelect
+} from 'reducers/actions/branchAction'
 
 const useBranch = () => {
-  const { state, dispatch } = useAppContext();
+  const { state, dispatch } = useAppContext()
 
   const handleFetchBranch = useCallback(() => {
-    fetchBranch(dispatch);
-  }, [dispatch]);
+    fetchBranch(dispatch)
+  }, [dispatch])
 
   const handleGetBranch = useCallback(
     (id: string | null) => {
-      getBranch(dispatch, id);
+      getBranch(dispatch, id)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   const handleSaveBranch = useCallback(
     (data: object) => {
-      saveBranch(dispatch, data);
+      saveBranch(dispatch, data)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   const handleDeleteBranch = useCallback(
     (id: string) => {
-      deleteBranch(dispatch, id);
+      deleteBranch(dispatch, id)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   const handleSheetSelect = useCallback(
     (branchId: string, sheetId: number) => {
-      sheetSelect(dispatch, branchId, sheetId);
+      sheetSelect(dispatch, branchId, sheetId)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   return {
     saved: state.branch.saved,
@@ -52,8 +52,8 @@ const useBranch = () => {
     getBranch: handleGetBranch,
     saveBranch: handleSaveBranch,
     deleteBranch: handleDeleteBranch,
-    sheetSelect: handleSheetSelect,
-  };
-};
+    sheetSelect: handleSheetSelect
+  }
+}
 
-export default useBranch;
+export default useBranch
