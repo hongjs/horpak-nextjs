@@ -24,7 +24,6 @@ import {
   PictureAsPdf as PdfIcon,
 } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
-import html2pdf from "html2pdf.js";
 import DataSourceReport from "components/report/DataSourceReport";
 import { Props } from "types";
 import { useBranch, useDrive, useReport } from "hooks";
@@ -44,6 +43,7 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
 
   const handlePrintClick = useReactToPrint({
     contentRef: componentRef,
+    documentTitle: `summary_${branch?.name || "report"}_${report.sheet?.title || "report"}`,
   });
 
   useEffect(() => {
@@ -87,9 +87,10 @@ const ViewSummaryReport: React.FC<Props> = (props) => {
       fetchReport(branch.spreadSheetId, sheetId);
   }, [fetchReport, branch, sheetId]);
 
-  const handleExportPdf = useCallback(() => {
+  const handleExportPdf = useCallback(async () => {
     if (!componentRef.current) return;
 
+    const html2pdf = (await import("html2pdf.js")).default;
     const element = componentRef.current;
     const sheetTitle = report.sheet?.title || "report";
     const filename = `summary_${branch?.name || "report"}_${sheetTitle}.pdf`;
