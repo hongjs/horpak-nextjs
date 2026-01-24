@@ -4,10 +4,15 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types: [labeled]
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'Ready to Test'))
 
     strategy:
       matrix:

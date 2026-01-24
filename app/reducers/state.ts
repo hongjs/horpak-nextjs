@@ -1,37 +1,37 @@
-import { AppState } from "types/state";
+import { AppState } from 'types/state'
 
 const initialState: AppState = {
   auth: {
     loading: false,
     currentUser: null,
-    noAdmin: false,
+    noAdmin: false
   },
   alert: {
     open: false,
-    message: "",
-    severity: "success",
+    message: '',
+    severity: 'success'
   },
   users: [],
   bank: {
     loading: false,
     saved: false,
     item: undefined,
-    banks: [],
+    banks: []
   },
   branch: {
     loading: false,
     saved: false,
     item: undefined,
-    branches: [],
+    branches: []
   },
   drive: {
     hasToken: false,
     loading: false,
-    files: [],
+    files: []
   },
   report: {
-    loading: false,
-  },
-};
+    loading: false
+  }
+}
 
-export default initialState;
+export default initialState

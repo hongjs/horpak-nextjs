@@ -1,26 +1,26 @@
-import Ajv from "ajv";
-import { ReportItem } from "types/state";
-import schema from "./reportSchema";
+import Ajv from 'ajv'
+import { ReportItem } from 'types/state'
+import schema from './reportSchema'
 
 const validateReport = (items: ReportItem[]) => {
-  const ajv = new Ajv();
-  const validate = ajv.compile(schema);
+  const ajv = new Ajv()
+  const validate = ajv.compile(schema)
 
-  const errors: string[] = [];
+  const errors: string[] = []
   items.forEach((item: ReportItem) => {
-    const valid = validate(item);
+    const valid = validate(item)
     if (!valid && validate.errors) {
       validate.errors.forEach((error) => {
         errors.push(
           `[${(item as ReportItem).room}] '${error.instancePath.replace(
-            "/",
-            "",
-          )}' ${error.message}.`,
-        );
-      });
+            '/',
+            ''
+          )}' ${error.message}.`
+        )
+      })
     }
-  });
-  return errors;
-};
+  })
+  return errors
+}
 
-export default validateReport;
+export default validateReport

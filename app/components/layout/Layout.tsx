@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import Router from "next/router";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Box } from "@mui/material";
-import MainNavigation from "./MainNavigation";
-import { Props } from "types";
-import Loading from "../Loading";
+import React, { useState } from 'react'
+import Router from 'next/router'
+import CssBaseline from '@mui/material/CssBaseline'
+import { Box } from '@mui/material'
+import MainNavigation from './MainNavigation'
+import { Props } from 'types'
+import Loading from '../Loading'
 
 const Layout: React.FC<Props> = ({ children }) => {
-  const [loadingPage, setLoadingPage] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(false)
 
-  Router.events.on("routeChangeStart", (url) => {
-    setLoadingPage(true);
-  });
-  Router.events.on("routeChangeComplete", (url) => {
-    setLoadingPage(false);
-  });
-  Router.events.on("routeChangeError", (url) => {
-    setLoadingPage(false);
-  });
+  Router.events.on('routeChangeStart', (url) => {
+    setLoadingPage(true)
+  })
+  Router.events.on('routeChangeComplete', (url) => {
+    setLoadingPage(false)
+  })
+  Router.events.on('routeChangeError', (url) => {
+    setLoadingPage(false)
+  })
 
   return (
     <Box
       sx={{
-        display: "flex",
-        minHeight: "100vh",
-        backgroundColor: "background.default",
+        display: 'flex',
+        minHeight: '100vh',
+        backgroundColor: 'background.default'
       }}
     >
       <CssBaseline />
@@ -34,18 +34,18 @@ const Layout: React.FC<Props> = ({ children }) => {
         sx={{
           flexGrow: 1,
           p: 3,
-          mt: "64px", // Height of AppBar
-          width: "100%", // Ensure it takes available width
-          overflowX: "hidden", // Prevent horizontal scroll
+          mt: '64px', // Height of AppBar
+          width: '100%', // Ensure it takes available width
+          overflowX: 'hidden' // Prevent horizontal scroll
         }}
       >
         {loadingPage ? (
           <Box
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "calc(100vh - 128px)",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 'calc(100vh - 128px)'
             }}
           >
             <Loading />
@@ -55,7 +55,7 @@ const Layout: React.FC<Props> = ({ children }) => {
         )}
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

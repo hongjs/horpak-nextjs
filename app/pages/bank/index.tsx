@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/router";
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/router'
 import {
   Box,
   Fab,
@@ -11,54 +11,54 @@ import {
   Button,
   useTheme,
   alpha,
-  Tooltip,
-} from "@mui/material";
+  Tooltip
+} from '@mui/material'
 import {
   Add as AddIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
-  AccountBalance as BankIcon,
-} from "@mui/icons-material";
-import { DataGrid, GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { format as dateFormat, parseISO } from "date-fns";
-import { useBank } from "hooks";
-import ConfirmDialog from "components/ConfirmDialog";
+  AccountBalance as BankIcon
+} from '@mui/icons-material'
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid'
+import { format as dateFormat, parseISO } from 'date-fns'
+import { useBank } from 'hooks'
+import ConfirmDialog from 'components/ConfirmDialog'
 
 const BankList: React.FC = () => {
-  const router = useRouter();
-  const theme = useTheme();
-  const { banks, fetchBank, deleteBank } = useBank();
-  const [open, setOpen] = useState(false);
-  const [current, setCurrent] = useState({ id: "", name: "" });
+  const router = useRouter()
+  const theme = useTheme()
+  const { banks, fetchBank, deleteBank } = useBank()
+  const [open, setOpen] = useState(false)
+  const [current, setCurrent] = useState({ id: '', name: '' })
 
   useEffect(() => {
-    fetchBank();
-  }, [fetchBank]);
+    fetchBank()
+  }, [fetchBank])
 
   const handleDeleteClick = useCallback((event: any, row: any) => {
-    setOpen(true);
-    setCurrent(row);
-    event.stopPropagation();
-  }, []);
+    setOpen(true)
+    setCurrent(row)
+    event.stopPropagation()
+  }, [])
 
   const handleDelete = useCallback(() => {
-    if (current) deleteBank(current.id);
+    if (current) deleteBank(current.id)
 
-    setCurrent({ id: "", name: "" });
-    setOpen(false);
-  }, [current, deleteBank]);
+    setCurrent({ id: '', name: '' })
+    setOpen(false)
+  }, [current, deleteBank])
 
   const handleCancel = useCallback(() => {
-    setCurrent({ id: "", name: "" });
-    setOpen(false);
-  }, []);
+    setCurrent({ id: '', name: '' })
+    setOpen(false)
+  }, [])
 
   const columns: GridColDef[] = useMemo(() => {
     return [
-      { field: "bankId", headerName: "ID", width: 90 },
+      { field: 'bankId', headerName: 'ID', width: 90 },
       {
-        field: "bankName",
-        headerName: "Bank",
+        field: 'bankName',
+        headerName: 'Bank',
         width: 180,
         renderCell: (params: GridRenderCellParams) => (
           <Stack direction="row" spacing={1} alignItems="center">
@@ -67,29 +67,26 @@ const BankList: React.FC = () => {
               {params.row.bankName}
             </Typography>
           </Stack>
-        ),
+        )
       },
-      { field: "accountNo", headerName: "Account No", width: 180 },
-      { field: "accountName", headerName: "Account Name", width: 250 },
-      { field: "remark", headerName: "Remark", width: 150 },
+      { field: 'accountNo', headerName: 'Account No', width: 180 },
+      { field: 'accountName', headerName: 'Account Name', width: 250 },
+      { field: 'remark', headerName: 'Remark', width: 150 },
       {
-        field: "modifiedDate",
-        headerName: "Last Modified",
+        field: 'modifiedDate',
+        headerName: 'Last Modified',
         width: 180,
         renderCell: (params: any) => {
           return (
             <Typography variant="body2" color="text.secondary">
-              {dateFormat(
-                parseISO(params.row.modifiedDate),
-                "yyyy-MM-dd HH:mm",
-              )}
+              {dateFormat(parseISO(params.row.modifiedDate), 'yyyy-MM-dd HH:mm')}
             </Typography>
-          );
-        },
+          )
+        }
       },
       {
-        field: "actions",
-        headerName: "Actions",
+        field: 'actions',
+        headerName: 'Actions',
         width: 120,
         sortable: false,
         renderCell: (params: any) => {
@@ -101,7 +98,7 @@ const BankList: React.FC = () => {
                   onClick={() => router.push(`/bank/edit/${params.row._id}`)}
                   sx={{
                     color: theme.palette.info.main,
-                    bgcolor: alpha(theme.palette.info.main, 0.1),
+                    bgcolor: alpha(theme.palette.info.main, 0.1)
                   }}
                 >
                   <EditIcon fontSize="small" />
@@ -113,33 +110,33 @@ const BankList: React.FC = () => {
                   onClick={(event) => {
                     const data = {
                       id: params.row._id,
-                      name: params.row.bankName,
-                    };
-                    handleDeleteClick(event, data);
+                      name: params.row.bankName
+                    }
+                    handleDeleteClick(event, data)
                   }}
                   sx={{
                     color: theme.palette.error.main,
-                    bgcolor: alpha(theme.palette.error.main, 0.1),
+                    bgcolor: alpha(theme.palette.error.main, 0.1)
                   }}
                 >
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
             </Stack>
-          );
-        },
-      },
-    ];
-  }, [router, handleDeleteClick, theme]);
+          )
+        }
+      }
+    ]
+  }, [router, handleDeleteClick, theme])
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Stack spacing={4}>
         {/* Header */}
         <Stack
-          direction={{ xs: "column", sm: "row" }}
+          direction={{ xs: 'column', sm: 'row' }}
           justifyContent="space-between"
-          alignItems={{ xs: "start", sm: "center" }}
+          alignItems={{ xs: 'start', sm: 'center' }}
           spacing={2}
         >
           <Box>
@@ -149,12 +146,12 @@ const BankList: React.FC = () => {
                 fontWeight: 800,
                 mb: 1,
                 background:
-                  theme.palette.mode === "dark"
-                    ? "linear-gradient(45deg, #90CAF9 30%, #66BB6A 90%)"
-                    : "linear-gradient(45deg, #4285F4 30%, #34A853 90%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                display: "inline-block",
+                  theme.palette.mode === 'dark'
+                    ? 'linear-gradient(45deg, #90CAF9 30%, #66BB6A 90%)'
+                    : 'linear-gradient(45deg, #4285F4 30%, #34A853 90%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                display: 'inline-block'
               }}
             >
               Bank Accounts
@@ -166,13 +163,13 @@ const BankList: React.FC = () => {
           <Button
             variant="contained"
             startIcon={<AddIcon />}
-            onClick={() => router.push("/bank/new")}
+            onClick={() => router.push('/bank/new')}
             sx={{
               borderRadius: 2,
               px: 3,
               py: 1.5,
               fontWeight: 700,
-              boxShadow: "0 8px 16px 0 rgba(66, 133, 244, 0.24)",
+              boxShadow: '0 8px 16px 0 rgba(66, 133, 244, 0.24)'
             }}
           >
             New Account
@@ -184,39 +181,39 @@ const BankList: React.FC = () => {
             borderRadius: 4,
             boxShadow: theme.shadows[4],
             border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-            overflow: "hidden",
+            overflow: 'hidden'
           }}
         >
           <DataGrid
             rows={banks || []}
             columns={columns}
             initialState={{
-              pagination: { paginationModel: { pageSize: 10 } },
+              pagination: { paginationModel: { pageSize: 10 } }
             }}
             pageSizeOptions={[10, 20, 50]}
             getRowId={(row: any) => row._id}
             disableRowSelectionOnClick
             autoHeight
             sx={{
-              border: "none",
-              "& .MuiDataGrid-cell": {
-                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+              border: 'none',
+              '& .MuiDataGrid-cell': {
+                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`
               },
-              "& .MuiDataGrid-columnHeaders": {
+              '& .MuiDataGrid-columnHeaders': {
                 backgroundColor: alpha(theme.palette.primary.main, 0.04),
-                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`
               },
-              "& .MuiDataGrid-columnHeaderTitle": {
+              '& .MuiDataGrid-columnHeaderTitle': {
                 fontWeight: 700,
-                color: theme.palette.text.primary,
+                color: theme.palette.text.primary
               },
-              "& .MuiDataGrid-row:hover": {
-                backgroundColor: alpha(theme.palette.primary.main, 0.02),
+              '& .MuiDataGrid-row:hover': {
+                backgroundColor: alpha(theme.palette.primary.main, 0.02)
               },
               // Fix padding
-              "& .MuiDataGrid-cell, & .MuiDataGrid-columnHeader": {
-                px: 3,
-              },
+              '& .MuiDataGrid-cell, & .MuiDataGrid-columnHeader': {
+                px: 3
+              }
             }}
           />
         </Card>
@@ -234,7 +231,7 @@ const BankList: React.FC = () => {
         content={
           <Box>
             <Typography variant="body1">
-              Are you sure you want to delete{" "}
+              Are you sure you want to delete{' '}
               <Typography component="span" fontWeight="bold" color="error">
                 {current.name}
               </Typography>
@@ -245,7 +242,7 @@ const BankList: React.FC = () => {
         okButtonText="Delete"
       />
     </Container>
-  );
-};
+  )
+}
 
-export default BankList;
+export default BankList

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState } from 'react'
 import {
   Avatar,
   Box,
@@ -16,36 +16,30 @@ import {
   alpha,
   Fade,
   Stack,
-  IconButton,
-} from "@mui/material";
+  IconButton
+} from '@mui/material'
 import {
   Folder as FolderIcon,
   Description as FileIcon,
   Close as CloseIcon,
-  ArrowBack as ArrowBackIcon,
-} from "@mui/icons-material";
-import { useDrive } from "hooks";
-import { DriveItem } from "types/state";
+  ArrowBack as ArrowBackIcon
+} from '@mui/icons-material'
+import { useDrive } from 'hooks'
+import { DriveItem } from 'types/state'
 
-export const FOLDER = "application/vnd.google-apps.folder";
+export const FOLDER = 'application/vnd.google-apps.folder'
 
 type DialogProps = {
-  open: boolean;
-  onSave: (item: DriveItem) => void;
-  onClose: () => void;
-};
+  open: boolean
+  onSave: (item: DriveItem) => void
+  onClose: () => void
+}
 
-const SpreadsheetDialog: React.FC<DialogProps> = ({
-  open,
-  onClose,
-  onSave,
-}) => {
-  const theme = useTheme();
-  const { files, loading, fetchDrive } = useDrive();
-  const [selectedItem, setSelectedItem] = useState<DriveItem | undefined>(
-    undefined,
-  );
-  const [error, setError] = useState(false);
+const SpreadsheetDialog: React.FC<DialogProps> = ({ open, onClose, onSave }) => {
+  const theme = useTheme()
+  const { files, loading, fetchDrive } = useDrive()
+  const [selectedItem, setSelectedItem] = useState<DriveItem | undefined>(undefined)
+  const [error, setError] = useState(false)
 
   // Simple history stack to allow "Back" navigation if desired,
   // currently just a placeholder/idea since the original code didn't handle "Up" explicitly
@@ -56,34 +50,34 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
   const handleItemClick = useCallback(
     (item: DriveItem) => {
       if (item.mimeType === FOLDER) {
-        fetchDrive(item.id);
-        setSelectedItem(undefined);
+        fetchDrive(item.id)
+        setSelectedItem(undefined)
       } else {
-        setSelectedItem(item);
-        setError(false);
+        setSelectedItem(item)
+        setError(false)
       }
     },
-    [fetchDrive],
-  );
+    [fetchDrive]
+  )
 
   const handleSaveClick = useCallback(() => {
     if (selectedItem) {
-      onSave(selectedItem);
+      onSave(selectedItem)
     } else {
-      setError(true);
+      setError(true)
     }
-  }, [selectedItem, onSave]);
+  }, [selectedItem, onSave])
 
   const handleCloseClick = useCallback(() => {
-    onClose();
-    setSelectedItem(undefined);
-    setError(false);
-  }, [onClose]);
+    onClose()
+    setSelectedItem(undefined)
+    setError(false)
+  }, [onClose])
 
   const renderFileOrFolder = useCallback(
     (item: DriveItem) => {
-      const isFolder = item.mimeType === FOLDER;
-      const selected = selectedItem && selectedItem.id === item.id;
+      const isFolder = item.mimeType === FOLDER
+      const selected = selectedItem && selectedItem.id === item.id
 
       return (
         <Paper
@@ -91,24 +85,24 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
           onClick={() => handleItemClick(item)}
           sx={{
             p: 1.5,
-            height: "100%",
-            cursor: "pointer",
+            height: '100%',
+            cursor: 'pointer',
             border: `1px solid ${selected ? theme.palette.primary.main : alpha(theme.palette.divider, 0.5)}`,
             bgcolor: selected
               ? alpha(theme.palette.primary.main, 0.08)
               : theme.palette.background.paper,
-            transition: "all 0.2s ease-in-out",
-            "&:hover": {
+            transition: 'all 0.2s ease-in-out',
+            '&:hover': {
               bgcolor: selected
                 ? alpha(theme.palette.primary.main, 0.12)
                 : alpha(theme.palette.action.hover, 0.04),
-              transform: "translateY(-2px)",
-              boxShadow: theme.shadows[2],
+              transform: 'translateY(-2px)',
+              boxShadow: theme.shadows[2]
             },
-            display: "flex",
-            alignItems: "center",
+            display: 'flex',
+            alignItems: 'center',
             gap: 1.5,
-            borderRadius: 2,
+            borderRadius: 2
           }}
         >
           <Avatar
@@ -116,11 +110,9 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
               bgcolor: isFolder
                 ? alpha(theme.palette.text.secondary, 0.1)
                 : alpha(theme.palette.success.main, 0.1),
-              color: isFolder
-                ? theme.palette.text.secondary
-                : theme.palette.success.main,
+              color: isFolder ? theme.palette.text.secondary : theme.palette.success.main,
               width: 40,
-              height: 40,
+              height: 40
             }}
           >
             {isFolder ? <FolderIcon /> : <FileIcon />}
@@ -130,19 +122,19 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
               variant="body2"
               noWrap
               fontWeight={selected ? 600 : 400}
-              color={selected ? "primary.main" : "text.primary"}
+              color={selected ? 'primary.main' : 'text.primary'}
             >
               {item.name}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {isFolder ? "Folder" : "Spreadsheet"}
+              {isFolder ? 'Folder' : 'Spreadsheet'}
             </Typography>
           </Box>
         </Paper>
-      );
+      )
     },
-    [selectedItem, handleItemClick, theme],
-  );
+    [selectedItem, handleItemClick, theme]
+  )
 
   return (
     <Dialog
@@ -153,19 +145,19 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
       PaperProps={{
         sx: {
           borderRadius: 3,
-          minHeight: "60vh",
-          maxHeight: "80vh",
-          boxShadow: theme.shadows[24],
-        },
+          minHeight: '60vh',
+          maxHeight: '80vh',
+          boxShadow: theme.shadows[24]
+        }
       }}
     >
       <DialogTitle
         sx={{
           p: 3,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`
         }}
       >
         <Box>
@@ -181,25 +173,23 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
         </IconButton>
       </DialogTitle>
 
-      <DialogContent
-        sx={{ p: 0, bgcolor: alpha(theme.palette.background.default, 0.4) }}
-      >
+      <DialogContent sx={{ p: 0, bgcolor: alpha(theme.palette.background.default, 0.4) }}>
         {loading && <LinearProgress sx={{ height: 2 }} />}
 
         <Box sx={{ p: 3, minHeight: 300 }}>
           {files.length === 0 && !loading ? (
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
                 height: 300,
                 gap: 2,
-                opacity: 0.6,
+                opacity: 0.6
               }}
             >
-              <FolderIcon sx={{ fontSize: 48, color: "text.disabled" }} />
+              <FolderIcon sx={{ fontSize: 48, color: 'text.disabled' }} />
               <Typography color="text.secondary">Empty Folder</Typography>
             </Box>
           ) : (
@@ -218,26 +208,18 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
         sx={{
           p: 3,
           borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-          gap: 1,
+          gap: 1
         }}
       >
         {error && (
           <Fade in={error}>
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{ mr: "auto", fontWeight: 500 }}
-            >
+            <Typography color="error" variant="body2" sx={{ mr: 'auto', fontWeight: 500 }}>
               Please select a spreadsheet file first.
             </Typography>
           </Fade>
         )}
 
-        <Button
-          onClick={handleCloseClick}
-          color="inherit"
-          sx={{ fontWeight: 600 }}
-        >
+        <Button onClick={handleCloseClick} color="inherit" sx={{ fontWeight: 600 }}>
           Cancel
         </Button>
         <Button
@@ -247,16 +229,14 @@ const SpreadsheetDialog: React.FC<DialogProps> = ({
           sx={{
             px: 4,
             borderRadius: 2,
-            boxShadow: !selectedItem
-              ? "none"
-              : "0 8px 16px 0 rgba(66, 133, 244, 0.24)",
+            boxShadow: !selectedItem ? 'none' : '0 8px 16px 0 rgba(66, 133, 244, 0.24)'
           }}
         >
           Select File
         </Button>
       </DialogActions>
     </Dialog>
-  );
-};
+  )
+}
 
-export default SpreadsheetDialog;
+export default SpreadsheetDialog

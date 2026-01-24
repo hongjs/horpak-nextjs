@@ -1,67 +1,60 @@
-import React, { useCallback, useMemo } from "react";
-import { useTheme } from "next-themes";
+import React, { useCallback, useMemo } from 'react'
+import { useTheme } from 'next-themes'
 import {
   displayInteger,
   displayUnit,
   displayMoney,
   toFullMonthYear,
-  toShortMonthYear,
-} from "lib/textHelper";
-import { BankItemState, BranchItemState, ReportItem } from "types/state";
+  toShortMonthYear
+} from 'lib/textHelper'
+import { BankItemState, BranchItemState, ReportItem } from 'types/state'
 
 type Props = {
-  items: ReportItem[];
-  branch: BranchItemState;
-  banks: BankItemState[];
-  invoiceMonth: Date;
-  dueDate: Date;
+  items: ReportItem[]
+  branch: BranchItemState
+  banks: BankItemState[]
+  invoiceMonth: Date
+  dueDate: Date
   // rooms?: number[]; // filter rooms
   // hasName: boolean;
-};
+}
 
 const InvoiceReport = (props: any, ref: any) => {
-  const { items, branch, banks, invoiceMonth, dueDate }: Props = props;
-  const { resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const { items, branch, banks, invoiceMonth, dueDate }: Props = props
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
 
-  const bgColor = isDark ? "#1e1e1e" : "#fff";
-  const textColor = isDark ? "#e0e0e0" : "#000";
-  const screenBg = isDark ? "#121212" : "#666";
-  const borderColor = isDark ? "#555" : "#555";
-  const dashedBorder = isDark ? "#444" : "#A3A3A3";
+  const bgColor = isDark ? '#1e1e1e' : '#fff'
+  const textColor = isDark ? '#e0e0e0' : '#000'
+  const screenBg = isDark ? '#121212' : '#666'
+  const borderColor = isDark ? '#555' : '#555'
+  const dashedBorder = isDark ? '#444' : '#A3A3A3'
 
   const generateRemark = useCallback(
     (bank_id: number) => {
-      const bank = banks.find((bank) => bank.bankId == bank_id);
+      const bank = banks.find((bank) => bank.bankId == bank_id)
 
       if (bank) {
         const remark = branch.reportRemark
           ? branch.reportRemark
-              .replace("[@BANK]", bank.bankName ? bank.bankName : "")
-              .replace("[@ACCOUNT_NO]", bank.accountNo ? bank.accountNo : "")
-              .replace(
-                "[@ACCOUNT_NAME]",
-                bank.accountName ? bank.accountName : "",
-              )
-          : "";
+              .replace('[@BANK]', bank.bankName ? bank.bankName : '')
+              .replace('[@ACCOUNT_NO]', bank.accountNo ? bank.accountNo : '')
+              .replace('[@ACCOUNT_NAME]', bank.accountName ? bank.accountName : '')
+          : ''
 
         return (
           <div>
-            {remark.split("|").map((i, index) => {
-              return (
-                <div key={index}>{`${
-                  index === 1 ? "หมายเหตุ: " : ""
-                }${i}`}</div>
-              );
+            {remark.split('|').map((i, index) => {
+              return <div key={index}>{`${index === 1 ? 'หมายเหตุ: ' : ''}${i}`}</div>
             })}
           </div>
-        );
+        )
       } else {
-        return branch.reportRemark;
+        return branch.reportRemark
       }
     },
-    [branch, banks],
-  );
+    [branch, banks]
+  )
 
   const renderRow = useCallback(
     (row: ReportItem) => {
@@ -78,10 +71,8 @@ const InvoiceReport = (props: any, ref: any) => {
               <td colSpan={5}>เบอร์ติดต่อ: {branch.reportContact}</td>
             </tr>
             <tr className="title">
-              <td colSpan={3}>
-                ใบแจ้งค่าใช้บริการ เดือน {toFullMonthYear(invoiceMonth)}
-              </td>
-              <td colSpan={2} style={{ textAlign: "right", fontSize: "10pt" }}>
+              <td colSpan={3}>ใบแจ้งค่าใช้บริการ เดือน {toFullMonthYear(invoiceMonth)}</td>
+              <td colSpan={2} style={{ textAlign: 'right', fontSize: '10pt' }}>
                 ชำระเงินภายในวันที่ {toShortMonthYear(dueDate)}
               </td>
             </tr>
@@ -97,9 +88,8 @@ const InvoiceReport = (props: any, ref: any) => {
               <td className="space"></td>
               <td>มิเตอร์ไฟ </td>
               <td>
-                ครั้งก่อน {displayUnit(row.electric_start, 4)} ครั้งหลัง{" "}
-                {displayUnit(row.electric_end, 4)} (
-                {displayInteger(row.electric_unit)} น.)
+                ครั้งก่อน {displayUnit(row.electric_start, 4)} ครั้งหลัง{' '}
+                {displayUnit(row.electric_end, 4)} ({displayInteger(row.electric_unit)} น.)
               </td>
               <td className="amount">{displayMoney(row.electric_cost)} บาท</td>
               <td className="space"></td>
@@ -108,9 +98,8 @@ const InvoiceReport = (props: any, ref: any) => {
               <td className="space"></td>
               <td>มิเตอร์น้ำ </td>
               <td>
-                ครั้งก่อน {displayUnit(row.water_start, 4)} ครั้งหลัง{" "}
-                {displayUnit(row.water_end, 4)} (
-                {displayInteger(row.water_unit)} น.)
+                ครั้งก่อน {displayUnit(row.water_start, 4)} ครั้งหลัง{' '}
+                {displayUnit(row.water_end, 4)} ({displayInteger(row.water_unit)} น.)
               </td>
               <td className="amount">{displayMoney(row.water_cost)} บาท</td>
               <td className="space"></td>
@@ -136,9 +125,7 @@ const InvoiceReport = (props: any, ref: any) => {
                 <td className="space"></td>
                 <td>ค่าอินเตอร์เน็ต</td>
                 <td></td>
-                <td className="amount">
-                  {displayMoney(row.internet_cost)} บาท
-                </td>
+                <td className="amount">{displayMoney(row.internet_cost)} บาท</td>
                 <td className="space"></td>
               </tr>
             )}
@@ -164,9 +151,7 @@ const InvoiceReport = (props: any, ref: any) => {
               <tr>
                 <td className="space"></td>
                 <td colSpan={2}>{row.electric_extra}</td>
-                <td className="amount">
-                  {displayMoney(row.electric_extra_cost)} บาท
-                </td>
+                <td className="amount">{displayMoney(row.electric_extra_cost)} บาท</td>
                 <td className="space"></td>
               </tr>
             )}
@@ -174,9 +159,7 @@ const InvoiceReport = (props: any, ref: any) => {
               <tr>
                 <td className="space"></td>
                 <td colSpan={2}>{row.water_extra}</td>
-                <td className="amount">
-                  {displayMoney(row.water_extra_cost)} บาท
-                </td>
+                <td className="amount">{displayMoney(row.water_extra_cost)} บาท</td>
                 <td className="space"></td>
               </tr>
             )}
@@ -209,13 +192,13 @@ const InvoiceReport = (props: any, ref: any) => {
             </tr>
           </tbody>
         </table>
-      );
+      )
     },
-    [branch, dueDate, invoiceMonth, generateRemark],
-  );
+    [branch, dueDate, invoiceMonth, generateRemark]
+  )
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: 'relative' }}>
       <div ref={ref}>
         <style>
           {`
@@ -260,34 +243,34 @@ const InvoiceReport = (props: any, ref: any) => {
         {items && items.length > 0 && (
           <div id="content">
             {Array.from({ length: Math.ceil(items.length / 4) }).map((_, pageIndex) => {
-              const pageItems = items.slice(pageIndex * 4, (pageIndex + 1) * 4);
+              const pageItems = items.slice(pageIndex * 4, (pageIndex + 1) * 4)
               return (
                 <React.Fragment key={pageIndex}>
                   <div className="page-container">
                     {pageItems.map((row, idx) => {
-                      const isRightColumn = idx === 1 || idx === 3;
-                      const isTopRow = idx === 0 || idx === 1;
+                      const isRightColumn = idx === 1 || idx === 3
+                      const isTopRow = idx === 0 || idx === 1
                       return (
                         <div
                           key={idx}
-                          className={`section ${!isRightColumn ? "section-border-right" : ""} ${isTopRow ? "section-border-bottom" : ""}`}
+                          className={`section ${!isRightColumn ? 'section-border-right' : ''} ${isTopRow ? 'section-border-bottom' : ''}`}
                         >
                           {renderRow(row)}
                         </div>
-                      );
+                      )
                     })}
                   </div>
                   <footer />
                 </React.Fragment>
-              );
+              )
             })}
           </div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-InvoiceReport.displayName = "InvoiceReport";
+InvoiceReport.displayName = 'InvoiceReport'
 
-export default React.forwardRef(InvoiceReport);
+export default React.forwardRef(InvoiceReport)

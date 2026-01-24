@@ -1,47 +1,47 @@
-import { useCallback } from "react";
-import { useAppContext } from "hooks";
+import { useCallback } from 'react'
+import { useAppContext } from 'hooks'
 import {
   fetchDrive,
   fetchSheets,
   checkToken,
   getUser,
-  processData,
-} from "reducers/actions/driveAction";
-import { BranchItemState } from "types/state";
+  processData
+} from 'reducers/actions/driveAction'
+import { BranchItemState } from 'types/state'
 
 const useDrive = () => {
-  const { state, dispatch } = useAppContext();
+  const { state, dispatch } = useAppContext()
 
   const handleFetchDrive = useCallback(
     (folderId: string) => {
-      fetchDrive(dispatch, folderId);
+      fetchDrive(dispatch, folderId)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   const handleCheckToken = useCallback(() => {
-    checkToken(dispatch);
-  }, [dispatch]);
+    checkToken(dispatch)
+  }, [dispatch])
 
   const handleGetUser = useCallback(() => {
-    getUser(dispatch);
-  }, [dispatch]);
+    getUser(dispatch)
+  }, [dispatch])
 
-  const handleChangeSheet = useCallback(() => {}, []);
+  const handleChangeSheet = useCallback(() => {}, [])
 
   const handleFetchSheets = useCallback(
     (branches: BranchItemState[]) => {
-      fetchSheets(dispatch, branches);
+      fetchSheets(dispatch, branches)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   const handleProcessData = useCallback(
     (branchId: string, spreadsheetId: string, sheetId: number) => {
-      processData(dispatch, branchId, spreadsheetId, sheetId);
+      processData(dispatch, branchId, spreadsheetId, sheetId)
     },
-    [dispatch],
-  );
+    [dispatch]
+  )
 
   return {
     files: state.drive.files,
@@ -53,8 +53,8 @@ const useDrive = () => {
     checkToken: handleCheckToken,
     changeSheet: handleChangeSheet,
     fetchSheets: handleFetchSheets,
-    processData: handleProcessData,
-  };
-};
+    processData: handleProcessData
+  }
+}
 
-export default useDrive;
+export default useDrive

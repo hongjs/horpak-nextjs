@@ -1,28 +1,28 @@
-import React, { useEffect } from "react";
-import type { NextPage, GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-import { getSession, signOut } from "next-auth/react";
-import { Box, Typography, Button } from "@mui/material";
+import React, { useEffect } from 'react'
+import type { NextPage, GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
+import { getSession, signOut } from 'next-auth/react'
+import { Box, Typography, Button } from '@mui/material'
 import {
   Description as DescriptionIcon,
   Receipt as ReceiptIcon,
   Settings as SettingsIcon,
   Group as GroupIcon,
-  Logout as LogoutIcon,
-} from "@mui/icons-material";
-import { HomePageProps } from "types";
-import styles from "styles/Home.module.css";
+  Logout as LogoutIcon
+} from '@mui/icons-material'
+import { HomePageProps } from 'types'
+import styles from 'styles/Home.module.css'
 
 const Home: NextPage<HomePageProps> = ({ session }) => {
-  const router = useRouter();
+  const router = useRouter()
 
   useEffect(() => {
     if (!session) {
-      router.push("/auth/signin");
+      router.push('/auth/signin')
     }
-  }, [router, session]);
+  }, [router, session])
 
-  if (!session) return null;
+  if (!session) return null
 
   return (
     <div className={styles.container}>
@@ -30,11 +30,10 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
       <Box className={styles.heroSection}>
         <Box className={styles.heroContent}>
           <Typography variant="h1" className={styles.welcomeTitle}>
-            Welcome back, {session?.user?.name || "User"}
+            Welcome back, {session?.user?.name || 'User'}
           </Typography>
           <Typography variant="body1" className={styles.welcomeSubtitle}>
-            Manage your dormitory, track payments, and view reports all in one
-            place.
+            Manage your dormitory, track payments, and view reports all in one place.
           </Typography>
         </Box>
       </Box>
@@ -43,10 +42,7 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
       <main className={styles.main}>
         <div className={styles.grid}>
           {/* Summary Report Card */}
-          <div
-            className={styles.card}
-            onClick={() => router.push("/report/viewSummaryReport")}
-          >
+          <div className={styles.card} onClick={() => router.push('/report/viewSummaryReport')}>
             <div className={`${styles.cardIcon} ${styles.iconBlue}`}>
               <DescriptionIcon />
             </div>
@@ -54,16 +50,12 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
               Summary Report
             </Typography>
             <Typography variant="body2" className={styles.cardDescription}>
-              View comprehensive summaries of income, expenses, and occupancy
-              rates.
+              View comprehensive summaries of income, expenses, and occupancy rates.
             </Typography>
           </div>
 
           {/* Invoice Report Card */}
-          <div
-            className={styles.card}
-            onClick={() => router.push("/report/viewInvoiceReport")}
-          >
+          <div className={styles.card} onClick={() => router.push('/report/viewInvoiceReport')}>
             <div className={`${styles.cardIcon} ${styles.iconGreen}`}>
               <ReceiptIcon />
             </div>
@@ -76,10 +68,7 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
           </div>
 
           {/* Process Card */}
-          <div
-            className={styles.card}
-            onClick={() => router.push("/report/processSheet")}
-          >
+          <div className={styles.card} onClick={() => router.push('/report/processSheet')}>
             <div className={`${styles.cardIcon} ${styles.iconYellow}`}>
               <SettingsIcon />
             </div>
@@ -87,13 +76,12 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
               Process
             </Typography>
             <Typography variant="body2" className={styles.cardDescription}>
-              Manage system processes, batch operations, and workflow
-              automation.
+              Manage system processes, batch operations, and workflow automation.
             </Typography>
           </div>
 
           {/* Users Card */}
-          <div className={styles.card} onClick={() => router.push("/users")}>
+          <div className={styles.card} onClick={() => router.push('/users')}>
             <div className={`${styles.cardIcon} ${styles.iconPurple}`}>
               <GroupIcon />
             </div>
@@ -106,19 +94,19 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
           </div>
         </div>
 
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
           <Button
             variant="outlined"
             startIcon={<LogoutIcon />}
             onClick={() => signOut()}
             sx={{
-              borderColor: "rgba(145, 158, 171, 0.32)",
-              color: "#637381",
-              "&:hover": {
-                borderColor: "#212b36",
-                color: "#212b36",
-                backgroundColor: "rgba(33, 43, 54, 0.08)",
-              },
+              borderColor: 'rgba(145, 158, 171, 0.32)',
+              color: '#637381',
+              '&:hover': {
+                borderColor: '#212b36',
+                color: '#212b36',
+                backgroundColor: 'rgba(33, 43, 54, 0.08)'
+              }
             }}
           >
             Sign Out
@@ -133,13 +121,13 @@ const Home: NextPage<HomePageProps> = ({ session }) => {
         </Typography>
       </footer>
     </div>
-  );
-};
+  )
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-  const _props: HomePageProps = { session };
-  return { props: _props };
-};
+  const session = await getSession(context)
+  const _props: HomePageProps = { session }
+  return { props: _props }
+}
 
-export default Home;
+export default Home
