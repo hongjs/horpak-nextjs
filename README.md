@@ -2,6 +2,8 @@
 
 A modern business management application built with Next.js for managing banks, branches, and generating detailed reports from Google Spreadsheets.
 
+<img width="1486" height="770" alt="image" src="https://github.com/user-attachments/assets/4223a33b-761d-4f08-803b-d26ae3474526" />
+
 ## Features
 
 - **Authentication & Authorization**
