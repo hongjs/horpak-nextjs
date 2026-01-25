@@ -6,3 +6,17 @@ node_modules
 Dockerfile
 gulpfile.ts
 README.md
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.git
+.DS_Store
+npm-debug.log
+yarn-error.log
+.next/cache
+.next/standalone
+dist
+build
+*.log
