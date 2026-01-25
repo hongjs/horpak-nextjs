@@ -88,14 +88,14 @@ const InvoiceReport = (props: any, ref: any) => {
               <td className="unit">บาท</td>
             </tr>
             <tr className="item-row">
-              <td className="label">ค่ห้อง</td>
+              <td className="label">ค่าห้อง</td>
               <td></td>
               <td className="amount">{displayMoney(row.room_cost)}</td>
               <td className="unit">บาท</td>
             </tr>
             {row.share_cost !== 0 && (
               <tr className="item-row">
-                <td className="label">ส่วนกลาง</td>
+                <td className="label">ค่าส่วนกลาง</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.share_cost)}</td>
                 <td className="unit">บาท</td>
@@ -103,7 +103,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.internet_cost !== 0 && (
               <tr className="item-row">
-                <td className="label">เน็ต</td>
+                <td className="label">ค่าเน็ต</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.internet_cost)}</td>
                 <td className="unit">บาท</td>
@@ -111,7 +111,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.penalty_cost !== 0 && (
               <tr className="item-row">
-                <td className="label">ปรับ</td>
+                <td className="label">ค่าปรับ</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.penalty_cost)}</td>
                 <td className="unit">บาท</td>
@@ -119,7 +119,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.arrear !== 0 && (
               <tr className="item-row">
-                <td className="label">ค้าง</td>
+                <td className="label">ค้างชำระ</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.arrear)}</td>
                 <td className="unit">บาท</td>
@@ -127,7 +127,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.electric_extra_cost !== 0 && (
               <tr className="item-row">
-                <td className="label" style={{fontSize: '7pt'}}>{row.electric_extra}</td>
+                <td className="label" style={{ fontSize: '7pt' }}>{row.electric_extra}</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.electric_extra_cost)}</td>
                 <td className="unit">บาท</td>
@@ -135,7 +135,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.water_extra_cost !== 0 && (
               <tr className="item-row">
-                <td className="label" style={{fontSize: '7pt'}}>{row.water_extra}</td>
+                <td className="label" style={{ fontSize: '7pt' }}>{row.water_extra}</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.water_extra_cost)}</td>
                 <td className="unit">บาท</td>
@@ -143,7 +143,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.other1_cost !== 0 && (
               <tr className="item-row">
-                <td className="label" style={{fontSize: '7pt'}}>{row.other1}</td>
+                <td className="label" style={{ fontSize: '7pt' }}>{row.other1}</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.other1_cost)}</td>
                 <td className="unit">บาท</td>
@@ -151,7 +151,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.other2_cost !== 0 && (
               <tr className="item-row">
-                <td className="label" style={{fontSize: '7pt'}}>{row.other2}</td>
+                <td className="label" style={{ fontSize: '7pt' }}>{row.other2}</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.other2_cost)}</td>
                 <td className="unit">บาท</td>
@@ -178,7 +178,7 @@ const InvoiceReport = (props: any, ref: any) => {
         <style>
           {`
             @media print {
-              @page { size: A4 portrait; margin: 10mm; }
+              @page { size: A4 portrait; margin: 5mm 15mm; }
               #content { padding: 0mm; background-color: #fff !important; }
               footer { page-break-after: always; }
               .section { background-color: #fff !important; color: #000 !important; }
