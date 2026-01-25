@@ -61,5 +61,5 @@ export const toShortMonthYear = (date: Date) => {
     'พ.ย.',
     'ธ.ค.'
   ]
-  return `${date.getDate()} ${monthNamesThai[date.getMonth()]} ${date.getFullYear()}`
+  return `${date.getDate()} ${monthNamesThai[date.getMonth()]}`
 }
