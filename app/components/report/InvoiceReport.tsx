@@ -43,11 +43,7 @@ const InvoiceReport = (props: any, ref: any) => {
           : ''
 
         return (
-          <div>
-            {remark.split('|').map((i, index) => {
-              return <div key={index}>{`${index === 1 ? 'หมายเหตุ: ' : ''}${i}`}</div>
-            })}
-          </div>
+          <span>{remark.split('|').join(' | ')}</span>
         )
       } else {
         return branch.reportRemark
@@ -62,133 +58,112 @@ const InvoiceReport = (props: any, ref: any) => {
         <table id="tb">
           <tbody>
             <tr className="header">
-              <td colSpan={5}>{branch.reportHeader}</td>
+              <td colSpan={2}>{branch.reportHeader}</td>
+              <td colSpan={2} style={{ fontSize: '7pt', textAlign: 'right' }}>
+                ชำระภายในวันที่ {toShortMonthYear(dueDate)}
+              </td>
             </tr>
             <tr className="contact">
-              <td colSpan={5}>ที่อยู่: {branch.reportAddress}</td>
-            </tr>
-            <tr className="contact border-bottom">
-              <td colSpan={5}>เบอร์ติดต่อ: {branch.reportContact}</td>
-            </tr>
-            <tr className="title">
-              <td colSpan={3}>ใบแจ้งค่าใช้บริการ เดือน {toFullMonthYear(invoiceMonth)}</td>
-              <td colSpan={2} style={{ textAlign: 'right', fontSize: '10pt' }}>
-                ชำระเงินภายในวันที่ {toShortMonthYear(dueDate)}
-              </td>
-            </tr>
-            <tr className="divider">
-              <td colSpan={5}></td>
+              <td colSpan={4}>{branch.reportAddress} | {branch.reportContact}</td>
             </tr>
             <tr className="title2">
-              <td colSpan={5}>
-                คุณ{row.name} ห้อง {row.room}
+              <td colSpan={4}>
+                ห้อง {row.room} คุณ{row.name}
               </td>
             </tr>
-            <tr>
-              <td className="space"></td>
-              <td>มิเตอร์ไฟ </td>
-              <td>
-                ครั้งก่อน {displayUnit(row.electric_start, 4)} ครั้งหลัง{' '}
-                {displayUnit(row.electric_end, 4)} ({displayInteger(row.electric_unit)} น.)
+            <tr className="item-row">
+              <td className="label">ค่าไฟ</td>
+              <td className="meter">
+                {displayUnit(row.electric_start, 2)} - {displayUnit(row.electric_end, 2)} ({displayInteger(row.electric_unit)} น.)
               </td>
-              <td className="amount">{displayMoney(row.electric_cost)} บาท</td>
-              <td className="space"></td>
+              <td className="amount">{displayMoney(row.electric_cost)}</td>
+              <td className="unit">บาท</td>
             </tr>
-            <tr>
-              <td className="space"></td>
-              <td>มิเตอร์น้ำ </td>
-              <td>
-                ครั้งก่อน {displayUnit(row.water_start, 4)} ครั้งหลัง{' '}
-                {displayUnit(row.water_end, 4)} ({displayInteger(row.water_unit)} น.)
+            <tr className="item-row">
+              <td className="label">ค่าน้ำ</td>
+              <td className="meter">
+                {displayUnit(row.water_start, 2)} - {displayUnit(row.water_end, 2)} ({displayInteger(row.water_unit)} น.)
               </td>
-              <td className="amount">{displayMoney(row.water_cost)} บาท</td>
-              <td className="space"></td>
+              <td className="amount">{displayMoney(row.water_cost)}</td>
+              <td className="unit">บาท</td>
             </tr>
-            <tr>
-              <td className="space"></td>
-              <td>ค่าเช่าห้อง</td>
+            <tr className="item-row">
+              <td className="label">ค่ห้อง</td>
               <td></td>
-              <td className="amount">{displayMoney(row.room_cost)} บาท</td>
-              <td className="space"></td>
+              <td className="amount">{displayMoney(row.room_cost)}</td>
+              <td className="unit">บาท</td>
             </tr>
             {row.share_cost !== 0 && (
-              <tr>
-                <td className="space"></td>
-                <td>ค่าส่วนกลาง</td>
+              <tr className="item-row">
+                <td className="label">ส่วนกลาง</td>
                 <td></td>
-                <td className="amount">{displayMoney(row.share_cost)} บาท</td>
-                <td className="space"></td>
+                <td className="amount">{displayMoney(row.share_cost)}</td>
+                <td className="unit">บาท</td>
               </tr>
             )}
             {row.internet_cost !== 0 && (
-              <tr>
-                <td className="space"></td>
-                <td>ค่าอินเตอร์เน็ต</td>
+              <tr className="item-row">
+                <td className="label">เน็ต</td>
                 <td></td>
-                <td className="amount">{displayMoney(row.internet_cost)} บาท</td>
-                <td className="space"></td>
+                <td className="amount">{displayMoney(row.internet_cost)}</td>
+                <td className="unit">บาท</td>
               </tr>
             )}
             {row.penalty_cost !== 0 && (
-              <tr>
-                <td className="space"></td>
-                <td>ค่าปรับ</td>
+              <tr className="item-row">
+                <td className="label">ปรับ</td>
                 <td></td>
-                <td className="amount">{displayMoney(row.penalty_cost)} บาท</td>
-                <td className="space"></td>
+                <td className="amount">{displayMoney(row.penalty_cost)}</td>
+                <td className="unit">บาท</td>
               </tr>
             )}
             {row.arrear !== 0 && (
-              <tr>
-                <td className="space"></td>
-                <td>ค้างชำระ</td>
+              <tr className="item-row">
+                <td className="label">ค้าง</td>
                 <td></td>
-                <td className="amount">{displayMoney(row.arrear)} บาท</td>
-                <td className="space"></td>
+                <td className="amount">{displayMoney(row.arrear)}</td>
+                <td className="unit">บาท</td>
               </tr>
             )}
             {row.electric_extra_cost !== 0 && (
-              <tr>
-                <td className="space"></td>
-                <td colSpan={2}>{row.electric_extra}</td>
-                <td className="amount">{displayMoney(row.electric_extra_cost)} บาท</td>
-                <td className="space"></td>
+              <tr className="item-row">
+                <td className="label" style={{fontSize: '7pt'}}>{row.electric_extra}</td>
+                <td></td>
+                <td className="amount">{displayMoney(row.electric_extra_cost)}</td>
+                <td className="unit">บาท</td>
               </tr>
             )}
             {row.water_extra_cost !== 0 && (
-              <tr>
-                <td className="space"></td>
-                <td colSpan={2}>{row.water_extra}</td>
-                <td className="amount">{displayMoney(row.water_extra_cost)} บาท</td>
-                <td className="space"></td>
+              <tr className="item-row">
+                <td className="label" style={{fontSize: '7pt'}}>{row.water_extra}</td>
+                <td></td>
+                <td className="amount">{displayMoney(row.water_extra_cost)}</td>
+                <td className="unit">บาท</td>
               </tr>
             )}
             {row.other1_cost !== 0 && (
-              <tr>
-                <td className="space"></td>
-                <td colSpan={2}>{row.other1}</td>
-                <td className="amount">{displayMoney(row.other1_cost)} บาท</td>
-                <td className="space"></td>
+              <tr className="item-row">
+                <td className="label" style={{fontSize: '7pt'}}>{row.other1}</td>
+                <td></td>
+                <td className="amount">{displayMoney(row.other1_cost)}</td>
+                <td className="unit">บาท</td>
               </tr>
             )}
             {row.other2_cost !== 0 && (
-              <tr>
-                <td className="space"></td>
-                <td colSpan={2}>{row.other2}</td>
-                <td className="amount">{displayMoney(row.other2_cost)} บาท</td>
-                <td className="space"></td>
+              <tr className="item-row">
+                <td className="label" style={{fontSize: '7pt'}}>{row.other2}</td>
+                <td></td>
+                <td className="amount">{displayMoney(row.other2_cost)}</td>
+                <td className="unit">บาท</td>
               </tr>
             )}
             <tr className="summary">
-              <td className="space"></td>
               <td colSpan={2}>รวม</td>
-              <td className="amount">{displayMoney(row.total)} บาท</td>
-              <td className="space"></td>
+              <td className="amount">{displayMoney(row.total)}</td>
+              <td className="unit">บาท</td>
             </tr>
             <tr className="remark">
-              <td className="space"></td>
-              <td colSpan={3}>{generateRemark(row.bank_id)}</td>
-              <td className="space"></td>
+              <td colSpan={4}>{generateRemark(row.bank_id)}</td>
             </tr>
           </tbody>
         </table>
@@ -202,17 +177,17 @@ const InvoiceReport = (props: any, ref: any) => {
       <div ref={ref}>
         <style>
           {`
-            @media print { 
-              @page { size: A4 landscape; margin: 5mm; } 
-              #content { padding: 0mm; background-color: #fff !important; } 
-              footer { page-break-after: always; } 
+            @media print {
+              @page { size: A4 portrait; margin: 10mm; }
+              #content { padding: 0mm; background-color: #fff !important; }
+              footer { page-break-after: always; }
               .section { background-color: #fff !important; color: #000 !important; }
               #tb { background-color: #fff !important; color: #000 !important; }
               #tb td { border-color: #555 !important; color: #000 !important; }
-            } 
-            @media screen { 
-              #content { padding: 5mm; text-align: -webkit-center; background-color: ${screenBg}; overflow-x: scroll; } 
-              footer { margin-bottom: 5mm; } 
+            }
+            @media screen {
+              #content { padding: 5mm; text-align: -webkit-center; background-color: ${screenBg}; overflow-y: scroll; }
+              footer { margin-bottom: 5mm; }
             }
             /* PDF export specific - applied via class */
             .pdf-export #content { background-color: #fff !important; padding: 0 !important; }
@@ -221,39 +196,37 @@ const InvoiceReport = (props: any, ref: any) => {
             .pdf-export #tb td { border-color: #555 !important; color: #000 !important; }
             .pdf-export .section-border-right { border-color: #A3A3A3 !important; }
             .pdf-export .section-border-bottom { border-color: #A3A3A3 !important; }
-            #tb { width: 100%; background-color: ${bgColor}; font-size: 9pt; color: ${textColor}; } 
-            #tb .space { width: 10mm; } 
-            #tb .amount { text-align: right; padding-right: 8px; } 
-            #tb .summary { font-weight: bold; } 
-            #tb .summary td { padding-bottom: 2mm; } 
-            #tb .remark { font-size: 8pt; padding: 4px 8px; } 
-            #tb .header td { font-size: 12pt; font-weight: bold; padding: 3mm 8px; border-top: 1px solid ${borderColor}; border-bottom: 1px solid ${borderColor}; } 
-            #tb .title td { font-size: 10pt; font-weight: bold; padding: 4px 8px; } 
-            #tb .divider td { height: 1px; border-bottom: 1px solid ${borderColor}; } 
-            #tb .title2 td { font-size: 10pt; padding: 4px 8px 3mm 8px; } 
-            #tb .contact td { font-size: 7pt; padding: 2px 8px; } 
-            #tb .border-bottom td { border-bottom: 2px solid ${borderColor}; }
-            #tb td { padding: 4px 8px; }
-            .page-container { display: flex; flex-wrap: wrap; width: 287mm; }
-            .section { width: 143mm; height: 100mm; padding: 5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; }
-            .section-border-right { border-right: 1px dashed ${dashedBorder}; }
-            .section-border-bottom { border-bottom: 1px dashed ${dashedBorder}; }
+            #tb { width: 100%; background-color: ${bgColor}; font-size: 8.5pt; color: ${textColor}; line-height: 1.2; border-collapse: collapse; }
+            #tb .label { width: 22%; font-weight: 500; padding: 2px 2px; }
+            #tb .meter { width: 38%; padding: 2px 2px; font-size: 8pt; }
+            #tb .amount { text-align: right; width: 25%; padding: 2px 2px; }
+            #tb .unit { width: 15%; padding: 2px 2px; }
+            #tb .summary { font-weight: bold; border-top: 1px solid ${borderColor}; border-bottom: 1px solid ${borderColor}; }
+            #tb .summary td { padding: 2px 2px; }
+            #tb .remark { font-size: 7.5pt; padding: 2px 2px; }
+            #tb .header td { font-size: 9pt; font-weight: bold; padding: 2px 2px; }
+            #tb .title2 td { font-size: 8.5pt; font-weight: bold; padding: 2px 2px; }
+            #tb .contact td { font-size: 7pt; padding: 1px 2px; border-bottom: 1px solid ${borderColor}; }
+            #tb td { padding: 1px 2px; }
+            #tb .item-row td { padding-left: 8mm; padding-right: 2px; }
+            .page-container { display: flex; flex-direction: column; width: 202mm; }
+            .section { width: 202mm; height: 57.8mm; padding: 1.5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; overflow: hidden; border-bottom: 1px solid ${dashedBorder}; }
+            .section-border-right { border-right: none; }
+            .section-border-bottom { border-bottom: none; }
           `}
         </style>
         {items && items.length > 0 && (
           <div id="content">
-            {Array.from({ length: Math.ceil(items.length / 4) }).map((_, pageIndex) => {
-              const pageItems = items.slice(pageIndex * 4, (pageIndex + 1) * 4)
+            {Array.from({ length: Math.ceil(items.length / 5) }).map((_, pageIndex) => {
+              const pageItems = items.slice(pageIndex * 5, (pageIndex + 1) * 5)
               return (
                 <React.Fragment key={pageIndex}>
                   <div className="page-container">
                     {pageItems.map((row, idx) => {
-                      const isRightColumn = idx === 1 || idx === 3
-                      const isTopRow = idx === 0 || idx === 1
                       return (
                         <div
                           key={idx}
-                          className={`section ${!isRightColumn ? 'section-border-right' : ''} ${isTopRow ? 'section-border-bottom' : ''}`}
+                          className="section"
                         >
                           {renderRow(row)}
                         </div>
