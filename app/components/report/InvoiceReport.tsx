@@ -197,11 +197,11 @@ const InvoiceReport = (props: any, ref: any) => {
             .pdf-export #tb td { border-color: #555 !important; color: #000 !important; }
             .pdf-export .section-border-right { border-color: #A3A3A3 !important; }
             .pdf-export .section-border-bottom { border-color: #A3A3A3 !important; }
-            #tb { width: 100%; background-color: ${bgColor}; font-size: 11pt; color: ${textColor}; line-height: 1.3; border-collapse: collapse; }
-            #tb .label { width: 27%; font-weight: 500; padding: 3px 4px; white-space: nowrap;  }
-            #tb .meter { width: 33%; padding: 3px 4px; font-size: 10.5pt; white-space: nowrap; }
-            #tb .amount { text-align: right; width: 25%; padding: 3px 4px; }
-            #tb .unit { width: 15%; padding: 3px 4px; text-align: left; }
+            #tb { width: 100%; background-color: ${bgColor}; font-size: 11pt; color: ${textColor}; line-height: 1.5; border-collapse: collapse; }
+            #tb .label { width: 27%; font-weight: 500; padding: 5px 4px; white-space: nowrap;  }
+            #tb .meter { width: 33%; padding: 5px 4px; font-size: 10.5pt; white-space: nowrap; }
+            #tb .amount { text-align: right; width: 25%; padding: 5px 4px; }
+            #tb .unit { width: 15%; padding: 5px 4px; text-align: left; }
             #tb .summary { font-weight: bold; border-top: 1px solid ${borderColor}; border-bottom: 1px solid ${borderColor}; }
             #tb .summary td { padding: 4px 4px; }
             #tb .remark { font-size: 9pt; padding: 4px 4px; }
@@ -211,7 +211,7 @@ const InvoiceReport = (props: any, ref: any) => {
             #tb td { padding: 2px 4px; }
             #tb .item-row .label { padding-left: 8mm; }
             .page-container { display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; height: 209mm; align-content: flex-start; }
-            .section { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; width: 50%; height: 50%; padding: 5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; overflow: hidden; border-bottom: 1px solid ${dashedBorder}; border-right: 1px solid ${dashedBorder}; }
+            .section { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; width: 50%; height: 53%; padding: 5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; overflow: hidden; border-bottom: 1px solid ${dashedBorder}; border-right: 1px solid ${dashedBorder}; }
             .section:nth-child(2n) { border-right: none; }
             .section-border-right { border-right: none; }
             .section-border-bottom { border-bottom: none; }
