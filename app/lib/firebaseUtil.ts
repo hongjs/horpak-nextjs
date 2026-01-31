@@ -1,20 +1,23 @@
 import { credential } from 'firebase-admin'
-import { initializeApp, getApps } from 'firebase-admin/app'
-import { getFirestore } from 'firebase-admin/firestore'
+import { initializeApp, getApps, App } from 'firebase-admin/app'
+import { getFirestore, Firestore } from 'firebase-admin/firestore'
 import keys from 'config/keys'
 
 const apps = getApps()
-const app =
-  apps.length > 0
-    ? apps[0]
-    : initializeApp(
-        {
-          credential: credential.cert(keys.FIREBASE_SERVICE_ACCOUNT_KEY as any)
-        },
-        keys.FIREBASE_SERVICE_ACCOUNT_KEY.project_id
-      )
+let app: App | undefined
 
-const db = getFirestore(app)
+if (apps.length > 0) {
+  app = apps[0]
+} else if (keys.FIREBASE_SERVICE_ACCOUNT_KEY) {
+  app = initializeApp(
+    {
+      credential: credential.cert(keys.FIREBASE_SERVICE_ACCOUNT_KEY as any)
+    },
+    keys.FIREBASE_SERVICE_ACCOUNT_KEY.project_id
+  )
+}
+
+const db = (app ? getFirestore(app) : {}) as Firestore
 
 const getUser = async (email: string) => {
   if (!email) return null
