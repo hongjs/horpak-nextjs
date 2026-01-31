@@ -127,7 +127,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.electric_extra_cost !== 0 && (
               <tr className="item-row">
-                <td className="label" style={{ fontSize: '7pt' }}>{row.electric_extra}</td>
+                <td className="label">{row.electric_extra}</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.electric_extra_cost)}</td>
                 <td className="unit">บาท</td>
@@ -135,7 +135,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.water_extra_cost !== 0 && (
               <tr className="item-row">
-                <td className="label" style={{ fontSize: '7pt' }}>{row.water_extra}</td>
+                <td className="label">{row.water_extra}</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.water_extra_cost)}</td>
                 <td className="unit">บาท</td>
@@ -143,7 +143,7 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.other1_cost !== 0 && (
               <tr className="item-row">
-                <td className="label" style={{ fontSize: '7pt' }}>{row.other1}</td>
+                <td className="label">{row.other1}</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.other1_cost)}</td>
                 <td className="unit">บาท</td>
@@ -151,14 +151,15 @@ const InvoiceReport = (props: any, ref: any) => {
             )}
             {row.other2_cost !== 0 && (
               <tr className="item-row">
-                <td className="label" style={{ fontSize: '7pt' }}>{row.other2}</td>
+                <td className="label">{row.other2}</td>
                 <td></td>
                 <td className="amount">{displayMoney(row.other2_cost)}</td>
                 <td className="unit">บาท</td>
               </tr>
             )}
             <tr className="summary">
-              <td colSpan={2}>รวม</td>
+              <td className="label">รวม</td>
+              <td></td>
               <td className="amount">{displayMoney(row.total)}</td>
               <td className="unit">บาท</td>
             </tr>
@@ -178,7 +179,7 @@ const InvoiceReport = (props: any, ref: any) => {
         <style>
           {`
             @media print {
-              @page { size: A4 portrait; margin: 5mm 15mm; }
+              @page { size: A4 landscape; margin: 0mm; }
               #content { padding: 0mm; background-color: #fff !important; }
               footer { page-break-after: always; }
               .section { background-color: #fff !important; color: #000 !important; }
@@ -196,29 +197,30 @@ const InvoiceReport = (props: any, ref: any) => {
             .pdf-export #tb td { border-color: #555 !important; color: #000 !important; }
             .pdf-export .section-border-right { border-color: #A3A3A3 !important; }
             .pdf-export .section-border-bottom { border-color: #A3A3A3 !important; }
-            #tb { width: 100%; background-color: ${bgColor}; font-size: 8.5pt; color: ${textColor}; line-height: 1.2; border-collapse: collapse; }
-            #tb .label { width: 22%; font-weight: 500; padding: 2px 2px; }
-            #tb .meter { width: 38%; padding: 2px 2px; font-size: 8pt; }
-            #tb .amount { text-align: right; width: 25%; padding: 2px 2px; }
-            #tb .unit { width: 15%; padding: 2px 2px; }
+            #tb { width: 100%; background-color: ${bgColor}; font-size: 11pt; color: ${textColor}; line-height: 1.3; border-collapse: collapse; }
+            #tb .label { width: 27%; font-weight: 500; padding: 3px 4px; white-space: nowrap;  }
+            #tb .meter { width: 33%; padding: 3px 4px; font-size: 10.5pt; white-space: nowrap; }
+            #tb .amount { text-align: right; width: 25%; padding: 3px 4px; }
+            #tb .unit { width: 15%; padding: 3px 4px; text-align: left; }
             #tb .summary { font-weight: bold; border-top: 1px solid ${borderColor}; border-bottom: 1px solid ${borderColor}; }
-            #tb .summary td { padding: 2px 2px; }
-            #tb .remark { font-size: 7.5pt; padding: 2px 2px; }
-            #tb .header td { font-size: 9pt; font-weight: bold; padding: 2px 2px; }
-            #tb .title2 td { font-size: 8.5pt; font-weight: bold; padding: 2px 2px; }
-            #tb .contact td { font-size: 7pt; padding: 1px 2px; border-bottom: 1px solid ${borderColor}; }
-            #tb td { padding: 1px 2px; }
-            #tb .item-row td { padding-left: 8mm; padding-right: 2px; }
-            .page-container { display: flex; flex-direction: column; width: 202mm; }
-            .section { width: 202mm; height: 57.8mm; padding: 1.5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; overflow: hidden; border-bottom: 1px solid ${dashedBorder}; }
+            #tb .summary td { padding: 4px 4px; }
+            #tb .remark { font-size: 9pt; padding: 4px 4px; }
+            #tb .header td { font-size: 14pt; font-weight: bold; padding: 4px 4px; text-align: left; }
+            #tb .title2 td { font-size: 12pt; font-weight: bold; padding: 4px 4px; text-align: left; }
+            #tb .contact td { font-size: 9pt; padding: 2px 4px; border-bottom: 1px solid ${borderColor}; text-align: left; }
+            #tb td { padding: 2px 4px; }
+            #tb .item-row .label { padding-left: 8mm; }
+            .page-container { display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; height: 209mm; align-content: flex-start; }
+            .section { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; width: 50%; height: 50%; padding: 5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; overflow: hidden; border-bottom: 1px solid ${dashedBorder}; border-right: 1px solid ${dashedBorder}; }
+            .section:nth-child(2n) { border-right: none; }
             .section-border-right { border-right: none; }
             .section-border-bottom { border-bottom: none; }
           `}
         </style>
         {items && items.length > 0 && (
           <div id="content">
-            {Array.from({ length: Math.ceil(items.length / 5) }).map((_, pageIndex) => {
-              const pageItems = items.slice(pageIndex * 5, (pageIndex + 1) * 5)
+            {Array.from({ length: Math.ceil(items.length / 4) }).map((_, pageIndex) => {
+              const pageItems = items.slice(pageIndex * 4, (pageIndex + 1) * 4)
               return (
                 <React.Fragment key={pageIndex}>
                   <div className="page-container">
