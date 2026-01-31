@@ -86,7 +86,7 @@ describe('textHelper', () => {
     it('should format date to Thai Short Month Year', () => {
       // 2023-01-01 -> 1 ม.ค.
       const date = new Date(2023, 0, 1)
-      expect(toShortMonthYear(date)).toBe('1 ม.ค.')
+      expect(toShortMonthYear(date)).toBe('1 ม.ค. 2023')
     })
   })
 })
