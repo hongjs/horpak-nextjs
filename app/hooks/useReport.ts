@@ -7,6 +7,7 @@ const useReport = () => {
 
   const handleFetchReport = useCallback(
     (spreadsheetId: string, sheetId: number) => {
+      clearReport(dispatch)
       fetchSheetContent(dispatch, spreadsheetId, sheetId)
     },
     [dispatch]

@@ -203,7 +203,9 @@ const UserList: React.FC<Props> = ({ isAdmin, noAdmin, email }) => {
             sx={{
               border: 'none',
               '& .MuiDataGrid-cell': {
-                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                display: 'flex',
+                alignItems: 'center'
               },
               '& .MuiDataGrid-columnHeaders': {
                 backgroundColor: alpha(theme.palette.primary.main, 0.04),

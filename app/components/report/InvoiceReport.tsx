@@ -210,7 +210,7 @@ const InvoiceReport = (props: any, ref: any) => {
             #tb .contact td { font-size: 9pt; padding: 2px 4px; border-bottom: 1px solid ${borderColor}; text-align: left; }
             #tb td { padding: 2px 4px; }
             #tb .item-row .label { padding-left: 8mm; }
-            .page-container { display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; height: 209mm; align-content: flex-start; }
+            .page-container { display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; height: 209mm; min-width: 296mm; align-content: flex-start; }
             .section { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; width: 50%; height: 53%; padding: 5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; overflow: hidden; border-bottom: 1px solid ${dashedBorder}; border-right: 1px solid ${dashedBorder}; }
             .section:nth-child(2n) { border-right: none; }
             .section-border-right { border-right: none; }
