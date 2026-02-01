@@ -2,17 +2,22 @@ import clientPromise from './mongodb'
 import keys from 'config/keys'
 
 export const getIds = async (collectionName: string, field?: string) => {
-  const _field = field ? field : '_id'
-  const client = await clientPromise
-  const db = client.db(keys.DB_NAME)
-  const items = await db
-    .collection(collectionName)
-    .find({})
-    .project({ [_field]: 1 })
-    .toArray()
-  return items.map((i) => {
-    return i[_field].toString()
-  })
+  try {
+    const _field = field ? field : '_id'
+    const client = await clientPromise
+    const db = client.db(keys.DB_NAME)
+    const items = await db
+      .collection(collectionName)
+      .find({})
+      .project({ [_field]: 1 })
+      .toArray()
+    return items.map((i) => {
+      return i[_field].toString()
+    })
+  } catch (error) {
+    console.warn(`[getIds] Failed to fetch data for ${collectionName} (returning empty list):`, error)
+    return []
+  }
 }
 
 export const saveDriveToken = async (token: any, userInfo: any, currentUser: string) => {
