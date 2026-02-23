@@ -198,17 +198,17 @@ const InvoiceReport = (props: any, ref: any) => {
             .pdf-export .section-border-right { border-color: #A3A3A3 !important; }
             .pdf-export .section-border-bottom { border-color: #A3A3A3 !important; }
             #tb { width: 100%; background-color: ${bgColor}; font-size: 11pt; color: ${textColor}; line-height: 1.5; border-collapse: collapse; }
-            #tb .label { width: 27%; font-weight: 500; padding: 5px 4px; white-space: nowrap;  }
-            #tb .meter { width: 33%; padding: 5px 4px; font-size: 10.5pt; white-space: nowrap; }
-            #tb .amount { text-align: right; width: 25%; padding: 5px 4px; }
-            #tb .unit { width: 15%; padding: 5px 4px; text-align: left; }
+            #tb .label { width: 27%; font-weight: 500; padding: 5px 4px 0px 0px; white-space: nowrap;  }
+            #tb .meter { width: 33%; padding: 5px 4px 0px 0px; font-size: 10.5pt; white-space: nowrap; }
+            #tb .amount { text-align: right; width: 25%; padding: 5px 4px 0px 0px; }
+            #tb .unit { width: 15%; padding: 5px 4px 0px 0px; text-align: left; }
             #tb .summary { font-weight: bold; border-top: 1px solid ${borderColor}; border-bottom: 1px solid ${borderColor}; }
             #tb .summary td { padding: 4px 4px; }
-            #tb .remark { font-size: 9pt; padding: 4px 4px; }
+            #tb .remark { font-size: 8pt; padding: 4px 4px; }
             #tb .header td { font-size: 14pt; font-weight: bold; padding: 4px 4px; text-align: left; }
             #tb .title2 td { font-size: 12pt; font-weight: bold; padding: 4px 4px; text-align: left; }
-            #tb .contact td { font-size: 9pt; padding: 2px 4px; border-bottom: 1px solid ${borderColor}; text-align: left; }
-            #tb td { padding: 2px 4px; }
+            #tb .contact td { font-size: 8pt; padding: 2px 4px; border-bottom: 1px solid ${borderColor}; text-align: left; }
+            #tb td { padding: 2px 2px; }
             #tb .item-row .label { padding-left: 8mm; }
             .page-container { display: flex; flex-direction: row; flex-wrap: wrap; width: 100%; height: 209mm; min-width: 296mm; align-content: flex-start; }
             .section { display: flex; flex-direction: column; justify-content: flex-start; align-items: center; width: 50%; height: 53%; padding: 5mm; background-color: ${bgColor}; color: ${textColor}; box-sizing: border-box; overflow: hidden; border-bottom: 1px solid ${dashedBorder}; border-right: 1px solid ${dashedBorder}; }
