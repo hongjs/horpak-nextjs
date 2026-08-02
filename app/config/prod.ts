@@ -5,8 +5,6 @@ const keys: ConfigType = Object.freeze({
   NODE_ENV: process.env.NODE_ENV,
   MONGO_URI: process.env.MONGO_URI || 'mongodb://localhost:27017/admin',
   DB_NAME: process.env.DB_NAME || 'dbname',
-  TOKEN_SECRET: process.env.JWT_SECRET || 'JWT_SECRET',
-  TOKEN_EXPIRES_IN: process.env.JWT_EXPIRE || '7d',
   TURNSTILE_SECRET: process.env.TURNSTILE_SECRET || '',
   GOOGLE_ID: process.env.GOOGLE_ID || '',
   GOOGLE_SECRET: process.env.GOOGLE_SECRET || '',
