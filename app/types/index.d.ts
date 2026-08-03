@@ -18,8 +18,6 @@ type ConfigType = {
   NODE_ENV: string
   MONGO_URI: string
   DB_NAME: string
-  TOKEN_SECRET: string
-  TOKEN_EXPIRES_IN: string
   TURNSTILE_SECRET: string
 
   GOOGLE_ID: string
